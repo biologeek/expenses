@@ -1,15 +1,17 @@
 package io.biologeek.expenses.domain.beans;
 
-public class Receiver {
+import javax.persistence.Entity;
 
-	public Entity receiverEntity;
+import io.biologeek.expenses.domain.beans.operations.Operation;
 
-	public Entity getReceiverEntity() {
-		return receiverEntity;
-	}
+/**
+ * A {@link Receiver} is, within an {@link Operation} the agent that receives
+ * the fruit of the operation. Money, object, ...
+ * 
+ * @author xcaron
+ *
+ */
+@Entity
+public class Receiver extends OperationAgent {
 
-	public void setReceiverEntity(Entity receiverEntity) {
-		this.receiverEntity = receiverEntity;
-	}
-	
 }

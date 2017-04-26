@@ -1,14 +1,12 @@
 package io.biologeek.expenses.domain.beans;
 
-public class Emitter {
+/**
+ * Within an operation, the {@link Emitter} is the one that either gives or pays
+ * or whatever.
+ * 
+ * @author xcaron
+ *
+ */
+public class Emitter extends OperationAgent {
 
-	public Entity emitterEntity;
-
-	public Entity getEmitterEntity() {
-		return emitterEntity;
-	}
-
-	public void setEmitterEntity(Entity emitterEntity) {
-		this.emitterEntity = emitterEntity;
-	}
 }
