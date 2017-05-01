@@ -2,6 +2,9 @@ package io.biologeek.expenses.domain.beans.operations;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Debt extends Expense implements TemporaryOperation {
 	private Date reimbursmentDate;
 	private Double reimbursedAmount;

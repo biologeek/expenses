@@ -13,7 +13,8 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
 @Entity
 public class Account {
 
-	@Id@GeneratedValue
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
 	/**
@@ -21,7 +22,7 @@ public class Account {
 	 */
 	private String owner;
 	private Long number;
-	@OneToMany(mappedBy="account")
+	@OneToMany(mappedBy = "account")
 	private List<Operation> expenses;
 
 	public Long getId() {

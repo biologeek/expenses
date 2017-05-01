@@ -1,6 +1,8 @@
 package io.biologeek.expenses.domain.beans;
 
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -25,11 +27,14 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class OperationAgent {
 
+	@Id
+	@GeneratedValue
+	private Long id;
 	/**
 	 * The entity attached to this agent
 	 */
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="entityAgent")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "agentEntity")
 	private Entity agentEntity;
 
 	public Entity getAgentEntity() {

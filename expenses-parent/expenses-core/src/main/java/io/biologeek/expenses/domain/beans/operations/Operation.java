@@ -5,12 +5,16 @@ import java.util.Currency;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import io.biologeek.expenses.data.converters.CurrencyConverter;
 import io.biologeek.expenses.domain.beans.Account;
+import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.Emitter;
 import io.biologeek.expenses.domain.beans.Receiver;
 
@@ -18,6 +22,9 @@ import io.biologeek.expenses.domain.beans.Receiver;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Operation {
 
+	@Id
+	@GeneratedValue
+	private Long id;
 	@ManyToOne(fetch = FetchType.EAGER)
 	Receiver beneficiary;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -30,6 +37,10 @@ public abstract class Operation {
 
 	@Convert(converter = CurrencyConverter.class)
 	Currency currency;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="operation_category")
+	Category category;
 
 	public Receiver getBeneficiary() {
 		return beneficiary;
@@ -61,6 +72,22 @@ public abstract class Operation {
 
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }

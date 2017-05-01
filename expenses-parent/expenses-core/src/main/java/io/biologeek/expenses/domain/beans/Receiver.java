@@ -1,6 +1,9 @@
 package io.biologeek.expenses.domain.beans;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import io.biologeek.expenses.domain.beans.operations.Operation;
 
@@ -13,5 +16,4 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
  */
 @Entity
 public class Receiver extends OperationAgent {
-
 }

@@ -21,13 +21,13 @@ import javax.persistence.OneToMany;
 @javax.persistence.Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Entity {
-	@Id@GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String name;
-	
-	@OneToMany(mappedBy="agentEntity")
+
+	@OneToMany(mappedBy = "agentEntity")
 	private List<OperationAgent> agents;
-	
 
 	public List<OperationAgent> getAgents() {
 		return agents;

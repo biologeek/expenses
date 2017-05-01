@@ -17,7 +17,7 @@ public class ExpensesService {
 	ExpensesRepository expensesRepository;
 
 	public List<Expense> getLastExpensesForAccount(Account account, int limit) {
-		return expensesRepository.getExpensesForAccountWithLimit(account.getAccountId(), limit,
+		return expensesRepository.getExpensesForAccountWithLimit(account.getId(), limit,
 				new PageRequest(0, limit));
 	}
 

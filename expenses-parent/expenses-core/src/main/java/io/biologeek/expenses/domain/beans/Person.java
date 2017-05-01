@@ -1,5 +1,9 @@
 package io.biologeek.expenses.domain.beans;
 
+import java.util.List;
+
+import javax.persistence.OneToMany;
+
 /**
  * A Person is a physical Entity, meaning a Person that has a name, ... in
  * opposition with a {@link Organization}
@@ -7,6 +11,7 @@ package io.biologeek.expenses.domain.beans;
  * @author xcaron
  *
  */
+@javax.persistence.Entity
 public class Person extends Entity {
 
 	private String firstName;
@@ -14,6 +19,9 @@ public class Person extends Entity {
 	private Integer age;
 	private String mailAddress;
 	private String phoneNumber;
+	
+	@OneToMany(mappedBy="mainContact")
+	private List<Organization> organization;
 
 	public String getMailAddress() {
 		return mailAddress;

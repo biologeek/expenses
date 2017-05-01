@@ -7,6 +7,6 @@ package io.biologeek.expenses.domain.beans;
  * @author xcaron
  *
  */
+@javax.persistence.Entity
 public class Emitter extends OperationAgent {
-
 }

@@ -2,11 +2,14 @@ package io.biologeek.expenses.domain.beans.operations;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 /**
  * A loan is a positive operation but it is also a non permanent one
  * @author xcaron
  *
  */
+@Entity
 public class Loan extends Income implements TemporaryOperation {
 
 	private Date reimbursmentDate;
