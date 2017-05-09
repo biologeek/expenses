@@ -1,7 +1,16 @@
 package io.biologeek.expenses.domain.beans.operations;
 
+import javax.persistence.Entity;
+
 import io.biologeek.expenses.domain.beans.Interval;
 
+/**
+ * An income that is received regularly. For example a salary, ...
+ * 
+ * @author xcaron
+ *
+ */
+@Entity
 public class RegularIncome extends Income implements RegularOperation {
 
 	private Interval interval;

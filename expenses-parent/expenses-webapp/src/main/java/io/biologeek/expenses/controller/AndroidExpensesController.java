@@ -16,6 +16,8 @@ import io.biologeek.expenses.api.beans.Expense;
 import io.biologeek.expenses.converter.ExpenseToApiConverter;
 import io.biologeek.expenses.converter.ExpenseToModelConverter;
 import io.biologeek.expenses.domain.beans.Account;
+import io.biologeek.expenses.exceptions.BusinessException;
+import io.biologeek.expenses.exceptions.TechnicalException;
 import io.biologeek.expenses.services.AccountService;
 import io.biologeek.expenses.services.ExpensesService;
 
@@ -53,7 +55,15 @@ public class AndroidExpensesController {
 			return new ResponseEntity<Expense>(HttpStatus.NOT_FOUND);
 		}
 
-		result = expensesService.addExpenseToAccount(account, ExpenseToModelConverter.convert(expense));
+		try {
+			result = expensesService.addExpenseToAccount(account, ExpenseToModelConverter.convert(expense));
+		} catch (TechnicalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(ExpenseToApiConverter.convert(result), HttpStatus.CREATED);
 	}
 
@@ -67,7 +77,15 @@ public class AndroidExpensesController {
 			return new ResponseEntity<Expense>(HttpStatus.NOT_FOUND);
 		}
 
-		result = expensesService.editExpenseForAccount(account, ExpenseToModelConverter.convert(expense));
+		try {
+			result = expensesService.editExpenseForAccount(account, ExpenseToModelConverter.convert(expense));
+		} catch (TechnicalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(ExpenseToApiConverter.convert(result), HttpStatus.OK);
 	}
 

@@ -37,6 +37,7 @@ public abstract class OperationAgent {
 	@JoinColumn(name = "agentEntity")
 	private Entity agentEntity;
 
+	
 	public Entity getAgentEntity() {
 		return agentEntity;
 	}

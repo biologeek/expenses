@@ -1,39 +1,52 @@
 package io.biologeek.expenses.domain.beans.operations;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import io.biologeek.expenses.exceptions.BusinessException;
 
 /**
- * A loan is a positive operation but it is also a non permanent one
+ * A loan is a positive operation but it is also a non permanent one. It can be
+ * reimbursed in more than one time.
+ * 
  * @author xcaron
  *
  */
 @Entity
 public class Loan extends Income implements TemporaryOperation {
+	private Date totalReimbursmentDate;
+	private Double totalReimbursedAmount;
 
-	private Date reimbursmentDate;
-	private Double reimbursedAmount;
+	@OneToMany(mappedBy="operation")
+	List<Refund> reimbursments;
 
-	public void solveTemporaryOperation(Double sum) {
-		this.setReimbursmentDate(new Date());
-		this.setReimbursedAmount(sum);
+	public List<Refund> getReimbursments() {
+		return reimbursments;
 	}
 
-	public Date getReimbursmentDate() {
-		return reimbursmentDate;
+	public void setReimbursments(List<Refund> reimbursments) {
+		this.reimbursments = reimbursments;
 	}
 
-	public void setReimbursmentDate(Date reimbursmentDate) {
-		this.reimbursmentDate = reimbursmentDate;
+	public void solveTemporaryOperation(Double sum) throws BusinessException {
+		this.setTotalReimbursmentDate(new Date());
+		if (!this.getTotalReimbursedAmount().equals(this.getAmount()))
+			throw new BusinessException("loan.not.refund");
 	}
 
-	public Double getReimbursedAmount() {
-		return reimbursedAmount;
+	public Double getTotalReimbursedAmount() {
+		return totalReimbursedAmount;
 	}
 
-	public void setReimbursedAmount(Double reimbursedAmount) {
-		this.reimbursedAmount = reimbursedAmount;
+	public Date getTotalReimbursmentDate() {
+		return totalReimbursmentDate;
+	}
+
+	public void setTotalReimbursmentDate(Date totalReimbursmentDate) {
+		this.totalReimbursmentDate = totalReimbursmentDate;
 	}
 
 }

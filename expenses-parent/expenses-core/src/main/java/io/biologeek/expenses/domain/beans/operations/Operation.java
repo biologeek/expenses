@@ -18,6 +18,11 @@ import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.Emitter;
 import io.biologeek.expenses.domain.beans.Receiver;
 
+/**
+ * An {@link Operation} is an exchange between an emitter and a receiver. It is attached to an account 
+ * @author xcaron
+ *
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Operation {
@@ -33,7 +38,7 @@ public abstract class Operation {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Account account;
 
-	Double amount;
+	private Double amount;
 
 	@Convert(converter = CurrencyConverter.class)
 	Currency currency;
@@ -88,6 +93,14 @@ public abstract class Operation {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }
