@@ -1,6 +1,7 @@
 package io.biologeek.expenses.domain.beans.operations;
 
 import java.util.Currency;
+import java.util.Date;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -19,7 +20,9 @@ import io.biologeek.expenses.domain.beans.Emitter;
 import io.biologeek.expenses.domain.beans.Receiver;
 
 /**
- * An {@link Operation} is an exchange between an emitter and a receiver. It is attached to an account 
+ * An {@link Operation} is an exchange between an emitter and a receiver. It is
+ * attached to an account
+ * 
  * @author xcaron
  *
  */
@@ -40,12 +43,37 @@ public abstract class Operation {
 
 	private Double amount;
 
-	@Convert(converter = CurrencyConverter.class)
-	Currency currency;
-
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="operation_category")
+	@JoinColumn(name = "operation_category")
 	Category category;
+
+	private Date creationDate;
+	private Date updateDate;
+	private int version;
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
 
 	public Receiver getBeneficiary() {
 		return beneficiary;
@@ -69,14 +97,6 @@ public abstract class Operation {
 
 	public void setAmount(Double amount) {
 		this.amount = amount;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
 	}
 
 	public Account getAccount() {

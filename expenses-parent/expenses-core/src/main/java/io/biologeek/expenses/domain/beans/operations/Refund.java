@@ -3,6 +3,8 @@ package io.biologeek.expenses.domain.beans.operations;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -12,6 +14,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Refund {
 
+	@Id@GeneratedValue
+	private Long id;
 	private Date reimbursmentDate;
 	private Double reimbursedAmount;
 
@@ -19,6 +23,22 @@ public class Refund {
 	@JoinColumn(name="reimbursments")
 	Operation operation;
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Operation getOperation() {
+		return operation;
+	}
+
+	public void setOperation(Operation operation) {
+		this.operation = operation;
+	}
+
 	public Date getReimbursmentDate() {
 		return reimbursmentDate;
 	}

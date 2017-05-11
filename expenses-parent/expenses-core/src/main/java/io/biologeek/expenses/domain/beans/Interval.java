@@ -1,5 +1,8 @@
 package io.biologeek.expenses.domain.beans;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Interval {
 	double interval;
 	int unit;

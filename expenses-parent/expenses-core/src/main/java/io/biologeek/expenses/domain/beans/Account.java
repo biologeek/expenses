@@ -1,5 +1,6 @@
 package io.biologeek.expenses.domain.beans;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -7,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import io.biologeek.expenses.domain.beans.operations.Expense;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 
 @Entity
@@ -24,6 +24,10 @@ public class Account {
 	private Long number;
 	@OneToMany(mappedBy = "account")
 	private List<Operation> expenses;
+	
+	private Date creationDate;
+	private Date updateDate;
+	
 
 	public Long getId() {
 		return id;
@@ -63,6 +67,22 @@ public class Account {
 
 	public void setExpenses(List<Operation> expenses) {
 		this.expenses = expenses;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 
 }

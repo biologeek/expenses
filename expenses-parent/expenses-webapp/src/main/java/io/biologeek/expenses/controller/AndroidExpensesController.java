@@ -30,10 +30,17 @@ public class AndroidExpensesController {
 	@Autowired
 	AccountService accountService;
 
+	@RequestMapping(path = { "/" }, method = { RequestMethod.GET })
+	public ResponseEntity<Void> voidmethod() {
+		return ResponseEntity.ok().build();
+	}
+
 	@RequestMapping(path = { "/account/{account}/expense" }, method = { RequestMethod.GET })
 	public ResponseEntity<List<Expense>> getLastExpenses(@PathVariable("account") long accountId,
-			@RequestParam("limit") int limit) {
+			@RequestParam(value = "limit", required = false) Integer limit) {
 		List<io.biologeek.expenses.domain.beans.operations.Expense> result = null;
+		if (limit == null || limit.equals(Integer.valueOf(0)))
+			limit = 20;
 		Account account = accountService.getAccount(accountId);
 
 		if (account == null) {

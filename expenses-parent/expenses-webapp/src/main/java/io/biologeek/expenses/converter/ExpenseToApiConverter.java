@@ -13,9 +13,21 @@ public class ExpenseToApiConverter {
 				.collect(Collectors.toList());
 	}
 
-	public static Expense convert(io.biologeek.expenses.domain.beans.operations.Expense result) {
-		
-		return new Expense();
+	public static Expense convert(io.biologeek.expenses.domain.beans.operations.Expense toConvert) {
+		Expense res = new Expense();
+
+		res.setAccount(AccountToApiConverter.convert(toConvert));
+		res.setAmount(toConvert.getAmount());
+		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
+		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
+		res.setCategory(CategoryToApiConverter.convert(toConvert.getCategory()));
+		res.setCreationDate(toConvert.getCreationDate());
+		res.setUpdateDate(toConvert.getUpdateDate());
+		res.setCurrency(toConvert.getCurrency().getCurrencyCode());
+		res.setId(toConvert.getId());
+		res.setVersion(toConvert.getVersion());
+
+		return res;
 	}
 
 }

@@ -22,7 +22,7 @@ public class ExpensesService {
 	ExpensesRepository expensesRepository;
 
 	public List<Expense> getLastExpensesForAccount(Account account, int limit) {
-		return expensesRepository.getExpensesForAccountWithLimit(account.getId(), limit, new PageRequest(0, limit));
+		return expensesRepository.getExpensesForAccountWithLimit(account.getId(), new PageRequest(0, limit));
 	}
 
 	/**
