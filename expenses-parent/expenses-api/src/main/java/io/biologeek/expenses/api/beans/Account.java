@@ -3,6 +3,9 @@ package io.biologeek.expenses.api.beans;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect
 public class Account {
 
 	private Long id;

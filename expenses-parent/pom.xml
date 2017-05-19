@@ -10,6 +10,8 @@
 		<module>expenses-api</module>
 		<module>expenses-core</module>
 		<module>expenses-webapp</module>
+		<module>expenses-ui</module>
+		<module>expenses-android</module>
 	</modules>
 	<build>
 		<plugins>

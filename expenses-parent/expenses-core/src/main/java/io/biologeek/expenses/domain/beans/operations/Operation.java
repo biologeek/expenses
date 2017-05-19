@@ -47,9 +47,27 @@ public abstract class Operation {
 	@JoinColumn(name = "operation_category")
 	Category category;
 
+	/**
+	 * The date the operation was created
+	 */
 	private Date creationDate;
+	/**
+	 * The date the operation was updated
+	 */
 	private Date updateDate;
 	private int version;
+	/**
+	 * The date the operation was effectively made
+	 */
+	private Date effectiveDate;
+
+	public Date getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
 
 	public Date getCreationDate() {
 		return creationDate;

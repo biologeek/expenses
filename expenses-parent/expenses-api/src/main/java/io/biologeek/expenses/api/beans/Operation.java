@@ -2,6 +2,9 @@ package io.biologeek.expenses.api.beans;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect
 public class Operation {
 
 	private Long id;

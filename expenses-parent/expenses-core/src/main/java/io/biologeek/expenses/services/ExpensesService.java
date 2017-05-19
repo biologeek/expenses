@@ -18,6 +18,7 @@ import io.biologeek.expenses.validation.ExpenseValidator;
 @Service
 @Transactional
 public class ExpensesService {
+	
 	@Autowired
 	ExpensesRepository expensesRepository;
 
