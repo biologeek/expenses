@@ -46,6 +46,11 @@ public class Category {
 
 	@OneToMany(mappedBy = "sector")
 	private List<Organization> organizations;
+	
+	/**
+	 * Picture used to illustrate category
+	 */
+	private String categoryPicture;
 
 	public Long getId() {
 		return id;
@@ -53,6 +58,14 @@ public class Category {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCategoryPicture() {
+		return categoryPicture;
+	}
+
+	public void setCategoryPicture(String categoryPicture) {
+		this.categoryPicture = categoryPicture;
 	}
 
 	public String getName() {

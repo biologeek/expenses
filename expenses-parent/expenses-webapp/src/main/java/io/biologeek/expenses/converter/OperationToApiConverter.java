@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.biologeek.expenses.api.beans.Operation;
+import io.biologeek.expenses.domain.beans.operations.RegularOperation;
 
 public class OperationToApiConverter {
 	public static List<Operation> convert(List<io.biologeek.expenses.domain.beans.operations.Operation> toConvert) {

@@ -122,7 +122,8 @@ public class AndroidExpensesController {
 	
 	@RequestMapping(path={"/operation/{id}"}, method={RequestMethod.GET})
 	public ResponseEntity<? extends Operation> getOperation(@PathVariable("id")long operationId){
-		return OperationToApiConverter.convert(toConvert, res)
+		io.biologeek.expenses.domain.beans.operations.Operation op = opService.getOperationByid(operationId);
+		return ResponseEntity.ok(OperationToApiConverter.convert(op, new Operation()));
 	}
 
 }

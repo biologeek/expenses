@@ -20,7 +20,7 @@ public class Interval {
 		this.unit = unit;
 	}
 
-	public Interval interval() {
+	public Interval interval(double interval) {
 		this.interval = interval;
 		return this;
 	}

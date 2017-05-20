@@ -24,4 +24,7 @@ public class Income extends Operation{
 		this.currency = currency;
 	}
 
+	public Income getMe(){
+		return this;
+	}
 }

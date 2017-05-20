@@ -19,13 +19,13 @@ public class AndroidOperationList extends ArrayList<OperationListMember> {
 		private String description;
 		private String currency;
 		private BigDecimal amount;
-		private String categoryPicture;
+		private int categoryPicture;
 
-		public String getCategoryPicture() {
+		public int getCategoryPicture() {
 			return categoryPicture;
 		}
 
-		public void setCategoryPicture(String categoryPicture) {
+		public void setCategoryPicture(int categoryPicture) {
 			this.categoryPicture = categoryPicture;
 		}
 

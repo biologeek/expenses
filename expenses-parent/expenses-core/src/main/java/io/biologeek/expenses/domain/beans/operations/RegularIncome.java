@@ -25,4 +25,7 @@ public class RegularIncome extends Income implements RegularOperation {
 		return interval;
 	}
 
+	public Income getIncome(){
+		return super.getMe();
+	}
 }
