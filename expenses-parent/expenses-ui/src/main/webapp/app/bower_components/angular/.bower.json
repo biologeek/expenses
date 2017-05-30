@@ -1,0 +1,12 @@
+{
+  "name": "angular",
+  "version": "v1.2.32",
+  "license": "MIT",
+  "main": "./angular.js",
+  "ignore": [],
+  "dependencies": {},
+  "_source": "nexus+https://yphmbusduddb.int.adeo.com/repository/Bower-All/angular",
+  "_target": "1.2.x",
+  "_release": "v1.2.32",
+  "_originalSource": "angular"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "angular-route",
+  "version": "v1.2.32",
+  "license": "MIT",
+  "main": "./angular-route.js",
+  "ignore": [],
+  "dependencies": {
+    "angular": "1.2.32"
+  },
+  "_source": "nexus+https://yphmbusduddb.int.adeo.com/repository/Bower-All/angular-route",
+  "_target": "~1.2.21",
+  "_release": "v1.2.32",
+  "_originalSource": "angular-route"
+}

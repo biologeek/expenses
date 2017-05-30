@@ -7,7 +7,7 @@ var saveLicense = require('uglify-save-license');
 var gulp = require('gulp');
 
 gulp.task('styles', function () {
-  return gulp.src('app/styles/*.scss','app/styles/*.css')
+  return gulp.src(['app/styles/*.scss','app/styles/*.css'])
     .pipe($.plumber())
     .pipe($.rubySass({style: 'expanded'}))
     .pipe($.autoprefixer('last 1 version'))

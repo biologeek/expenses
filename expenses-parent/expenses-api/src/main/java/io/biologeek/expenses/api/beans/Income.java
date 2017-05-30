@@ -22,6 +22,6 @@ public class Income extends Operation {
 
 	public void setInterval(Interval interval) {
 		this.interval = interval;
-	}
 
+	}
 }

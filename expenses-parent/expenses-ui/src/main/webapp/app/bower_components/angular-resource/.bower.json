@@ -1,0 +1,14 @@
+{
+  "name": "angular-resource",
+  "version": "v1.2.32",
+  "license": "MIT",
+  "main": "./angular-resource.js",
+  "ignore": [],
+  "dependencies": {
+    "angular": "1.2.32"
+  },
+  "_source": "nexus+https://yphmbusduddb.int.adeo.com/repository/Bower-All/angular-resource",
+  "_target": "~1.2.21",
+  "_release": "v1.2.32",
+  "_originalSource": "angular-resource"
+}

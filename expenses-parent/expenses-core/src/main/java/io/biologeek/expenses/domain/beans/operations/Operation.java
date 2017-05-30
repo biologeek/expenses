@@ -61,6 +61,27 @@ public abstract class Operation {
 	 */
 	private Date effectiveDate;
 
+	private String description;
+
+	@Convert(converter = CurrencyConverter.class)
+	Currency currency;
+
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Date getEffectiveDate() {
 		return effectiveDate;
 	}

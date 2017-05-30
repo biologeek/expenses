@@ -2,8 +2,14 @@ package io.biologeek.expenses.converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.http.ResponseEntity;
 
 import io.biologeek.expenses.api.beans.Operation;
+import io.biologeek.expenses.api.beans.charts.XYChartData;
+import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
+import io.biologeek.expenses.domain.beans.DailyBalance;
 import io.biologeek.expenses.domain.beans.operations.RegularOperation;
 
 public class OperationToApiConverter {
@@ -43,5 +49,31 @@ public class OperationToApiConverter {
 		res.setVersion(toConvert.getVersion());
 
 		return res;
+	}
+	
+	public static ResponseEntity<XYChartData> convertToXYChartData(
+			List<DailyBalance> operations, String title, String xLabel, String yLabel) {
+		XYChartData chart = new XYChartData()//
+				.title(title)//
+				.xLabel(xLabel)//
+				.yLabel(yLabel)//
+				.data(operations.stream().map(OperationToApiConverter::convertToXYChartPoint).collect(Collectors.toList()));
+		
+		
+		return null;
+	}
+	
+	
+	/**
+	 * Converts a {@link DailyBalance}
+	 * @param operation
+	 * @return
+	 */
+	public static XYChartPoint convertToXYChartPoint(DailyBalance operation){
+		XYChartPoint point = new XYChartData.XYChartPoint();
+		point.setLabel(null);
+		point.setX(operation.getBalanceDate().getTime());
+		point.setY(operation.getBalanceValue().doubleValue());
+		return null;
 	}
 }

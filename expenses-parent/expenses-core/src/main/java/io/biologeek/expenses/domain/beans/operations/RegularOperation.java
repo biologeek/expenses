@@ -1,7 +1,5 @@
 package io.biologeek.expenses.domain.beans.operations;
 
-import java.util.Calendar;
-
 import io.biologeek.expenses.domain.beans.Interval;
 
 /**

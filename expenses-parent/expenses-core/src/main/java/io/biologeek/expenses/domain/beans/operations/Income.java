@@ -13,18 +13,4 @@ import io.biologeek.expenses.data.converters.CurrencyConverter;
  */
 public class Income extends Operation{
 
-	@Convert(converter = CurrencyConverter.class)
-	Currency currency;
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
-
-	public Income getMe(){
-		return this;
-	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import io.biologeek.expenses.api.beans.Expense;
 import io.biologeek.expenses.api.beans.Operation;
+import io.biologeek.expenses.converter.AccountToApiConverter;
 import io.biologeek.expenses.converter.ExpenseToApiConverter;
 import io.biologeek.expenses.converter.ExpenseToModelConverter;
 import io.biologeek.expenses.converter.OperationToApiConverter;
@@ -40,26 +41,8 @@ public class AndroidExpensesController {
 		return ResponseEntity.ok().build();
 	}
 
-	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.GET })
-	public ResponseEntity<List<Expense>> getLastExpenses(@PathVariable("account") long accountId,
-			@RequestParam(value = "limit", required = false) Integer limit) {
-		List<io.biologeek.expenses.domain.beans.operations.Expense> result = null;
-		if (limit == null || limit.equals(Integer.valueOf(0)))
-			limit = 20;
-		Account account = accountService.getAccount(accountId);
-
-		if (account == null) {
-			return new ResponseEntity<List<Expense>>(HttpStatus.NOT_FOUND);
-		}
-		result = expensesService.getLastExpensesForAccount(account, limit);
-		if (result.isEmpty())
-			return new ResponseEntity<List<Expense>>(HttpStatus.NO_CONTENT);
-
-		return new ResponseEntity<>(ExpenseToApiConverter.convert(result), HttpStatus.OK);
-	}
 	
-
-	@RequestMapping(path = { "/account/{account}/operations" }, method = { RequestMethod.GET })
+	@RequestMapping(path = { "/account/{account}/operations",  "/account/{account}/operation" }, method = { RequestMethod.GET })
 	public ResponseEntity<List<Operation>> getLastOperations(@PathVariable("account") long accountId,
 			@RequestParam(value = "limit", required = false) Integer limit) {
 		List<io.biologeek.expenses.domain.beans.operations.Operation> result = null;
@@ -126,4 +109,10 @@ public class AndroidExpensesController {
 		return ResponseEntity.ok(OperationToApiConverter.convert(op, new Operation()));
 	}
 
+	
+	@RequestMapping(path={"/account"}, method={RequestMethod.GET})
+	public ResponseEntity<List<io.biologeek.expenses.api.beans.Account>> getAccounts(){
+		List<Account> accounts = accountService.getAccounts();
+		return ResponseEntity.ok(AccountToApiConverter.convert(accounts));
+	}
 }

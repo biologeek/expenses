@@ -1,11 +1,13 @@
 <!-- NOTE: Please don not delete any of the comments below -->
 <!doctype html>
-<html class="no-js" ng-app="myApp">
+<html class="no-js" ng-app=expenses.ui>
     <head>
         <meta charset="utf-8">
         <title>expenses-webui</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
+        
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <!-- build:css styles/vendor.css -->
@@ -22,6 +24,15 @@
         <!-- endbuild -->
     </head>
     <body>
+    
+    <div class="row">
+		<div id="left-menu" class="col-md-3">
+			<ul class="list-group">
+				<li class="list-group-item">Welcome page</li>
+				<li class="list-group-item"><a href="#/charts">Charts</a></li>
+				<li class="list-group-item"><a href="#/balances">Balances</a></li>
+			</ul>
+		</div>
         <!-- View Place holder -->
         <div ng-view=""></div>
 
@@ -32,6 +43,7 @@
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
