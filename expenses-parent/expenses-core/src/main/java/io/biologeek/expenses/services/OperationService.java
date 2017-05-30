@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Balance;
 import io.biologeek.expenses.domain.beans.Category;
-import io.biologeek.expenses.domain.beans.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.DailyBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.repositories.OperationsRepository;
@@ -30,6 +30,8 @@ public class OperationService {
 
 	@Autowired
 	OperationsRepository operationsRepository;
+	@Autowired
+	CurrencyDelegate currrencyDelegate;
 
 	public List<Operation> getLastOperationsForAccount(Account account, int limit) {
 		return operationsRepository.getOperationsForAccountWithLimit(account.getId(), new PageRequest(0, limit));
@@ -56,6 +58,11 @@ public class OperationService {
 		return buildDailyBalanceWithCategoryDetail(operations);
 	}
 
+	/**
+	 * Returns a list of daily balances 
+	 * @param operations
+	 * @return
+	 */
 	private List<? extends Balance> buildDailyBalanceWithCategoryDetail(List<Operation> operations) {
 		List<DailyBalance> result = new ArrayList<>();
 
@@ -63,14 +70,16 @@ public class OperationService {
 
 		for (Operation op : operations) {
 			if (balanceOfTheDay.equals(new DailyBalance())) {
-				balanceOfTheDay = convertToNewBalance(op);
+				balanceOfTheDay = addOperationToNewBalance(op);
+			} else {
+				balanceOfTheDay = updateBalanceWithOperation(op, balanceOfTheDay);
 			}
 
 		}
 		return null;
 	}
 
-	private DailyBalance convertToNewBalance(Operation op) {
+	private DailyBalance addOperationToNewBalance(Operation op) {
 		DailyBalance res = new DailyBalance();
 		res.setBalanceDate(op.getEffectiveDate());
 		res.setBalanceValue(new BigDecimal(op.getAmount()));
@@ -93,7 +102,7 @@ public class OperationService {
 	 * @param balance
 	 * @return
 	 */
-	private DailyBalance updateBalanceWithCategories(Operation op, DailyBalance balance) {
+	private DailyBalance updateBalanceWithOperation(Operation op, DailyBalance balance) {
 		if (!op.getEffectiveDate().equals(balance.getBalanceDate())) {
 			balance = new DailyBalance();
 		}
@@ -103,7 +112,7 @@ public class OperationService {
 			convertedAmount = convertToBalanceCurrency(op.getAmount(), op.getCurrency(), balance.getBalanceCurrency());
 		}
 
-		balance.getBalanceValue().add(new BigDecimal(op.getAmount()));
+		balance.getBalanceValue().add(new BigDecimal(convertedAmount));
 		Entry<Category, BigDecimal> category = balance.findCategory(op);
 		// If category is found, add amount to yet calculated amount.
 		// Else, put new category
@@ -115,8 +124,16 @@ public class OperationService {
 		return balance;
 	}
 
+	/**
+	 * Converts an operation or whatever amount to the good currency
+	 * 
+	 * @param amount
+	 * @param currency
+	 * @param balanceCurrency
+	 * @return
+	 */
 	private Double convertToBalanceCurrency(Double amount, Currency currency, Currency balanceCurrency) {
-		// TODO Auto-generated method stub
+		currrencyDelegate.convert(amount, currency, balanceCurrency);
 		return amount;
 	}
 }

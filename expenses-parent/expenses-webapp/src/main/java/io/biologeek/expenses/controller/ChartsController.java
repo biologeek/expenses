@@ -12,7 +12,7 @@ import io.biologeek.expenses.api.beans.charts.PieChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.domain.beans.Balance;
-import io.biologeek.expenses.domain.beans.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.DailyBalance;
 import io.biologeek.expenses.services.OperationService;
 
 public class ChartsController {

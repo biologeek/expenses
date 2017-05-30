@@ -1,4 +1,4 @@
-package io.biologeek.expenses.domain.beans;
+package io.biologeek.expenses.domain.beans.balances;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 
+import io.biologeek.expenses.domain.beans.Balance;
+import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 
 /**

@@ -13,4 +13,8 @@ import io.biologeek.expenses.data.converters.CurrencyConverter;
  */
 public class Income extends Operation{
 
+	public Income getMe() {
+		return null;
+	}
+
 }

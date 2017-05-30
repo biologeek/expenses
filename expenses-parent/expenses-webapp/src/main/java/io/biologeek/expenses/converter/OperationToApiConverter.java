@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
-import io.biologeek.expenses.domain.beans.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.DailyBalance;
 import io.biologeek.expenses.domain.beans.operations.RegularOperation;
 
 public class OperationToApiConverter {
