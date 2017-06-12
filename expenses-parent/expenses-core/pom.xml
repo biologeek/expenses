@@ -9,6 +9,7 @@
 		<dbh2.version>1.4.194</dbh2.version>
 		<org.springframework.version>4.3.7.RELEASE</org.springframework.version>
 		<spring.boot.version>1.5.2.RELEASE</spring.boot.version>
+		<junit.version>4.12</junit.version>
 	</properties>
 	<dependencies>
 
@@ -189,6 +190,28 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<version>${spring.boot.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<!-- or whatever version you use -->
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

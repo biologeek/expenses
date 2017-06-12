@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * A {@link Refund} is a part of the refund of a {@link Debt} or {@link Loan}
+ * A {@link Refund} is a part of the refund of a {@link Debt} or {@link TemporaryOperation}
  */
 @Entity
 public class Refund {

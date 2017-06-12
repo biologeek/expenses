@@ -2,6 +2,13 @@ package io.biologeek.expenses.api.beans.charts;
 
 import java.util.List;
 
+/**
+ * Represents a time-based chart as a list of points determined by their (x, y)
+ * position and eventually a label.
+ * 
+ * @author xavier
+ *
+ */
 public class XYChartData extends AbstractChartDataset {
 	private List<XYChartPoint> data;
 

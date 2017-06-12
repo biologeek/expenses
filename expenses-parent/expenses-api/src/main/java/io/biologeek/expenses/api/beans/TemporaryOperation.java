@@ -3,10 +3,7 @@ package io.biologeek.expenses.api.beans;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
-@JsonAutoDetect
-public class Debt extends Expense {
+public class TemporaryOperation extends Operation {
 	private Date totalReimbursmentDate;
 	private Double totalReimbursedAmount;
 	List<Refund> reimbursments;
@@ -34,5 +31,4 @@ public class Debt extends Expense {
 	public void setReimbursments(List<Refund> reimbursments) {
 		this.reimbursments = reimbursments;
 	}
-
 }

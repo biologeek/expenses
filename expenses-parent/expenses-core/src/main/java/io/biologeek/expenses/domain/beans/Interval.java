@@ -1,17 +1,45 @@
 package io.biologeek.expenses.domain.beans;
 
+import io.biologeek.expenses.utils.DateUtils;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Interval {
-	double interval;
+	
+	Date firstDate;
+	int interval;
+	/**
+	 * Corresponds to {@link Calendar} unit
+	 */
 	int unit;
 
-	public double getInterval() {
+	Date lastDate;
+
+	public Date getFirstDate() {
+		return firstDate;
+	}
+
+	public void setFirstDate(Date firstDate) {
+		this.firstDate = firstDate;
+	}
+
+	public Date getLastDate() {
+		return lastDate;
+	}
+
+	public void setLastDate(Date lastDate) {
+		this.lastDate = lastDate;
+	}
+
+	public int getInterval() {
 		return interval;
 	}
 
-	public void setInterval(double interval) {
+	public void setInterval(int interval) {
 		this.interval = interval;
 	}
 
@@ -32,4 +60,23 @@ public class Interval {
 		this.unit = unit;
 		return this;
 	}
+	
+	public boolean isOutdated(){
+		Calendar now = Calendar.getInstance();
+		Calendar last = Calendar.getInstance();
+		last.setTime(lastDate);
+		last.add(unit, interval);
+		
+		return last.after(now);
+	}
+
+	public boolean isAnOperationOfTheDay(Date balanceDate) {
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(lastDate);
+		cal.add(unit, interval);
+		Date theoreticalNextDate = cal.getTime();
+		return DateUtils.areSameDate(balanceDate, theoreticalNextDate);
+	}
+	
 }
