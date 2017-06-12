@@ -13,6 +13,7 @@ import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.domain.beans.Balance;
 import io.biologeek.expenses.domain.beans.balances.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.services.OperationService;
 
 public class ChartsController {
@@ -31,7 +32,7 @@ public class ChartsController {
 	 */
 	public ResponseEntity<XYChartData> getOperationsForPeriod(long account, Date begin, Date end,
 			OperationType... types) {
-		List<DailyBalance> operations = (List<DailyBalance>) operationService.getOperationsForPeriod(account, begin, end,
+		FullPeriodicBalance operations = operationService.getFullBalanceForPeriod(account, begin, end,
 				convertOperationType(types));
 
 		return OperationToApiConverter.convertToXYChartData(operations, "chart.xy.time.title", "chart.xy.time.x.label", "chart.xy.time.y.label");

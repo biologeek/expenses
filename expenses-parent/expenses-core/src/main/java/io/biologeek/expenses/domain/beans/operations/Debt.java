@@ -9,7 +9,7 @@ import javax.persistence.OneToMany;
 import io.biologeek.expenses.exceptions.BusinessException;
 
 @Entity
-public class Debt extends Expense implements TemporaryOperation {
+public class Debt extends Expense implements Temporary {
 	private Date totalReimbursmentDate;
 	private Double totalReimbursedAmount;
 

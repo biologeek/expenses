@@ -10,7 +10,8 @@ import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
 import io.biologeek.expenses.domain.beans.balances.DailyBalance;
-import io.biologeek.expenses.domain.beans.operations.RegularOperation;
+import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
+import io.biologeek.expenses.domain.beans.operations.Regular;
 
 public class OperationToApiConverter {
 	public static List<Operation> convert(List<io.biologeek.expenses.domain.beans.operations.Operation> toConvert) {
@@ -52,12 +53,12 @@ public class OperationToApiConverter {
 	}
 	
 	public static ResponseEntity<XYChartData> convertToXYChartData(
-			List<DailyBalance> operations, String title, String xLabel, String yLabel) {
-		XYChartData chart = new XYChartData()//
+			FullPeriodicBalance operations, String title, String xLabel, String yLabel) {
+		XYChartData chart = ((XYChartData) new XYChartData()//
 				.title(title)//
 				.xLabel(xLabel)//
-				.yLabel(yLabel)//
-				.data(operations.stream().map(OperationToApiConverter::convertToXYChartPoint).collect(Collectors.toList()));
+				.yLabel(yLabel))//
+				.data(operations.getDailyBalances().stream().map(OperationToApiConverter::convertToXYChartPoint).collect(Collectors.toList()));
 		
 		
 		return null;

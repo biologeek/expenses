@@ -23,7 +23,21 @@ public class DailyBalance extends Balance {
 	private Date balanceDate;
 	private BigDecimal balanceValue;
 	private Currency balanceCurrency;
-	private Map<Category, BigDecimal> categories;
+
+	private CategoryBalance categoryBalance;
+	
+	public DailyBalance() {
+		super();
+		categoryBalance = new CategoryBalance();
+	}
+
+	public CategoryBalance getCategoryBalance() {
+		return categoryBalance;
+	}
+
+	public void setCategoryBalance(CategoryBalance categoryBalance) {
+		this.categoryBalance = categoryBalance;
+	}
 
 	public Date getBalanceDate() {
 		return balanceDate;
@@ -49,26 +63,20 @@ public class DailyBalance extends Balance {
 		this.balanceCurrency = balanceCurrency;
 	}
 
-	public Map<Category, BigDecimal> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(Map<Category, BigDecimal> categories) {
-		this.categories = categories;
-	}
-
 	/**
 	 * Finds the {@link Category} correponding to the operation if it exists
+	 * 
 	 * @param op
 	 * @return
 	 */
 	public Entry<Category, BigDecimal> findCategory(final Operation op) {
-		return this.getCategories().entrySet().stream().filter(new Predicate<Entry<Category, BigDecimal>>() {
-			@Override
-			public boolean test(Entry<Category, BigDecimal> t) {
-				return t.getKey().equals(op.getCategory());
-			}
-		}).findFirst().get();
-	
+		return this.getCategories().entrySet().stream()
+				.filter(new Predicate<Entry<Category, BigDecimal>>() {
+					@Override
+					public boolean test(Entry<Category, BigDecimal> t) {
+						return t.getKey().equals(op.getCategory());
+					}
+				}).findFirst().get();
+
 	}
 }
