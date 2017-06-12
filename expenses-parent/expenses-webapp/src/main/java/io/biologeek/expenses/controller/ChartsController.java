@@ -14,6 +14,7 @@ import io.biologeek.expenses.api.beans.charts.PieChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
+import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.services.OperationService;
 
 
