@@ -2,10 +2,12 @@ package io.biologeek.expenses.domain.beans.balances;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import io.biologeek.expenses.domain.beans.Balance;
 import io.biologeek.expenses.domain.beans.Category;
+import io.biologeek.expenses.domain.beans.operations.Operation;
 
 public class FullPeriodicBalance extends Balance {
 
@@ -50,6 +52,11 @@ public class FullPeriodicBalance extends Balance {
 
 	public DailyBalances getDailyBalances() {
 		return dailyBalances;
+	}
+
+	public FullPeriodicBalance dailyBalances(DailyBalances dailyBalances) {
+		this.setDailyBalances(dailyBalances);
+		return this;
 	}
 
 }

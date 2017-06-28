@@ -9,7 +9,7 @@ public class Operation {
 
 	private Long id;
 	User beneficiary;
-	User OperationAgent;
+	User emitter;
 
 	private Account account;
 
@@ -38,11 +38,11 @@ public class Operation {
 	}
 
 	public User getOperationAgent() {
-		return OperationAgent;
+		return emitter;
 	}
 
-	public void setOperationAgent(User OperationAgent) {
-		this.OperationAgent = OperationAgent;
+	public void setEmitter(User emitter) {
+		this.emitter = emitter;
 	}
 
 	public Account getAccount() {

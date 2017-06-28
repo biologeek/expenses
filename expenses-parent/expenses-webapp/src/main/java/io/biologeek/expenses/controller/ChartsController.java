@@ -9,14 +9,18 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.biologeek.expenses.api.beans.OperationType;
+import io.biologeek.expenses.api.beans.charts.EmptyXYChartData;
 import io.biologeek.expenses.api.beans.charts.PieChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.converter.OperationToApiConverter;
+import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
+import io.biologeek.expenses.domain.beans.balances.DailyBalances;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.services.OperationService;
 
@@ -38,16 +42,38 @@ public class ChartsController {
 	 * @return
 	 */
 	@RequestMapping("/amounts/{unitConstant}/")
-	public ResponseEntity<XYChartData> getOperationsForPeriod(@PathParam("account") long account
+	public ResponseEntity<? extends XYChartData> getOperationsForPeriod(@PathParam("account") long account
 			, @PathParam("unitConstant") String unitConstant
 			, @QueryParam("begin") Date begin, @QueryParam("end") Date end
 			, @QueryParam("types") OperationType... types) {
 		
-		FullPeriodicBalance operations = operationService.getFullBalanceForPeriod(account, unitConstant, begin,
+		DailyBalances operations = operationService.getDailyBalancesForPeriod(account, unitConstant, begin,
 				end, convertOperationType(types));
 
-		return OperationToApiConverter.convertToXYChartData(operations, "chart.xy.time.title", "chart.xy.time.x.label",
-				"chart.xy.time.y.label");
+		if (operations.isEmpty())
+			return new ResponseEntity<XYChartData>(HttpStatus.NO_CONTENT);
+		
+		return ResponseEntity.ok(
+				OperationToApiConverter.convertToXYChartData(operations, "chart.xy.time.title", "chart.xy.time.x.label",
+				"chart.xy.time.y.label"));
+	}
+	
+	public ResponseEntity<PieChartData> getOperationsByCategoryForPeriod(@PathParam("account") long account
+			, @PathParam("unitConstant") String unitConstant
+			, @QueryParam("begin") Date begin, @QueryParam("end") Date end
+			, @QueryParam("types") OperationType... types){
+		
+
+		List<CategoryBalance> balance = operationService.ca(account, unitConstant, begin,
+				end, convertOperationType(types));
+
+		if (operations.isEmpty())
+			return new ResponseEntity<XYChartData>(HttpStatus.NO_CONTENT);
+		
+		return ResponseEntity.ok(
+				OperationToApiConverter.convertToXYChartData(operations, "chart.xy.time.title", "chart.xy.time.x.label",
+				"chart.xy.time.y.label"));
+		
 	}
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
+import io.biologeek.expenses.domain.beans.balances.DailyBalances;
 import io.biologeek.expenses.domain.beans.balances.DailyBalances.DailyBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 
@@ -16,16 +17,14 @@ public class OperationToApiConverter {
 	public static List<Operation> convert(List<io.biologeek.expenses.domain.beans.operations.Operation> toConvert) {
 		List<Operation> result = new ArrayList<>();
 		for (io.biologeek.expenses.domain.beans.operations.Operation op : toConvert) {
-				result.add(OperationToApiConverter.convert((io.biologeek.expenses.domain.beans.operations.Operation) op));
+			result.add(OperationToApiConverter.convert((io.biologeek.expenses.domain.beans.operations.Operation) op));
 		}
-		return null;
+		return result;
 	}
 
 	public static io.biologeek.expenses.api.beans.Operation convert(
 			io.biologeek.expenses.domain.beans.operations.Operation toConvert) {
-				return null;
-		
-		
+		return null;
 	}
 
 	public static io.biologeek.expenses.api.beans.Operation convert(
@@ -34,7 +33,7 @@ public class OperationToApiConverter {
 		res.setAccount(AccountToApiConverter.convert(toConvert.getAccount()));
 		res.setAmount(toConvert.getAmount());
 		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
-		res.setOperationAgent(UserConverter.convert(toConvert.getOperationAgent()));
+		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
 		res.setCategory(CategoryToApiConverter.convert(toConvert.getCategory()));
 		res.setCreationDate(toConvert.getCreationDate());
 		res.setUpdateDate(toConvert.getUpdateDate());
@@ -44,24 +43,31 @@ public class OperationToApiConverter {
 		return res;
 	}
 
-	public static ResponseEntity<XYChartData> convertToXYChartData(
-			FullPeriodicBalance operations, String title, String xLabel, String yLabel) {
-		XYChartData chart = ((XYChartData) new XYChartData()//
-				.title(title)//
-				.xLabel(xLabel)//
-				.yLabel(yLabel))//
-				.data(operations.getDailyBalances().stream().map(OperationToApiConverter::convertToXYChartPoint).collect(Collectors.toList()));
+	public static XYChartData convertToXYChartData(FullPeriodicBalance operations, String title,
+			String xLabel, String yLabel) {
+		return convertToXYChartData(operations.getDailyBalances(), title, xLabel, yLabel);
 		
-		
-		return null;
 	}
+	public static XYChartData convertToXYChartData(DailyBalances operations, String title,
+			String xLabel, String yLabel) {
+		
+	
+	XYChartData chart = ((XYChartData) new XYChartData()//
+			.title(title)//
+			.xLabel(xLabel)//
+			.yLabel(yLabel))//
+					.data(operations.stream().map(OperationToApiConverter::convertToXYChartPoint)
+							.collect(Collectors.toList()));
 
+	return chart;
+	}
 	/**
 	 * Converts a {@link DailyBalance}
+	 * 
 	 * @param operation
 	 * @return
 	 */
-	public static XYChartPoint convertToXYChartPoint(DailyBalance operation){
+	public static XYChartPoint convertToXYChartPoint(DailyBalance operation) {
 		XYChartPoint point = new XYChartData.XYChartPoint();
 		point.setLabel(null);
 		point.setX(operation.getBalanceDate().getTime());

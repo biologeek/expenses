@@ -1,6 +1,7 @@
 package io.biologeek.expenses.services;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.balances.DailyBalances.DailyBalance;
 import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
+import io.biologeek.expenses.domain.beans.balances.DailyBalances;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
@@ -84,6 +86,46 @@ public class OperationService {
 	}
 
 	/**
+	 * Method to call to retrieve eligible operations against criteria passed in
+	 * parameters
+	 * 
+	 * @param account
+	 * @param unitConstant
+	 * @param begin
+	 * @param end
+	 * @param collect
+	 * @param withCategories
+	 * @return
+	 */
+	public DailyBalances getDailyBalancesForPeriod(long account, String unitConstant, Date begin, Date end,
+			List<OperationType> collect) {
+
+		List<Operation> operations = searchEligibleOperations(account, begin, end, collect);
+
+		return buildDailyBalances(operations);
+	}
+
+	/**
+	 * Method to call to retrieve eligible operations against criteria passed in
+	 * parameters
+	 * 
+	 * @param account
+	 * @param unitConstant
+	 * @param begin
+	 * @param end
+	 * @param collect
+	 * @param withCategories
+	 * @return
+	 */
+	public CategoryBalance getCategoryBalancesForPeriod(long account, String unitConstant, Date begin, Date end,
+			List<OperationType> collect) {
+
+		List<Operation> operations = searchEligibleOperations(account, begin, end, collect);
+
+		return buildCategoryBalanceForPeriodAndTypes(operations, null);
+	}
+
+	/**
 	 * Returns a full balance
 	 * 
 	 * @param account
@@ -97,16 +139,32 @@ public class OperationService {
 	public FullPeriodicBalance getFullBalanceForPeriod(long account, String unitConstant, Date begin, Date end,
 			List<OperationType> collect, boolean withCategories) {
 
-		List<Operation> operations = operationsRepository.getGroupedByDayAndPeriodAndTypeOfOperationsForAccount(account,
-				begin, end, (OperationType[]) collect.toArray());
+		List<Operation> operations = searchEligibleOperations(account, begin, end, collect);
+
 		if (operations != null && operations.isEmpty())
 			return new FullPeriodicBalance();
 
 		if (withCategories)
 			return buildFullBalanceWithCategoryDetail(operations);
 		else
-			return buildFullBalanceWithoutCategoryDetail(operations);
+			return new FullPeriodicBalance()//
+					.dailyBalances(this.buildDailyBalances(operations));
 
+	}
+
+	/**
+	 * Returns raw list of results from datasource
+	 * 
+	 * @param account
+	 * @param begin
+	 * @param end
+	 * @param collect
+	 * @return
+	 */
+	private List<Operation> searchEligibleOperations(long account, Date begin, Date end, List<OperationType> collect) {
+		List<Operation> operations = operationsRepository.getGroupedByDayAndPeriodAndTypeOfOperationsForAccount(account,
+				begin, end, (OperationType[]) collect.toArray());
+		return operations;
 	}
 
 	public FullPeriodicBalance getFullBalanceForPeriod(long account, String unitConstant, Date begin, Date end,
@@ -114,11 +172,21 @@ public class OperationService {
 		return getFullBalanceForPeriod(account, unitConstant, begin, end, collect, true);
 	}
 
-	CategoryBalance buildCategoryBalanceForPeriod(List<Operation> operations) {
+	/**
+	 * Builds a balanced with a repartition by category. You can also filter by type
+	 * @param operations
+	 * @param types
+	 * @return
+	 */
+	CategoryBalance buildCategoryBalanceForPeriodAndTypes(List<Operation> operations, OperationType... types) {
 		CategoryBalance result = new CategoryBalance();
 
 		for (Operation op : operations) {
-
+			if (result.getCategories().containsKey(op.getCategory()) 
+					&& (Arrays.asList(types).contains(op.getOperationType()) || types == null)){
+				BigDecimal entry = result.getCategories().get(op.getCategory());	
+				entry.add(new BigDecimal(op.getAmount()));
+			}
 		}
 
 		return result;
@@ -163,8 +231,8 @@ public class OperationService {
 	 * @param operations
 	 * @return
 	 */
-	private FullPeriodicBalance buildFullBalanceWithoutCategoryDetail(List<Operation> operations) {
-		FullPeriodicBalance fullBalance = new FullPeriodicBalance();
+	public DailyBalances buildDailyBalances(List<Operation> operations) {
+		DailyBalances fullBalance = new DailyBalances();
 
 		for (Operation op : operations) {
 			DailyBalance balanceOfTheDay = new DailyBalance();
@@ -180,9 +248,7 @@ public class OperationService {
 			} else {
 				balanceOfTheDay = addOperationToNewBalance(op);
 			}
-
-			fullBalance.getDailyBalances().add(balanceOfTheDay);
-
+			fullBalance.add(balanceOfTheDay);
 		}
 		return fullBalance;
 	}
@@ -194,19 +260,21 @@ public class OperationService {
 	 * @param result
 	 * @return
 	 */
-	private boolean isOperationDayAlreadyBalanced(Operation op, FullPeriodicBalance fullBalance) {
-		if (op == null || fullBalance.getDailyBalances() == null || fullBalance.getDailyBalances().size() == 0)
+	private boolean isOperationDayAlreadyBalanced(Operation op, DailyBalances fullBalance) {
+		if (op == null || fullBalance == null || fullBalance.size() == 0)
 			return false;
 
 		final Date dateOfOperation = op.getEffectiveDate();
-		return fullBalance//
-				.getDailyBalances()//
-				.stream()//
+		return fullBalance.stream()//
 				.anyMatch(new Predicate<DailyBalance>() {
 					public boolean test(DailyBalance t) {
 						return DateUtils.areSameDate(dateOfOperation, t.getBalanceDate());
 					}
 				});
+	}
+
+	private boolean isOperationDayAlreadyBalanced(Operation op, FullPeriodicBalance fullBalance) {
+		return isOperationDayAlreadyBalanced(op, fullBalance.getDailyBalances());
 	}
 
 	private DailyBalance getBalanceOfTheDay(Operation op, FullPeriodicBalance fullBalance) {
