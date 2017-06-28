@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
-import io.biologeek.expenses.domain.beans.balances.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.DailyBalances.DailyBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 
 public class OperationToApiConverter {
@@ -34,7 +34,7 @@ public class OperationToApiConverter {
 		res.setAccount(AccountToApiConverter.convert(toConvert.getAccount()));
 		res.setAmount(toConvert.getAmount());
 		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
-		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
+		res.setOperationAgent(UserConverter.convert(toConvert.getOperationAgent()));
 		res.setCategory(CategoryToApiConverter.convert(toConvert.getCategory()));
 		res.setCreationDate(toConvert.getCreationDate());
 		res.setUpdateDate(toConvert.getUpdateDate());

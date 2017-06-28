@@ -2,12 +2,15 @@ package io.biologeek.expenses.services;
 
 import java.util.Currency;
 
+import org.springframework.stereotype.Service;
+
 
 /**
  * A delegate service that 
  * @author xcaron
  *
  */
+@Service
 public class CurrencyDelegateImpl implements CurrencyDelegate {
 
 	public Double convert(Double amount, Currency fromUnit, Currency toUnit) {

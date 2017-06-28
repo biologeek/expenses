@@ -16,6 +16,10 @@ public class FullPeriodicBalance extends Balance {
 
 	private Map<Category, BigDecimal> categories;
 
+	public FullPeriodicBalance() {
+		dailyBalances = new DailyBalances();
+	}
+	
 	public Map<Category, BigDecimal> getCategories() {
 		return categories;
 	}

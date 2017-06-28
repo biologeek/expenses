@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import io.biologeek.expenses.beans.TimeUnit;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.balances.DailyBalances.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
@@ -81,11 +83,22 @@ public class OperationService {
 		return operationsRepository.getOne(id);
 	}
 
-	public FullPeriodicBalance getFullBalanceForPeriod(long account, Date begin, Date end, List<OperationType> collect,
-			boolean withCategories) {
+	/**
+	 * Returns a full balance
+	 * 
+	 * @param account
+	 * @param unitConstant
+	 * @param begin
+	 * @param end
+	 * @param collect
+	 * @param withCategories
+	 * @return
+	 */
+	public FullPeriodicBalance getFullBalanceForPeriod(long account, String unitConstant, Date begin, Date end,
+			List<OperationType> collect, boolean withCategories) {
 
-		List<Operation> operations = operationsRepository.getGroupedByDayOperationsForAccountByPeriod(account, begin,
-				end);
+		List<Operation> operations = operationsRepository.getGroupedByDayAndPeriodAndTypeOfOperationsForAccount(account,
+				begin, end, (OperationType[]) collect.toArray());
 		if (operations != null && operations.isEmpty())
 			return new FullPeriodicBalance();
 
@@ -96,9 +109,19 @@ public class OperationService {
 
 	}
 
-	public FullPeriodicBalance getFullBalanceForPeriod(long account, Date begin, Date end,
+	public FullPeriodicBalance getFullBalanceForPeriod(long account, String unitConstant, Date begin, Date end,
 			List<OperationType> collect) {
-		return getFullBalanceForPeriod(account, begin, end, collect, true);
+		return getFullBalanceForPeriod(account, unitConstant, begin, end, collect, true);
+	}
+
+	CategoryBalance buildCategoryBalanceForPeriod(List<Operation> operations) {
+		CategoryBalance result = new CategoryBalance();
+
+		for (Operation op : operations) {
+
+		}
+
+		return result;
 	}
 
 	/**
@@ -114,6 +137,7 @@ public class OperationService {
 
 		for (Operation op : operations) {
 			if (isOperationDayAlreadyBalanced(op, fullBalance)) {
+				balanceOfTheDay = getBalanceOfTheDay(op, fullBalance);
 				if (op instanceof Regular
 						&& ((Regular) op).getInterval().isAnOperationOfTheDay(balanceOfTheDay.getBalanceDate())) {
 					//
@@ -126,10 +150,11 @@ public class OperationService {
 				balanceOfTheDay = addOperationToNewBalance(op);
 				// Adds amount to category balance
 				updateCategoryBalanceWithOperation(op, balanceOfTheDay);
+				fullBalance.getDailyBalances().add(balanceOfTheDay);
 			}
 
 		}
-		return null;
+		return fullBalance;
 	}
 
 	/**
@@ -178,11 +203,25 @@ public class OperationService {
 				.getDailyBalances()//
 				.stream()//
 				.anyMatch(new Predicate<DailyBalance>() {
-
 					public boolean test(DailyBalance t) {
 						return DateUtils.areSameDate(dateOfOperation, t.getBalanceDate());
 					}
 				});
+	}
+
+	private DailyBalance getBalanceOfTheDay(Operation op, FullPeriodicBalance fullBalance) {
+		if (op == null || fullBalance.getDailyBalances() == null || fullBalance.getDailyBalances().size() == 0)
+			return null;
+
+		final Date dateOfOperation = op.getEffectiveDate();
+		return fullBalance//
+				.getDailyBalances()//
+				.stream()//
+				.filter(new Predicate<DailyBalance>() {
+					public boolean test(DailyBalance t) {
+						return DateUtils.areSameDate(dateOfOperation, t.getBalanceDate());
+					}
+				}).findFirst().get();
 	}
 
 	/**
@@ -221,7 +260,8 @@ public class OperationService {
 			convertedAmount = convertToBalanceCurrency(op.getAmount(), op.getCurrency(), balance.getBalanceCurrency());
 		}
 
-		balance.getBalanceValue().add(new BigDecimal(convertedAmount));
+		BigDecimal currentValue = balance.getBalanceValue();
+		balance.setBalanceValue(currentValue.add(new BigDecimal(convertedAmount)));
 
 		return balance;
 	}
@@ -239,8 +279,9 @@ public class OperationService {
 		// Else, put new category
 		if (category == null) {
 			balance.getCategoryBalance().getCategories().put(op.getCategory(), new BigDecimal(op.getAmount()));
+		} else {
+			category.getValue().add(new BigDecimal(op.getAmount()));
 		}
-		category.getValue().add(new BigDecimal(op.getAmount()));
 	}
 
 	/**
@@ -255,7 +296,7 @@ public class OperationService {
 		currrencyDelegate.convert(amount, currency, balanceCurrency);
 		return amount;
 	}
-	
+
 	/**
 	 * Check and save an expense
 	 * 
@@ -266,7 +307,8 @@ public class OperationService {
 	 * @throws TechnicalException
 	 * @throws BusinessException
 	 */
-	public Operation addExpenseToAccount(Account account, Operation expense) throws TechnicalException, BusinessException {
+	public Operation addExpenseToAccount(Account account, Operation expense)
+			throws TechnicalException, BusinessException {
 		Operation result = null;
 		if (expense.getAccount() == null && account != null) {
 			expense.setAccount(account);

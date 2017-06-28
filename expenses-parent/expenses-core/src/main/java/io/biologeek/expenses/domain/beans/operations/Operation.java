@@ -18,11 +18,11 @@ import javax.persistence.ManyToOne;
 import io.biologeek.expenses.data.converters.CurrencyConverter;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
-import io.biologeek.expenses.domain.beans.Emitter;
-import io.biologeek.expenses.domain.beans.Receiver;
+import io.biologeek.expenses.domain.beans.OperationAgent;
+import io.biologeek.expenses.domain.beans.OperationAgent;
 
 /**
- * An {@link Operation} is an exchange between an emitter and a receiver. It is
+ * An {@link Operation} is an exchange between an OperationAgent and a receiver. It is
  * attached to an account
  * 
  * @author xcaron
@@ -36,9 +36,9 @@ public class Operation {
 	@GeneratedValue
 	private Long id;
 	@ManyToOne(fetch = FetchType.EAGER)
-	Receiver beneficiary;
+	OperationAgent beneficiary;
 	@ManyToOne(fetch = FetchType.EAGER)
-	Emitter emitter;
+	OperationAgent emitter;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Account account;
@@ -64,10 +64,9 @@ public class Operation {
 	private Date effectiveDate;
 
 	private String description;
-	
+
 	@Enumerated(EnumType.STRING)
 	private OperationType operationType;
-
 
 	@Convert(converter = CurrencyConverter.class)
 	Currency currency;
@@ -120,24 +119,32 @@ public class Operation {
 		this.version = version;
 	}
 
-	public Receiver getBeneficiary() {
+	public OperationAgent getBeneficiary() {
 		return beneficiary;
 	}
 
-	public void setBeneficiary(Receiver beneficiary) {
+	public void setBeneficiary(OperationAgent beneficiary) {
 		this.beneficiary = beneficiary;
 	}
 
-	public Emitter getEmitter() {
+	public OperationAgent getEmitter() {
 		return emitter;
 	}
 
-	public void setEmitter(Emitter emitter) {
-		this.emitter = emitter;
+	public void setEmitter(OperationAgent OperationAgent) {
+		this.emitter = OperationAgent;
 	}
 
 	public Double getAmount() {
-		return amount;
+		if (this.operationType.getSign() < 0 && amount.doubleValue() > 0) {
+			return -amount;
+		} else if (this.operationType.getSign() > 0 && amount.doubleValue() > 0) {
+			return amount;
+		} else if (this.operationType.getSign() < 0 && amount.doubleValue() < 0) {
+			return amount;
+		} else {
+			return -amount;
+		}
 	}
 
 	public void setAmount(Double amount) {

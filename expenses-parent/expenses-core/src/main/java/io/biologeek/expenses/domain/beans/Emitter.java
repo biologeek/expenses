@@ -1,7 +1,7 @@
 package io.biologeek.expenses.domain.beans;
 
 /**
- * Within an operation, the {@link Emitter} is the one that either gives or pays
+ * Within an operation, the {@link OperationAgent} is the one that either gives or pays
  * or whatever.
  * 
  * @author xcaron

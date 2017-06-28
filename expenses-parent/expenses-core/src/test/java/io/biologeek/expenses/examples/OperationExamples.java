@@ -12,7 +12,8 @@ public class OperationExamples {
 
 	public static Operation anExpense(){
 		Operation ope1 = new Operation();
-		ope1.setAmount(10D);
+		ope1.setAmount(-10D);
+		ope1.setOperationType(OperationType.EXPENSE);
 		ope1.setCategory(CategoryExamples.aHomeCategory());
 		ope1.setCreationDate(DateUtils.dateFromArgs(2017, 05, 01));
 		ope1.setEffectiveDate(DateUtils.dateFromArgs(2017, 05, 01));

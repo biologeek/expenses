@@ -13,11 +13,11 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
 /**
  * An {@link OperationAgent} is a protagonist within an {@link Operation}. <br>
  * <br>
- * In many cases an Operation references an {@link Emitter} and a
- * {@link Receiver}. <br>
+ * In many cases an Operation references an {@link OperationAgent} and a
+ * {@link OperationAgent}. <br>
  * <br>
  * Inheritance strategy makes that all operation agents are stored in a single
- * table, as one can be an emitter or a receiver or whatever in an operation and
+ * table, as one can be an OperationAgent or a receiver or whatever in an operation and
  * have a different role in another
  * 
  * @author xcaron

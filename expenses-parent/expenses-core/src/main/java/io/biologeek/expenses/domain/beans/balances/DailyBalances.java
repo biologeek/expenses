@@ -29,20 +29,34 @@ public class DailyBalances extends ArrayList<DailyBalance> {
 	SimpleDateFormat dateTimeFrenchPattern = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	SimpleDateFormat dateFrenchPattern = new SimpleDateFormat("dd/MM/yyyy");
 
-	public DailyBalance getByDate(String string) throws ModelException {
+	/**
+	 * Finds {@link DailyBalance} corresponding to stringDate date. Valid date pattern is following : dd/MM/yyyy
+	 * 
+	 * @param stringDate
+	 * @return
+	 * @throws ModelException
+	 */
+	public DailyBalance getByDate(String stringDate) throws ModelException {
 		Date date = null;
 		try {
-			return getByDate(dateFrenchPattern.parse(string));
+			return getByDate(dateFrenchPattern.parse(stringDate));
 		} catch (ParseException e) {
 			throw new ModelException("error.parse.pattern");
 		}
 	}
 
-	private DailyBalance getByDate(Date parsed) {
+	/**
+	 * Finds {@link DailyBalance} corresponding to "date" date.
+	 * 
+	 * @param string
+	 * @return
+	 * @throws ModelException
+	 */
+	private DailyBalance getByDate(Date date) {
 		return (DailyBalance) this.stream().filter(new Predicate<DailyBalance>() {
 			@Override
 			public boolean test(DailyBalance t) {
-				return t.getBalanceDate().equals(parsed);
+				return t.getBalanceDate().equals(date);
 			}
 		});
 	}
@@ -105,7 +119,7 @@ public class DailyBalances extends ArrayList<DailyBalance> {
 						public boolean test(Entry<Category, BigDecimal> t) {
 							return t.getKey().equals(op.getCategory());
 						}
-					}).findFirst().get();
+					}).findFirst().orElse(null);
 
 		}
 	}

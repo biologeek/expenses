@@ -11,8 +11,6 @@ public class CategoryBalance {
 	private Date balanceDate;
 	private Map<Category, BigDecimal> categories;
 	
-	
-
 	public CategoryBalance() {
 		super();
 		categories = new HashMap<>();

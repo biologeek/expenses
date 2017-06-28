@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,12 +18,11 @@ import io.biologeek.expenses.api.beans.charts.PieChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
-import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.services.OperationService;
 
 
 @Controller
-@RequestMapping("/charts")
+@RequestMapping("/charts/{account}")
 public class ChartsController {
 
 	private OperationService operationService;
@@ -28,21 +31,31 @@ public class ChartsController {
 	 * Method used to retrieve data for time-based chart (e.g. for a line chart
 	 * that shows expenses and incomes evolutions over a month)
 	 * 
-	 * @param account
+	 * @param account the account from which 
 	 * @param types
 	 * @param begin
 	 * @param end
 	 * @return
 	 */
-	public ResponseEntity<XYChartData> getOperationsForPeriod(long account, Date begin, Date end,
-			OperationType... types) {
-		FullPeriodicBalance operations = operationService.getFullBalanceForPeriod(account, begin, end,
-				convertOperationType(types));
+	@RequestMapping("/amounts/{unitConstant}/")
+	public ResponseEntity<XYChartData> getOperationsForPeriod(@PathParam("account") long account
+			, @PathParam("unitConstant") String unitConstant
+			, @QueryParam("begin") Date begin, @QueryParam("end") Date end
+			, @QueryParam("types") OperationType... types) {
+		
+		FullPeriodicBalance operations = operationService.getFullBalanceForPeriod(account, unitConstant, begin,
+				end, convertOperationType(types));
 
 		return OperationToApiConverter.convertToXYChartData(operations, "chart.xy.time.title", "chart.xy.time.x.label",
 				"chart.xy.time.y.label");
 	}
-
+	
+	
+	/**
+	 * 
+	 * @param types
+	 * @return
+	 */
 	private List<io.biologeek.expenses.domain.beans.operations.OperationType> convertOperationType(
 			OperationType... types) {
 		return Arrays.asList(types).stream()
