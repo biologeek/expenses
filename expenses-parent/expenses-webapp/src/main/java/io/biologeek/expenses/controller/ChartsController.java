@@ -58,20 +58,30 @@ public class ChartsController {
 				"chart.xy.time.y.label"));
 	}
 	
+	/**
+	 * Retrieves a balance by category and builds a convenient object for plotting a pie chart
+	 * 
+	 * @param account
+	 * @param unitConstant
+	 * @param begin
+	 * @param end
+	 * @param types
+	 * @return
+	 */
 	public ResponseEntity<PieChartData> getOperationsByCategoryForPeriod(@PathParam("account") long account
 			, @PathParam("unitConstant") String unitConstant
 			, @QueryParam("begin") Date begin, @QueryParam("end") Date end
 			, @QueryParam("types") OperationType... types){
 		
 
-		List<CategoryBalance> balance = operationService.ca(account, unitConstant, begin,
+		CategoryBalance balance = operationService.getCategoryBalancesForPeriod(account, unitConstant, begin,
 				end, convertOperationType(types));
 
-		if (operations.isEmpty())
-			return new ResponseEntity<XYChartData>(HttpStatus.NO_CONTENT);
+		if (balance.getCategories().isEmpty())
+			return new ResponseEntity<PieChartData>(HttpStatus.NO_CONTENT);
 		
 		return ResponseEntity.ok(
-				OperationToApiConverter.convertToXYChartData(operations, "chart.xy.time.title", "chart.xy.time.x.label",
+				OperationToApiConverter.convertToPieChartData(balance, "chart.xy.time.title", "chart.xy.time.x.label",
 				"chart.xy.time.y.label"));
 		
 	}

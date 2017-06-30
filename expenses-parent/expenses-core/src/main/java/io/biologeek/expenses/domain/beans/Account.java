@@ -19,9 +19,7 @@ public class Account {
 	@GeneratedValue
 	private Long id;
 	private String name;
-	/**
-	 * For the moment, user is only a String. Then it could be an object
-	 */
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private User owner;
 	private Long number;

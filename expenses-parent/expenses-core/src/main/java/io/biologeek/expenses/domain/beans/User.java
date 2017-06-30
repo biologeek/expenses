@@ -2,9 +2,17 @@ package io.biologeek.expenses.domain.beans;
 
 import java.util.List;
 
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 @javax.persistence.Entity
+@Table(schema="public", name="user")
 public class User {
 
+	@Id@GeneratedValue
 	private Long id;
 	private String firstName;
 	private String lastName;
@@ -13,6 +21,7 @@ public class User {
 	private int age;
 	private String email;
 	private String phoneNumber;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="owner")
 	private List<Account> accounts;
 	private String authToken;
 

@@ -4,11 +4,15 @@ import io.biologeek.expenses.domain.beans.Interval;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 
+@Entity
 public class RegularOperation extends Operation implements Regular {
 
 	@Embedded
+	@Column(nullable=true)
 	private Interval interval;
 
 	public void setInterval(Interval interval) {

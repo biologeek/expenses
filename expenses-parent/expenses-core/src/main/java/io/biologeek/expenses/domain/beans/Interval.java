@@ -5,18 +5,23 @@ import io.biologeek.expenses.utils.DateUtils;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Interval {
-	
+
+	@Column(nullable = true)
 	Date firstDate;
+	@Column(nullable = true)
 	int interval;
 	/**
 	 * Corresponds to {@link Calendar} unit
 	 */
+	@Column(nullable = true)
 	int unit;
 
+	@Column(nullable = true)
 	Date lastDate;
 
 	public Date getFirstDate() {
@@ -60,23 +65,23 @@ public class Interval {
 		this.unit = unit;
 		return this;
 	}
-	
-	public boolean isOutdated(){
+
+	public boolean isOutdated() {
 		Calendar now = Calendar.getInstance();
 		Calendar last = Calendar.getInstance();
 		last.setTime(lastDate);
 		last.add(unit, interval);
-		
+
 		return last.after(now);
 	}
 
 	public boolean isAnOperationOfTheDay(Date balanceDate) {
 		Calendar cal = Calendar.getInstance();
-		
+
 		cal.setTime(lastDate);
 		cal.add(unit, interval);
 		Date theoreticalNextDate = cal.getTime();
 		return DateUtils.areSameDate(balanceDate, theoreticalNextDate);
 	}
-	
+
 }

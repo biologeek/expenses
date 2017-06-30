@@ -13,5 +13,4 @@ public class PieChartData extends AbstractChartDataset {
 	public void setValues(Map<String, Double> values) {
 		this.values = values;
 	}
-	
 }

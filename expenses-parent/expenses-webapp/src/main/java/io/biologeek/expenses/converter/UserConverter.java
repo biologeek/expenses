@@ -11,9 +11,4 @@ public class UserConverter {
 		return null;
 	}
 
-	public static User convert(OperationAgent OperationAgent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

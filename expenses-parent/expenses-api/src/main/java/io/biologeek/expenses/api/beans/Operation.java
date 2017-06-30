@@ -92,4 +92,48 @@ public class Operation {
 	public void setVersion(int version) {
 		this.version = version;
 	}
+	
+	
+	
+	/* 
+	 * Builder
+	 * 
+	 */
+
+	public Operation account(Account convert) {
+		this.account = convert;
+		return this;
+	}
+	public Operation updateDate(Date convert) {
+		this.updateDate = convert;
+		return this;
+	}
+	public Operation amount(Double convert) {
+		this.amount = convert;
+		return this;
+	}
+	public Operation beneficiary(User convert) {
+		this.beneficiary = convert;
+		return this;
+	}
+	public Operation emitter(User convert) {
+		this.emitter = convert;
+		return this;
+	}
+	public Operation category(Category convert) {
+		this.category = convert;
+		return this;
+	}
+	public Operation creationDate(Date convert) {
+		this.creationDate = convert;
+		return this;
+	}
+	public Operation id(Long convert) {
+		this.id = convert;
+		return this;
+	}
+	public Operation version(int convert) {
+		this.version = convert;
+		return this;
+	}
 }

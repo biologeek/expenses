@@ -1,0 +1,26 @@
+<div id="header-title">
+	<h3>Menu</h3>
+</div>
+
+<div id="form-container">
+
+	<form name="form">
+	
+	<input type="text" ng-model="currentOperation.amount" />
+	<br />
+	
+	<select name="nomenc0" ng-options="category as category.label for category in categorieLevel0" ng-model="nomenc[0]">
+		
+	</select>
+	<select name="nomenc1" ng-options="category as category.label for category in categorieLevel1">
+		
+	</select>
+	<select name="nomenc2" ng-options="category as category.label for category in categorieLevel2">
+		
+	</select>
+	<select name="nomenc3" ng-options="category as category.label for category in categorieLevel3">
+		
+	</select>
+	</form>
+	
+</div>
