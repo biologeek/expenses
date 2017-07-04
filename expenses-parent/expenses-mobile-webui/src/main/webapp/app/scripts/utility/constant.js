@@ -3,7 +3,7 @@
  * Contants
  */
 'use strict';
-var constantsModule = angular.module('myApp.constants', []);
+var constantsModule = angular.module('myApp');
 
 constantsModule.constant('liaisonConstants', {
     appName: 'Liaison My Psych Track',

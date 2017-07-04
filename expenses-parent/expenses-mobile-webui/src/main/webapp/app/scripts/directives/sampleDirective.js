@@ -3,7 +3,7 @@
  * Directives
  */
 'use strict';
-var directiveModule = angular.module('myApp.directives', []);
+var directiveModule = angular.module('myApp');
 
 directiveModule.directive('sampleDirective', ['$scope', function($scope) {
         return {

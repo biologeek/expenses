@@ -34,6 +34,9 @@ public class Category {
 	 * Level af the category in the classification
 	 */
 	private int level;
+	
+	private String nomenclature;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_category")
 	private Category parent;
@@ -98,6 +101,14 @@ public class Category {
 
 	public void setSubCategories(List<Category> subCategories) {
 		this.subCategories = subCategories;
+	}
+
+	public String getNomenclature() {
+		return nomenclature;
+	}
+
+	public void setNomenclature(String nomenclature) {
+		this.nomenclature = nomenclature;
 	}
 
 	public List<Operation> getOperations() {

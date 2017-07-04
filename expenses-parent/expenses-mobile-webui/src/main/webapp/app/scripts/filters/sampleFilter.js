@@ -3,7 +3,7 @@
  * Filters
  */
 'use strict';
-var filtersModule = angular.module('myApp.filters', []);
+var filtersModule = angular.module('myApp');
 
 filtersModule.filter('simpleFilter', function() {
     return function(input) {

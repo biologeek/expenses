@@ -1,0 +1,26 @@
+{
+	"EXPENSE": "Dépense", 
+	"INCOME": "Revenu", 
+	"LOAN": "Prêt", 
+	"DEBT": "Dette", 
+	"REGULAR_EXPENSE": "Dépense régulière", 
+	"REGULAR_INCOME": "Revenu régulier", 
+	"REGULAR_LOAN": "Prêt régulier", 
+	"REGULAR_DEBT": "Dette régulière",
+	"welcome" : {
+		"list" : {
+			"add" : "Ajouter une opération",
+			"update" : "Mettre à jour",
+			"list" : "Lister les opérations"
+		}
+	},
+	"addorupdate" : {
+		"form" : {
+			"amount" : "Montant",
+			"description" : "Description",
+			"submit" : "OK",
+			"type" : "Type",
+			"nomenclature" : "Nomenclature"
+		}
+	}
+}

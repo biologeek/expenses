@@ -1,0 +1,11 @@
+<div ng-controller="AuthentController as authentController">
+	<div id="header-title">
+	</div>
+
+	<div id="listContainer">
+		<select ng-model="authentController.accountName"
+			ng-options="account.name for account in authentController.accounts"
+			ng-change="authent()">
+		</select>
+	</div>
+</div>

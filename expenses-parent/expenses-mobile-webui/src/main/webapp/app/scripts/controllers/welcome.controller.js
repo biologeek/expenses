@@ -3,9 +3,9 @@
  * Dashboard controller
  */
 'use strict';
-var controllerModule = angular.module('myApp.controller', []);
+var controllerModule = angular.module('myApp');
 
-controllerModule.controller('AddOrUpdateController', ['$scope, MobileService', function($scope, mobileService) {
+controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$translate', function($scope, MobileService, $translate) {
     
 	var vm = this;
 	
@@ -15,7 +15,7 @@ controllerModule.controller('AddOrUpdateController', ['$scope, MobileService', f
 	vm.addOperationHandler = function(){
 		vm.validateOperation();
 		
-		mobileService.create(vm.currentOperation, function(operation){
+		MobileService.create(vm.currentOperation, function(operation){
 			console.log('ok');
 		}, function(errorCode){
 			console.log('Pas ok !!! '+errorCode);
@@ -25,7 +25,7 @@ controllerModule.controller('AddOrUpdateController', ['$scope, MobileService', f
 	
 	vm.updateOperationHandler = function(){
 		vm.validateOperation(true, function(){
-			mobileService.update(vm.currentOperation, function(operation){
+			MobileService.update(vm.currentOperation, function(operation){
 				console.log('ok');
 			}, function(errorCode){
 				console.log('Pas ok !!! '+errorCode);

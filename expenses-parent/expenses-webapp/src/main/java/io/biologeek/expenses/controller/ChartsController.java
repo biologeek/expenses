@@ -95,7 +95,7 @@ public class ChartsController {
 	private List<io.biologeek.expenses.domain.beans.operations.OperationType> convertOperationType(
 			OperationType... types) {
 		return Arrays.asList(types).stream()
-				.map(t -> io.biologeek.expenses.domain.beans.operations.OperationType.valueOf(t.name()))
+				.map(t -> io.biologeek.expenses.domain.beans.operations.OperationType.valueOf(t.getName()))
 				.collect(Collectors.toList());
 	}
 

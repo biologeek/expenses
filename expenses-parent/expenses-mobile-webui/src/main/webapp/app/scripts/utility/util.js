@@ -4,7 +4,7 @@
 	 * Utility
 	 */
 	'use strict';
-	var utilityModule = angular.module('myApp.utilityService', []);
+	var utilityModule = angular.module('myApp');
 
 	utilityModule.service('utilService', [ '$timeout', function(timeout) {
 

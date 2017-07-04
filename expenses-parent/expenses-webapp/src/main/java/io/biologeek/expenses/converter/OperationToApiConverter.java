@@ -17,6 +17,7 @@ import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.DailyBalances;
 import io.biologeek.expenses.domain.beans.balances.DailyBalances.DailyBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
+import io.biologeek.expenses.domain.beans.operations.OperationType;
 
 public class OperationToApiConverter {
 	public static List<Operation> convert(List<io.biologeek.expenses.domain.beans.operations.Operation> toConvert) {
@@ -27,8 +28,7 @@ public class OperationToApiConverter {
 		return result;
 	}
 
-	public static Operation convert(
-			io.biologeek.expenses.domain.beans.operations.Operation toConvert) {
+	public static Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert) {
 		return new Operation()//
 				.account(AccountToApiConverter.convert(toConvert.getAccount()))//
 				.amount(toConvert.getAmount())//
@@ -111,6 +111,20 @@ public class OperationToApiConverter {
 			result.getValues().put(entry.getKey().getName(), entry.getValue().doubleValue());
 		}
 		return result;
+	}
+
+	public static class OperationTypeConverter {
+
+		public static List<io.biologeek.expenses.api.beans.OperationType> convert(List<OperationType> asList) {
+			return asList.stream()//
+					.map(t -> OperationTypeConverter.convert(t))//
+					.collect(Collectors.toList());
+		}
+
+		public static io.biologeek.expenses.api.beans.OperationType convert(OperationType asList) {
+			return new io.biologeek.expenses.api.beans.OperationType(asList.name(), //
+					asList.getSign());
+		}
 	}
 
 }

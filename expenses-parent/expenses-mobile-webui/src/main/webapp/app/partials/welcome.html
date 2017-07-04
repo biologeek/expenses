@@ -1,11 +1,19 @@
-<div id="header-title">
-	<h3>Menu</h3>
-</div>
+<div ng-controller="WelcomeController as welcomeController">
+	<div id="header-title">
+		<h3>Menu</h3>
+	</div>
 
-<div id="listContainer">
-	<ul class="list">
-		<li class="list-item"><a href="#/add">Add expense</a></li>
-		<li class="list-item"><a href="#/update">Update expense</a></li>
-		<li class="list-item"><a href="#/list">List expenses</a></li>
-	</ul>
+	<div id="listContainer">
+		<ul class="list">
+			<li class="list-item">
+				<a ng-href="#!/add">{{"welcome.list.add" | translate}}</a>
+			</li>
+			<li class="list-item">
+				<a ng-href="#update">{{"welcome.list.update" | translate }}</a>
+			</li>
+			<li class="list-item">
+				<a ng-href="#list">{{"welcome.list.list" | translate}}</a>
+			</li>
+		</ul>
+	</div>
 </div>
