@@ -65,7 +65,7 @@
 						}
 					}
 					return lastCat;
-				}
+				};
 
 				/*
 				 * EXECUTED AT PAGE LOAD
