@@ -21,7 +21,7 @@ public class Account {
 	private String name;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	private User owner;
+	private RegisteredUser owner;
 	private Long number;
 	@OneToMany(mappedBy = "account")
 	private List<Operation> expenses;
@@ -47,11 +47,11 @@ public class Account {
 		this.name = name;
 	}
 
-	public User getOwner() {
+	public RegisteredUser getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(RegisteredUser owner) {
 		this.owner = owner;
 	}
 

@@ -38,11 +38,11 @@
 					}
 				};
 
-				vm.authent = function() {
+				vm.selectAccount = function() {
 					_.each(vm.availableAccounts, function(o) {
 						if (o.name == vm.accountName) {
 							// FIXME Boooowwww baaaaad !!!
-							$cookies.put("accountId", o.id);
+							$cookies.put("account", o.id);
 							$location.path("#!/welcome");
 						}
 					});

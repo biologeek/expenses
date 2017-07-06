@@ -30,7 +30,7 @@ public class OperationToApiConverter {
 
 	public static Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert) {
 		return new Operation()//
-				.account(AccountToApiConverter.convert(toConvert.getAccount()))//
+				.account(toConvert.getAccount().getId())//
 				.amount(toConvert.getAmount())//
 				.beneficiary(UserConverter.convert(toConvert.getBeneficiary()))//
 				.emitter(UserConverter.convert(toConvert.getEmitter()))//
@@ -44,7 +44,7 @@ public class OperationToApiConverter {
 	public static io.biologeek.expenses.api.beans.Operation convert(
 			io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
 
-		res.setAccount(AccountToApiConverter.convert(toConvert.getAccount()));
+		res.setAccount(toConvert.getAccount().getId());
 		res.setAmount(toConvert.getAmount());
 		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
 		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));

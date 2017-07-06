@@ -11,7 +11,7 @@ public class Operation {
 	User beneficiary;
 	User emitter;
 
-	private Account account;
+	private Long account;
 
 	private Double amount;
 
@@ -45,12 +45,17 @@ public class Operation {
 		this.emitter = emitter;
 	}
 
-	public Account getAccount() {
+
+	public Long getAccount() {
 		return account;
 	}
 
-	public void setAccount(Account account) {
+	public void setAccount(Long account) {
 		this.account = account;
+	}
+
+	public User getEmitter() {
+		return emitter;
 	}
 
 	public Double getAmount() {
@@ -100,7 +105,7 @@ public class Operation {
 	 * 
 	 */
 
-	public Operation account(Account convert) {
+	public Operation account(Long convert) {
 		this.account = convert;
 		return this;
 	}

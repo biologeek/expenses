@@ -5,7 +5,8 @@
 'use strict';
 var controllerModule = angular.module('myApp');
 
-controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$translate', function($scope, MobileService, $translate) {
+controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$translate', '$cookies', 
+	function($scope, MobileService, $translate, $cookies) {
     
 	var vm = this;
 	
@@ -13,6 +14,8 @@ controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$t
 	
 
 	vm.addOperationHandler = function(){
+		
+		vm.completeOperation(false);
 		vm.validateOperation();
 		
 		MobileService.create(vm.currentOperation, function(operation){
@@ -24,6 +27,7 @@ controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$t
 	};
 	
 	vm.updateOperationHandler = function(){
+		vm.completeOperation(true);
 		vm.validateOperation(true, function(){
 			MobileService.update(vm.currentOperation, function(operation){
 				console.log('ok');
@@ -36,22 +40,30 @@ controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$t
 		
 	};
 	
+	
+	vm.completeOperation = function(isUpdate){
+		if (!isUpdate && vm.currentOperation.id){
+			vm.currentOperation.id = null;
+		}
+		vm.currentOperation.account = $cookies.account;
+		
+		
+	};
+	
 	/**
 	 * Validates operation regarding specs of an operation.
 	 */
-	vm.validateOperation = function(isUpdate, callbackOk, CALLBACKKo){
+	vm.validateOperation = function(isUpdate, callbackSuccess, callbackError){
 		if (isUpdate){
 			if (!vm.currentOperation.id || vm.currentOperation.id <= 0){
-				CALLBACKKo('id.null');
+				callbackError('id.null');
 			}
 		}
 		
 		if (vm.currentOperation.amount > Constants.MAX_AMOUNT_OPERATION || vm.currentOperation.amount < - Constants.MAX_AMOUNT_OPERATION){
-			CALLBACKKo('amount.mini.maxi');
+			callbackError('amount.mini.maxi');
 		}
-		
-		
-		callbackOk();
+		callbackSuccess();
 	};
 	
     }]);

@@ -10,7 +10,7 @@
 				request.headers.Authorization = $cookies.get('token');
 			}, 
 			responseError: function(response){
-				if (!response || response.status === 403){
+				if (!response || response.status === 403 || response.status === 401){
 					UserService.setAuthenticated(false);
 					$location.path('/login');
 				}

@@ -19,7 +19,7 @@ public class AccountToApiConverter {
 		return res;
 	}
 
-	private static User convert(io.biologeek.expenses.domain.beans.User owner) {
+	private static User convert(io.biologeek.expenses.domain.beans.RegisteredUser owner) {
 		return new User()//
 				.firstName(owner.getFirstName())//
 				.lastName(owner.getLastName())//
