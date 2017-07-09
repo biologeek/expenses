@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 import io.biologeek.expenses.domain.beans.RegisteredUser;
 import io.biologeek.expenses.services.RegisteredUserService;
 
-@Component
-public class CustomUserDetailsService implements UserDetailsService {
+
+public class CustomUserDetailsService {
 
 	@Autowired
 	RegisteredUserService service;
 
-	@Override
+	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		RegisteredUser user = null;
 		if (!username.isEmpty()) {

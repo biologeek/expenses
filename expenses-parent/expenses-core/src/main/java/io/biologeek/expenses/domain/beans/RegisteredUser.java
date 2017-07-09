@@ -1,9 +1,12 @@
 package io.biologeek.expenses.domain.beans;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,32 +14,36 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import io.biologeek.expenses.domain.beans.security.AuthenticationInformation;
+
 @javax.persistence.Entity
-@Table(schema="public", name="user")
+@Table(schema = "public", name = "user")
 public class RegisteredUser implements UserDetails {
 
-	@Id@GeneratedValue
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -348165437223530844L;
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String firstName;
 	private String lastName;
-	private String login;
-	private String password;
+	@Embedded
+	private AuthenticationInformation authentication;
 	private int age;
 	private String email;
 	private String phoneNumber;
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="owner")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
 	private List<Account> accounts;
 	private String authToken;
-	private String role;
-	private boolean isActive;
-	private final Set<GrantedAuthority> authorities;
+	private String roles;
+	@Column(nullable = true)
+	private Boolean isActive = false;
 
-	
-	public RegisteredUser(Set<GrantedAuthority> authorities) {
-		this.authorities = authorities;
-	}
 	public Long getId() {
 		return id;
 	}
@@ -45,28 +52,12 @@ public class RegisteredUser implements UserDetails {
 		this.id = id;
 	}
 
-	public String getRole() {
-		return role;
+	public String getRoles() {
+		return roles;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setRoles(String role) {
+		this.roles = role;
 	}
 
 	public String getAuthToken() {
@@ -127,31 +118,39 @@ public class RegisteredUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<GrantedAuthority> auth = new HashSet<>();
+		for (String role : roles.split(";")) {
+			auth.add(new SimpleGrantedAuthority(role));
+		}
+		return auth;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return login;
+		return authentication == null ? null : authentication.getLogin();
+	}
+	
+	public String getLogin(){
+		return getUsername();
+	}
+	public void setLogin(String login) {
+		if (this.authentication == null)
+			this.authentication = new AuthenticationInformation();
+		this.authentication.setLogin(login);
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return isActive;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return isActive;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return isActive;
 	}
 
@@ -165,8 +164,25 @@ public class RegisteredUser implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return isActive;
+	}
+
+	@Override
+	public String getPassword() {
+		return authentication == null ? null : authentication.getPassword();
+	}
+
+	public void setPassword(String password) {
+		if (authentication == null)
+			authentication = new AuthenticationInformation();
+		authentication.setPassword(password);
+	}
+	public AuthenticationInformation getAuthentication() {
+		return authentication;
+	}
+
+	public void setAuthentication(AuthenticationInformation authentication) {
+		this.authentication = authentication;
 	}
 
 }

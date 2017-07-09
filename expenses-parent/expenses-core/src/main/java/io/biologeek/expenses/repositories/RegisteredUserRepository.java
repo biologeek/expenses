@@ -8,6 +8,6 @@ import io.biologeek.expenses.domain.beans.RegisteredUser;
 @Repository
 public interface RegisteredUserRepository extends CrudRepository<RegisteredUser, Long>{
 	
-	public RegisteredUser findByLogin(String login);
+	public RegisteredUser findByAuthenticationLogin(String login);
 
 }

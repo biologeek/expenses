@@ -32,14 +32,14 @@
 				 */
 				vm.getSubCategories = function(level) {
 					var selectedItem = vm.nomenc[level];
+				
+					vm.categoryLevels[level+1] = [];
 					// Call service
 					CategoryService.getCategoryByNomenclature(
 							vm.nomenc[level].nomenclature, function(listOfCats) {
 								// Add retrieved categories to list and show
 								// corresponding select item
-								if (!vm.categoryLevels[level+1]){
 									vm.categoryLevels[level+1] = listOfCats;
-								}
 								vm.show[level+1] = true;
 							}, function(error) {
 								vm.show[level+1] = false;
@@ -49,11 +49,7 @@
 				
 				vm.saveOrUpdateOperation = function(form){
 					// Check validity of form
-					if (form.$valid()){						
 						vm.currentOperation.category = getCategory().id;	
-						
-					}
-					
 					
 				};
 				
