@@ -14,6 +14,7 @@
 
 				var vm = this;
 
+				vm.errors = [];
 				vm.currentOperation = null;
 				/**
 				 * Selected items
@@ -48,9 +49,18 @@
 				};
 				
 				vm.saveOrUpdateOperation = function(form){
+					console.log('Blabalrzerzer');
 					// Check validity of form
-						vm.currentOperation.category = getCategory().id;	
-					
+					if (getCategory() != null){
+						vm.currentOperation.category = getCategory().id;
+						MobileService.create(vm.currentOperation, function(data) {
+							vm.currentOperation = data;
+						}, function(response) {
+							vm.errors.push(response.data);
+						});
+					} else {
+						vm.errors.push("error.missing.category");
+					}					
 				};
 				
 				var getCategory = function (){

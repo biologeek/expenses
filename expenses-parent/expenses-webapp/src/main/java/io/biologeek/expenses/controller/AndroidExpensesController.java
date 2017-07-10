@@ -36,8 +36,8 @@ public class AndroidExpensesController {
 		return ResponseEntity.ok().build();
 	}
 
-	
-	@RequestMapping(path = { "/account/{account}/operations",  "/account/{account}/operation" }, method = { RequestMethod.GET })
+	@RequestMapping(path = { "/account/{account}/operations", "/account/{account}/operation" }, method = {
+			RequestMethod.GET })
 	public ResponseEntity<List<Operation>> getLastOperations(@PathVariable("account") long accountId,
 			@RequestParam(value = "limit", required = false) Integer limit) {
 		List<io.biologeek.expenses.domain.beans.operations.Operation> result = null;
@@ -56,10 +56,10 @@ public class AndroidExpensesController {
 	}
 
 	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.POST })
-	public ResponseEntity<Operation> addOperation(@PathVariable("account") long accountId, @RequestBody Operation expense) {
+	public ResponseEntity<Operation> addOperation(@PathVariable("account") long accountId,
+			@RequestBody Operation expense) {
 		io.biologeek.expenses.domain.beans.operations.Operation result = null;
 		Account account = accountService.getAccount(accountId);
-
 		if (account == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -67,10 +67,8 @@ public class AndroidExpensesController {
 		try {
 			result = opService.addExpenseToAccount(account, OperationToModelConverter.convert(expense));
 		} catch (TechnicalException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.CREATED);
@@ -97,16 +95,15 @@ public class AndroidExpensesController {
 		}
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.OK);
 	}
-	
-	@RequestMapping(path={"/operation/{id}"}, method={RequestMethod.GET})
-	public ResponseEntity<? extends Operation> getOperation(@PathVariable("id")long operationId){
+
+	@RequestMapping(path = { "/operation/{id}" }, method = { RequestMethod.GET })
+	public ResponseEntity<? extends Operation> getOperation(@PathVariable("id") long operationId) {
 		io.biologeek.expenses.domain.beans.operations.Operation op = opService.getOperationByid(operationId);
 		return ResponseEntity.ok(OperationToApiConverter.convert(op, new Operation()));
 	}
 
-	
-	@RequestMapping(path={"/account"}, method={RequestMethod.GET})
-	public ResponseEntity<List<io.biologeek.expenses.api.beans.Account>> getAccounts(){
+	@RequestMapping(path = { "/account" }, method = { RequestMethod.GET })
+	public ResponseEntity<List<io.biologeek.expenses.api.beans.Account>> getAccounts() {
 		List<Account> accounts = accountService.getAccounts();
 		return ResponseEntity.ok(AccountToApiConverter.convert(accounts));
 	}

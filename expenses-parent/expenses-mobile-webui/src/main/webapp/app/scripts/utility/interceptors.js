@@ -18,6 +18,14 @@
 		};
 		
 	});
+	
+	app.factory('AccountInterceptor', '$cookies', function($cookies) {
+		return {
+			request: function(request) {
+				request.url.replace('${operation.account}', $cookies.get('account'));
+			}
+		};
+	});
 		
 	app.config(function($httpProvider){
 		$httpProvider.interceptors.push('AuthenticationInterceptor');

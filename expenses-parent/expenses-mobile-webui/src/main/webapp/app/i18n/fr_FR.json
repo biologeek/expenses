@@ -10,7 +10,7 @@
 	"welcome" : {
 		"list" : {
 			"add" : "Ajouter une opération",
-			"update" : "Mettre à jour",
+			"accounts" : "Lister les comptes",
 			"list" : "Lister les opérations"
 		}
 	},

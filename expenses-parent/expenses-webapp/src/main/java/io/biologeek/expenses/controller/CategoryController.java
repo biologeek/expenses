@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.api.beans.Category;
-import io.biologeek.expenses.converter.CategoryToApiConverter;
+import io.biologeek.expenses.converter.CategoryConverter;
 import io.biologeek.expenses.converter.OperationToApiConverter.OperationTypeConverter;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.services.CategoryService;
@@ -35,13 +35,13 @@ public class CategoryController {
 			level = parent.getLevel() + 1;
 		}
 		return new ResponseEntity<>(
-				CategoryToApiConverter.convert(categoryService.getCategoriesByParentNomenclature(level, parent)), HttpStatus.OK);
+				CategoryConverter.convert(categoryService.getCategoriesByParentNomenclature(level, parent)), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/level/{nomenc}")
 	public ResponseEntity<List<Category>> getCategoriesByLevels(@PathVariable("nomenc") String nomenclature) {
 		return new ResponseEntity<>(
-				CategoryToApiConverter.convert(
+				CategoryConverter.convert(
 						categoryService.getCategoryByLevels(Integer.valueOf(nomenclature))
 						),
 				HttpStatus.OK);
@@ -49,7 +49,7 @@ public class CategoryController {
 
 	@RequestMapping(method = RequestMethod.GET, path = "/")
 	public ResponseEntity<List<Category>> getTopCategories() {
-		return new ResponseEntity<>(CategoryToApiConverter.convert(categoryService.getTopLevelCategories()),
+		return new ResponseEntity<>(CategoryConverter.convert(categoryService.getTopLevelCategories()),
 				HttpStatus.OK);
 	}
 

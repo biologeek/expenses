@@ -45,7 +45,7 @@ controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$t
 		if (!isUpdate && vm.currentOperation.id){
 			vm.currentOperation.id = null;
 		}
-		vm.currentOperation.account = $cookies.account;
+		vm.currentOperation.account = $cookies.get('account');
 		
 		
 	};

@@ -24,6 +24,16 @@
 			controller : 'AddOrUpdateController'
 		});
 
+		$routeProvider.when('/accounts', {
+			templateUrl : 'partials/accounts.html',
+			controller : 'AccountController'
+		});
+
+		$routeProvider.when('/accounts/:userId', {
+			templateUrl : 'partials/accounts.html',
+			controller : 'AccountController'
+		});
+
 		// Default
 		$routeProvider.otherwise({
 			redirectTo : '/page1'

@@ -9,7 +9,9 @@
 			'$scope',
 			'$cookies',
 			'$location',
-			function($scope, $cookies, $location) {
+			'$routeParams',
+			'UserService',
+			function($scope, $cookies, $location, $routeParams, UserService) {
 
 				var vm = this;
 
@@ -17,7 +19,8 @@
 				vm.availableAccounts = null;
 
 				vm.getAccounts = function() {
-					var user = $cookies.get('userId');
+					var user = $cookies.get('userId') || $routeParams.userId;
+					
 					if (user && user > 0) {
 						UserService.getUser(user, function(data) {
 							if (user && user.id) {
@@ -25,9 +28,7 @@
 										function(data) {
 											vm.availableAccounts = data;
 										}, function(response) {
-											console.log('Error '
-													+ resonse.status + ', '
-													+ response.data);
+											console.log('Error '+ resonse.status + ', '+ response.data);
 										});
 							} else {
 								console.log('No user found');
@@ -47,5 +48,7 @@
 						}
 					});
 				};
-			} ]);
+
+				vm.getAccounts();
+	} ]);
 })();

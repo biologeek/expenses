@@ -32,7 +32,7 @@
 							callbackSuccess(response.data);
 						},function(response){
 							callbackError(respone);
-						})
+						});
 					}
 				};
 			} ]);

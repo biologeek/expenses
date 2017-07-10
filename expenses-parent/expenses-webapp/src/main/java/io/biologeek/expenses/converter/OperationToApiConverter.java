@@ -34,7 +34,7 @@ public class OperationToApiConverter {
 				.amount(toConvert.getAmount())//
 				.beneficiary(UserConverter.convert(toConvert.getBeneficiary()))//
 				.emitter(UserConverter.convert(toConvert.getEmitter()))//
-				.category(CategoryToApiConverter.convert(toConvert.getCategory()))//
+				.category(CategoryConverter.convert(toConvert.getCategory()))//
 				.creationDate(toConvert.getCreationDate())//
 				.updateDate(toConvert.getUpdateDate())//
 				.id(toConvert.getId())//
@@ -48,7 +48,7 @@ public class OperationToApiConverter {
 		res.setAmount(toConvert.getAmount());
 		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
 		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
-		res.setCategory(CategoryToApiConverter.convert(toConvert.getCategory()));
+		res.setCategory(CategoryConverter.convert(toConvert.getCategory()));
 		res.setCreationDate(toConvert.getCreationDate());
 		res.setUpdateDate(toConvert.getUpdateDate());
 		res.setId(toConvert.getId());
