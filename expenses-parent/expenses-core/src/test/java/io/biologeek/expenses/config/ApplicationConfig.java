@@ -2,12 +2,14 @@ package io.biologeek.expenses.config;
 
 import java.util.Properties;
 
+import javax.servlet.Filter;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @Configuration
 @PropertySources({ @PropertySource("/application.properties") })
@@ -76,12 +80,17 @@ public class ApplicationConfig {
 	public EmbeddedServletContainerCustomizer customize(){
 		return new EmbeddedServletContainerCustomizer() {
 			
-			@Override
 			public void customize(ConfigurableEmbeddedServletContainer container) {
 				container.setPort(8080);
 				container.setContextPath("/expenses");
 			}
 		};
 	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new StandardPasswordEncoder();
+	}
+	
 
 }

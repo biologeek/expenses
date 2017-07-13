@@ -100,5 +100,21 @@ public class ApplicationConfig {
 			}
 		};
 	}
+	
+
+	@Bean
+	public FilterRegistrationBean someFilterRegistration() {
+
+	    FilterRegistrationBean registration = new FilterRegistrationBean();
+	    registration.setFilter(loginFilter());
+	    registration.addUrlPatterns("/expenses/*");
+	    registration.setName("loginFilter");
+	    registration.setOrder(1);
+	    return registration;
+	}
+
+	private Filter loginFilter() {
+		return new SimpleTokenAuthenticationFilter();
+	} 
 
 }

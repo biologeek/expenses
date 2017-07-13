@@ -52,7 +52,7 @@ public class DailyBalances extends ArrayList<DailyBalance> {
 	 * @return
 	 * @throws ModelException
 	 */
-	private DailyBalance getByDate(Date date) {
+	private DailyBalance getByDate(final Date date) {
 		return (DailyBalance) this.stream().filter(new Predicate<DailyBalance>() {
 			@Override
 			public boolean test(DailyBalance t) {

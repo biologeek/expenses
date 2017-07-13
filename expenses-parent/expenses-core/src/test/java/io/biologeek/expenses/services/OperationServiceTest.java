@@ -40,6 +40,4 @@ public class OperationServiceTest {
 		Assert.assertEquals(BigDecimal.ZERO, balance.getDailyBalances().get(0).getBalanceValue());
 	}
 	
-	
-
 }
