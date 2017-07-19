@@ -22,10 +22,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
-@Configuration
-@PropertySources({ @PropertySource("/application.properties") })
-@ComponentScan(basePackages = "io.biologeek")
-@EnableJpaRepositories("io.biologeek.expenses.repositories")
+//@Configuration
+//@PropertySources({ @PropertySource("/application.properties") })
+//@ComponentScan(basePackages = "io.biologeek")
+//@EnableJpaRepositories("io.biologeek.expenses.repositories")
 public class ApplicationConfig {
 
 	@Value("${hibernate.dialect}")

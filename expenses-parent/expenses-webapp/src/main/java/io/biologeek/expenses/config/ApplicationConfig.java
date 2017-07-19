@@ -44,15 +44,16 @@ public class ApplicationConfig {
 
 	
 	@Bean
-	Filter filter(){
+	public Filter filter(){
 		return new SimpleTokenAuthenticationFilter();
 	}
 	
 	@Bean
-	FilterRegistrationBean filterRegistrationBean(){
+	public FilterRegistrationBean filterRegistrationBean(){
 		FilterRegistrationBean frb = new FilterRegistrationBean();
 		frb.setFilter(filter());
-		frb.addUrlPatterns("/**");
+		frb.addUrlPatterns("/*");
+		frb.setEnabled(true);
 		return frb;
 	}
 	
@@ -100,11 +101,10 @@ public class ApplicationConfig {
 			}
 		};
 	}
-	
+
 
 	@Bean
-	public FilterRegistrationBean someFilterRegistration() {
-
+	public FilterRegistrationBean loginFilterRegistration() {
 	    FilterRegistrationBean registration = new FilterRegistrationBean();
 	    registration.setFilter(loginFilter());
 	    registration.addUrlPatterns("/expenses/*");
@@ -115,6 +115,5 @@ public class ApplicationConfig {
 
 	private Filter loginFilter() {
 		return new SimpleTokenAuthenticationFilter();
-	} 
-
+	}
 }

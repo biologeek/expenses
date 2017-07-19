@@ -1,6 +1,8 @@
 package io.biologeek.expenses.domain.beans;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +42,6 @@ public class RegisteredUser implements UserDetails {
 	private String phoneNumber;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
 	private List<Account> accounts;
-	private String authToken;
 	private String roles;
 	@Column(nullable = true)
 	private Boolean isActive = false;
@@ -58,14 +60,6 @@ public class RegisteredUser implements UserDetails {
 
 	public void setRoles(String role) {
 		this.roles = role;
-	}
-
-	public String getAuthToken() {
-		return authToken;
-	}
-
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
 	}
 
 	public String getFirstName() {
@@ -129,10 +123,11 @@ public class RegisteredUser implements UserDetails {
 	public String getUsername() {
 		return authentication == null ? null : authentication.getLogin();
 	}
-	
-	public String getLogin(){
+
+	public String getLogin() {
 		return getUsername();
 	}
+
 	public void setLogin(String login) {
 		if (this.authentication == null)
 			this.authentication = new AuthenticationInformation();
@@ -177,6 +172,7 @@ public class RegisteredUser implements UserDetails {
 			authentication = new AuthenticationInformation();
 		authentication.setPassword(password);
 	}
+
 	public AuthenticationInformation getAuthentication() {
 		return authentication;
 	}
@@ -184,5 +180,4 @@ public class RegisteredUser implements UserDetails {
 	public void setAuthentication(AuthenticationInformation authentication) {
 		this.authentication = authentication;
 	}
-
 }

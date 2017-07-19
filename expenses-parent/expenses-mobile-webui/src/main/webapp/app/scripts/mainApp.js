@@ -10,8 +10,8 @@
 	myApp.config([ '$routeProvider', function($routeProvider) {
 		// Login
 		$routeProvider.when('/', {
-			templateUrl : 'partials/welcome.html',
-			controller : 'WelcomeController'
+			templateUrl : 'partials/connection.html',
+			controller : 'LoginController'
 		});
 
 		$routeProvider.when('/add', {
@@ -32,12 +32,7 @@
 		$routeProvider.when('/accounts/:userId', {
 			templateUrl : 'partials/accounts.html',
 			controller : 'AccountController'
-		});
-
-		// Default
-		$routeProvider.otherwise({
-			redirectTo : '/page1'
-		});		
+		});	
 	} ]);
 	
 	myApp.config(function ($translateProvider) {
@@ -55,4 +50,8 @@
 	myApp.config(function (tmhDynamicLocaleProvider) {
         tmhDynamicLocaleProvider.localeLocationPattern('vendors/angular-i18n/angular-locale_{{locale}}.js');
     });
+	
+	myApp.config([ '$httpProvider', function($httpProvider){
+		$httpProvider.interceptors.push('AuthenticationInterceptor');
+	}]);
 })();

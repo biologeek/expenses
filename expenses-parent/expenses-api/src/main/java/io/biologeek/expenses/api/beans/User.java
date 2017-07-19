@@ -7,12 +7,38 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 @JsonAutoDetect
 public class User extends Entity {
 	private Long id;
+	private String username;
 	private String firstName;
 	private String lastName;
 	private Integer age;
 	private String mailAddress;
 	private String phoneNumber;
 	private List<Account> accounts;
+	private String sessionToken;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getSessionToken() {
+		return sessionToken;
+	}
+
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
+	}
+
+	public List<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
 
 	public Long getId() {
 		return id;
@@ -93,6 +119,11 @@ public class User extends Entity {
 
 	public User accounts(List<Account> collect) {
 		this.accounts = collect;
+		return this;
+	}
+
+	public User authToken(String authToken) {
+		this.setSessionToken(authToken);
 		return this;
 	}
 	

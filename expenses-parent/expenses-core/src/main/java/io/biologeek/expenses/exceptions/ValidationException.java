@@ -1,6 +1,6 @@
 package io.biologeek.expenses.exceptions;
 
-public class ValidationException extends Exception {
+public class ValidationException extends KeyTranslatedException {
 
 	
 	

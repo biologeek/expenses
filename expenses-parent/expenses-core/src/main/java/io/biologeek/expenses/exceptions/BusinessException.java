@@ -1,6 +1,6 @@
 package io.biologeek.expenses.exceptions;
 
-public class BusinessException extends Exception {
+public class BusinessException extends KeyTranslatedException {
 
 	/**
 	 * 

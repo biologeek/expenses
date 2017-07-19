@@ -24,11 +24,11 @@
 						return false;
 					},
 					setAuthenticated : function(isAuthenticated, username,
-							password, token, userId) {
-						if (!isAuthenticated) {
+							token, userId) {
+						if (isAuthenticated) {
 							$cookies.put("username", username);
 							$cookies.put("token", token);
-							$cookies.put("userId", userId);
+							$cookies.put("user", userId);
 						}
 					},
 					logout: function(){
@@ -41,6 +41,9 @@
 						},function(response){
 							callbackError(respone);
 						});
+					},
+					login: function(login, password){
+						return $http.post('/expenses/user/login', {"login": login, "password": password});
 					}
 				};
 			} ]);

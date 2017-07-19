@@ -1,18 +1,23 @@
 {
-	"EXPENSE": "DÃ©pense", 
+	"EXPENSE": "Dépense", 
 	"INCOME": "Revenu", 
-	"LOAN": "PrÃªt", 
+	"LOAN": "Prêt", 
 	"DEBT": "Dette", 
-	"REGULAR_EXPENSE": "DÃ©pense rÃ©guliÃ¨re", 
-	"REGULAR_INCOME": "Revenu rÃ©gulier", 
-	"REGULAR_LOAN": "PrÃªt rÃ©gulier", 
-	"REGULAR_DEBT": "Dette rÃ©guliÃ¨re",
+	"REGULAR_EXPENSE": "Dépense régulière", 
+	"REGULAR_INCOME": "Revenu régulier", 
+	"REGULAR_LOAN": "Prêt régulier", 
+	"REGULAR_DEBT": "Dette régulière",
 	"welcome" : {
 		"list" : {
-			"add" : "Ajouter une opÃ©ration",
+			"add" : "Ajouter une opération",
 			"accounts" : "Lister les comptes",
-			"list" : "Lister les opÃ©rations"
+			"list" : "Lister les opérations"
 		}
+	},
+	"login": {
+		"username": "Nom d'utilisateur",
+		"password": "Mot de passe",
+		"submitButton": "Connexion"
 	},
 	"addorupdate" : {
 		"form" : {
