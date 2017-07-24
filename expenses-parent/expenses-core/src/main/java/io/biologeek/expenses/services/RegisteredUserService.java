@@ -47,13 +47,12 @@ public class RegisteredUserService {
 		if (!savedUser.getLogin().equals(user.getLogin())) {
 			throw new ValidationException("error.login.different");
 		}
-		String encodedSaltedPassword = encoder.encode(saltPassword(user.getPassword(), Constants.PASSWORD_SALT));
 		if (savedUser.getAuthentication() == null) {
 			throw new ValidationException("error.no_login_info");
 		}
-		if (!savedUser.getPassword().equals(encodedSaltedPassword)) {
+		if (!savedUser.getPassword().equals(user.getPassword())) {
 			logger.info("Changed password for user {}", user.getLogin());
-			savedUser.getAuthentication().setPassword(encodedSaltedPassword);
+			savedUser.getAuthentication().setPassword(user.getPassword());
 		}
 		if (!savedUser.getAuthentication().getAuthToken().equals(user.getAuthentication().getAuthToken())) {
 			logger.info("Update token for user {}", user.getLogin());

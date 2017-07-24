@@ -43,19 +43,6 @@ public class ApplicationConfig {
 	
 
 	
-	@Bean
-	public Filter filter(){
-		return new SimpleTokenAuthenticationFilter();
-	}
-	
-	@Bean
-	public FilterRegistrationBean filterRegistrationBean(){
-		FilterRegistrationBean frb = new FilterRegistrationBean();
-		frb.setFilter(filter());
-		frb.addUrlPatterns("/*");
-		frb.setEnabled(true);
-		return frb;
-	}
 	
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer properties() {
@@ -113,7 +100,8 @@ public class ApplicationConfig {
 	    return registration;
 	}
 
-	private Filter loginFilter() {
+	@Bean
+	public Filter loginFilter() {
 		return new SimpleTokenAuthenticationFilter();
 	}
 }

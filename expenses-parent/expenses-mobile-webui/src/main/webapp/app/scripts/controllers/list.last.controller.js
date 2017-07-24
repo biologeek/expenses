@@ -5,7 +5,7 @@
 'use strict';
 var controllerModule = angular.module('myApp');
 
-controllerModule.controller('WelcomeController', ['$scope', 'MobileService', '$translate', '$cookies', 
+controllerModule.controller('ListLastController', ['$scope', 'MobileService', '$translate', '$cookies', 
 	function($scope, MobileService, $translate, $cookies) {
     
 	var vm = this;

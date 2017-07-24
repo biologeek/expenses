@@ -1,6 +1,10 @@
 package io.biologeek.expenses.config.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.naming.AuthenticationException;
@@ -10,6 +14,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +42,17 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest arg0, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) arg0;
-		if (request.getHeader("Authorization") != null) {
+		
+		List<Cookie> cookies = request.getCookies() == null ? new ArrayList<>() : Arrays.asList(request.getCookies());
+		
+		boolean hasAuthorization = cookies.stream().anyMatch(new Predicate<Cookie>() {
+			@Override
+			public boolean test(Cookie t) {				
+				return t.getName().equals("token");
+			}
+		});
+		
+		if (request.getHeader("Authorization") != null || hasAuthorization) {
 			authenticateWithToken(response, chain, request);
 		} else if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/login")) {
 			// Should not filter login endpoint
@@ -52,7 +67,9 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 
 	/**
 	 * Controls access to application for users that are already logged in and have
-	 * a token
+	 * a token.
+	 * 
+	 * Searches among headers then cookies
 	 * 
 	 * @param response
 	 * @param chain
@@ -63,8 +80,23 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 	private void authenticateWithToken(ServletResponse response, FilterChain chain, HttpServletRequest request)
 			throws IOException, ServletException {
 		String userID = request.getHeader("user");
+		if (userID == null) {
+			userID = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
+				@Override
+				public boolean test(Cookie t) {
+					return t.getName().equals("user");
+				}
+			}).findFirst().get().getValue();
+		}
 		String token = request.getHeader("Authorization");
-
+		if (token == null) {
+			token = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
+				@Override
+				public boolean test(Cookie t) {
+					return t.getName().equals("token");
+				}
+			}).findFirst().get().getValue();
+		}
 		if (token != null && userID != null) {
 			if (authentService.checkToken(Long.valueOf(userID), token)) {
 				// User is authenticated and token is valid

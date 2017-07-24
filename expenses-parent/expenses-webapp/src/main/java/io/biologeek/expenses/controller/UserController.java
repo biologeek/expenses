@@ -1,16 +1,11 @@
 package io.biologeek.expenses.controller;
 
-import io.biologeek.expenses.exceptions.AuthenticationException;
-import io.biologeek.expenses.exceptions.MissingArgumentException;
-import io.biologeek.expenses.exceptions.ValidationException;
-
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.api.beans.AuthenticationActionBean;
 import io.biologeek.expenses.api.beans.User;
+import io.biologeek.expenses.converter.AccountToApiConverter;
 import io.biologeek.expenses.converter.UserConverter;
 import io.biologeek.expenses.domain.beans.RegisteredUser;
+import io.biologeek.expenses.exceptions.AuthenticationException;
+import io.biologeek.expenses.exceptions.MissingArgumentException;
+import io.biologeek.expenses.exceptions.ValidationException;
+import io.biologeek.expenses.services.AccountService;
 import io.biologeek.expenses.services.AuthenticationService;
 import io.biologeek.expenses.services.RegisteredUserService;
 
@@ -33,6 +33,8 @@ public class UserController extends ExceptionWrappedRestController {
 	private RegisteredUserService userService;
 	@Autowired
 	private AuthenticationService authentService;
+	@Autowired
+	private AccountService accountService;
 
 	@GetMapping(path = "/{id}")
 	public User getUser(@PathVariable("id") Long id) {
@@ -62,6 +64,44 @@ public class UserController extends ExceptionWrappedRestController {
 		}
 		return null;
 
+	}
+	
+	
+	@GetMapping(path = "/{user}/accounts")
+	public ResponseEntity<? extends Object> listAccounts(@PathVariable("user") Long userId){
+		List<io.biologeek.expenses.domain.beans.Account> accounts = null;
+		if(userId != null && userId > 0) {
+			
+			RegisteredUser user = userService.findUserById(userId);
+			accounts = accountService.getAccountsForUser(user);
+		}
+		
+		return ResponseEntity.ok(AccountToApiConverter.convert(accounts));
+
+	}
+
+	public RegisteredUserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(RegisteredUserService userService) {
+		this.userService = userService;
+	}
+
+	public AuthenticationService getAuthentService() {
+		return authentService;
+	}
+
+	public void setAuthentService(AuthenticationService authentService) {
+		this.authentService = authentService;
+	}
+
+	public AccountService getAccountService() {
+		return accountService;
+	}
+
+	public void setAccountService(AccountService accountService) {
+		this.accountService = accountService;
 	}
 
 }

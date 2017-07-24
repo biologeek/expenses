@@ -67,6 +67,7 @@ public class AuthenticationService {
 				&& encoder.matches(bean.getPassword(), user.getAuthentication().getPassword())) {
 			user.getAuthentication().setAuthToken(tokenGenerator.generate());
 			user.getAuthentication().setTokenGenerationDate(new Date());
+			user.getAuthentication().setPassword(encoder.encode(bean.getPassword()));
 			userService.updateUser(user);
 			return user;
 		}

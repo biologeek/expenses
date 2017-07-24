@@ -23,8 +23,8 @@
 					
 					if (user && user > 0) {
 						UserService.getUser(user, function(data) {
-							if (user && user.id) {
-								UserService.getAccounts(user.id,
+							if (data && data.id) {
+								UserService.getAccounts(data.id,
 										function(data) {
 											vm.availableAccounts = data;
 										}, function(response) {
@@ -41,10 +41,10 @@
 
 				vm.selectAccount = function() {
 					_.each(vm.availableAccounts, function(o) {
-						if (o.name == vm.accountName) {
+						if (o.name == vm.accountName.name) {
 							// FIXME Boooowwww baaaaad !!!
 							$cookies.put("account", o.id);
-							$location.path("#!/welcome");
+							$location.path("#!/listLast/20");
 						}
 					});
 				};

@@ -33,6 +33,15 @@
 			templateUrl : 'partials/accounts.html',
 			controller : 'AccountController'
 		});	
+
+		$routeProvider.when('listLast/:number', {
+			templateUrl : 'partials/list.last.html',
+			controller : 'ListLastController'
+		});	
+		$routeProvider.otherwise({
+			templateUrl : 'partials/connection.html',
+			controller : 'LoginController'
+		});
 	} ]);
 	
 	myApp.config(function ($translateProvider) {
@@ -50,8 +59,9 @@
 	myApp.config(function (tmhDynamicLocaleProvider) {
         tmhDynamicLocaleProvider.localeLocationPattern('vendors/angular-i18n/angular-locale_{{locale}}.js');
     });
-	
-	myApp.config([ '$httpProvider', function($httpProvider){
-		$httpProvider.interceptors.push('AuthenticationInterceptor');
+    
+    myApp.run(['$http', '$cookies', function($http, $cookies){
+     	$http.defaults.headers.common.Authorization = $cookies.get("token");
+     	
 	}]);
 })();
