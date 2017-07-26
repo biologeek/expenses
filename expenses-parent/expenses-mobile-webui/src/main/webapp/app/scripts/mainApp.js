@@ -34,14 +34,19 @@
 			controller : 'AccountController'
 		});	
 
-		$routeProvider.when('listLast/:number', {
-			templateUrl : 'partials/list.last.html',
-			controller : 'ListLastController'
+		$routeProvider.when('/operations/', {
+			templateUrl : 'partials/operations.html',
+			controller : 'OperationsController'
 		});	
-		$routeProvider.otherwise({
+
+		$routeProvider.when('/account/:accountId/operations/list/:limit', {
+			templateUrl : 'partials/operations.list.html',
+			controller : 'OperationsController'
+		});	
+	/*	$routeProvider.otherwise({
 			templateUrl : 'partials/connection.html',
 			controller : 'LoginController'
-		});
+		});*/
 	} ]);
 	
 	myApp.config(function ($translateProvider) {

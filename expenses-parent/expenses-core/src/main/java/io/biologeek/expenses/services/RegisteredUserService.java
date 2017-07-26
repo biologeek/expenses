@@ -72,12 +72,15 @@ public class RegisteredUserService {
 	}
 
 	private String validateAndReturnEmail(String email) throws ValidationException {
-		Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN);
+		if (email != null) {
+			Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN);
 
-		Matcher matcher = pattern.matcher(email);
-		if (matcher.matches())
-			return email;
-		throw new ValidationException("error.email.incorrect");
+			Matcher matcher = pattern.matcher(email);
+			if (matcher.matches())
+				return email;
+			throw new ValidationException("error.email.incorrect");
+		} 
+		return null;
 	}
 
 	private String saltPassword(String password, Object passwordSalt) {
@@ -90,5 +93,4 @@ public class RegisteredUserService {
 		return null;
 	}
 
-	
 }

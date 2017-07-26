@@ -44,7 +44,7 @@
 						if (o.name == vm.accountName.name) {
 							// FIXME Boooowwww baaaaad !!!
 							$cookies.put("account", o.id);
-							$location.path("#!/listLast/20");
+							$location.path("/account/"+o.id+"/operations/list/20");
 						}
 					});
 				};

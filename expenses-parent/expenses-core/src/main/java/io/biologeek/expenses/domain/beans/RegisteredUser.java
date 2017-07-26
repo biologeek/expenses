@@ -24,35 +24,20 @@ import io.biologeek.expenses.domain.beans.security.AuthenticationInformation;
 
 @javax.persistence.Entity
 @Table(schema = "public", name = "user")
-public class RegisteredUser implements UserDetails {
+public class RegisteredUser extends Person implements UserDetails {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -348165437223530844L;
-	@Id
-	@GeneratedValue
-	private Long id;
-	private String firstName;
-	private String lastName;
 	@Embedded
 	private AuthenticationInformation authentication;
-	private int age;
-	private String email;
-	private String phoneNumber;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
 	private List<Account> accounts;
 	private String roles;
 	@Column(nullable = true)
 	private Boolean isActive = false;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getRoles() {
 		return roles;
@@ -78,7 +63,7 @@ public class RegisteredUser implements UserDetails {
 		this.lastName = lastName;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
@@ -87,11 +72,11 @@ public class RegisteredUser implements UserDetails {
 	}
 
 	public String getEmail() {
-		return email;
+		return mailAddress;
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.mailAddress = email;
 	}
 
 	public String getPhoneNumber() {

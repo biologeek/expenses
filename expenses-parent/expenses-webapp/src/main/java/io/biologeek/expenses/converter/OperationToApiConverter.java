@@ -12,6 +12,7 @@ import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.charts.PieChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
+import io.biologeek.expenses.data.converters.CurrencyConverter;
 import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.DailyBalances;
@@ -32,6 +33,7 @@ public class OperationToApiConverter {
 		return new Operation()//
 				.account(toConvert.getAccount().getId())//
 				.amount(toConvert.getAmount())//
+				.currency(CurrencyConverter.convert(toConvert.getCurrency()))
 				.beneficiary(UserConverter.convert(toConvert.getBeneficiary()))//
 				.emitter(UserConverter.convert(toConvert.getEmitter()))//
 				.category(CategoryConverter.convert(toConvert.getCategory()))//

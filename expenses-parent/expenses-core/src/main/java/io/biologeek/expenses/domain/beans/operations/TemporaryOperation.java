@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -18,6 +19,7 @@ import io.biologeek.expenses.exceptions.BusinessException;
  *
  */
 @Entity
+@DiscriminatorValue("T")
 public class TemporaryOperation extends Operation implements Temporary {
 	@Column(nullable=true)
 	private Date totalReimbursmentDate;

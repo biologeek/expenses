@@ -1,0 +1,25 @@
+<div ng-controller="OperationsController as opCtrl">
+	<div id="header-title">
+		<h3>Menu</h3>
+	</div>
+
+	<table id="list-container">
+		<tr class="list-operation-item"
+			ng-repeat="item in opCtrl.currentOperationsList">
+			<td ><img class="item-type-icon"
+				ng-src="images/{{item.category.picture}}" /></td>
+			<td><span class="text-currency">{{item.amount}}
+					{{item.currency}} </span> - <span class="text-discrete">{{item.category.name}}</span>
+				<br />
+				<hr /> <br /> <span class="text-description">{{item.description}}</span>
+			</td>
+			<td><a
+				href="#!/account/{{item.account}}/operation/{{item.id}}/edit"> <img
+					alt="edit" src="images/edit-button.png" class="small-button" /></a> 
+					<a>
+						<img alt="del" ng-click="opCtrl.delete(item.id)" src="images/delete-button.png" class="small-button" />
+					</a> 
+			</td>
+		</tr>
+	</table>
+</div>

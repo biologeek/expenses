@@ -24,8 +24,7 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
  *
  */
 @javax.persistence.Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class OperationAgent {
+public class OperationAgent {
 
 	@Id
 	@GeneratedValue

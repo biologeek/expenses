@@ -182,4 +182,9 @@ public class Operation {
 		this.version = convert;
 		return this;
 	}
+
+	public Operation currency(String convert) {
+		this.currency = convert;
+		return this;
+	}
 }

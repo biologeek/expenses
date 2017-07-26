@@ -71,8 +71,16 @@ public class OperationService {
 		return null;
 	}
 
-	public List<Operation> getLastOperationsForAccount(Account account, int limit) {
-		return operationsRepository.getOperationsForAccountWithLimit(account.getId(), new PageRequest(0, limit));
+	public List<Operation> getLastOperationsForAccount(Account account, int page, Integer limit, String orderBy,
+			boolean reverseOrder) {
+
+		String orderByField = "creationDate";
+
+		if ("date".equals(orderBy))
+			orderByField = "creationDate";
+
+		return operationsRepository.getOperationsForAccountWithLimit(account.getId(), new PageRequest(page, limit),
+				orderByField+" "+(reverseOrder ? "desc" : "asc"));
 	}
 
 	/**
@@ -174,6 +182,7 @@ public class OperationService {
 
 	/**
 	 * Builds a balanced with a repartition by category. You can also filter by type
+	 * 
 	 * @param operations
 	 * @param types
 	 * @return
@@ -182,9 +191,9 @@ public class OperationService {
 		CategoryBalance result = new CategoryBalance();
 
 		for (Operation op : operations) {
-			if (result.getCategories().containsKey(op.getCategory()) 
-					&& (Arrays.asList(types).contains(op.getOperationType()) || types == null)){
-				BigDecimal entry = result.getCategories().get(op.getCategory());	
+			if (result.getCategories().containsKey(op.getCategory())
+					&& (Arrays.asList(types).contains(op.getOperationType()) || types == null)) {
+				BigDecimal entry = result.getCategories().get(op.getCategory());
 				entry.add(new BigDecimal(op.getAmount()));
 			}
 		}
@@ -311,8 +320,8 @@ public class OperationService {
 	/**
 	 * Builds balance per category by adding operations to balance. <br>
 	 * <br>
-	 * If the category to which belongs the operation exists in the balance,
-	 * method will update balance of the category. Else it will create it
+	 * If the category to which belongs the operation exists in the balance, method
+	 * will update balance of the category. Else it will create it
 	 * 
 	 * @param op
 	 * @param balance
@@ -335,8 +344,8 @@ public class OperationService {
 	}
 
 	/**
-	 * Manages category balance update and adds operation amount to category if
-	 * it exists or creates a new category in current daily balance
+	 * Manages category balance update and adds operation amount to category if it
+	 * exists or creates a new category in current daily balance
 	 * 
 	 * @param op
 	 * @param balance

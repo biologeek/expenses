@@ -7,15 +7,6 @@
 		
 		return {
 			request: function(request){
-				request.headers = request.headers || {};
-				request.headers = { 
-					 'Authorization' : $cookies.get('token') || '',
-					 'Content Type' : "application/json",
-					 'Accept': "application/json",
-					 'user': $cookies.get('user') || ''
-			      };
-			      
-			      console.log(request.headers);
 				return request;
 			}, 
 			responseError: function(response){

@@ -36,10 +36,15 @@ public class AndroidExpensesController {
 		return ResponseEntity.ok().build();
 	}
 
-	@RequestMapping(path = { "/account/{account}/operations", "/account/{account}/operation" }, method = {
-			RequestMethod.GET })
-	public ResponseEntity<List<Operation>> getLastOperations(@PathVariable("account") long accountId,
-			@RequestParam(value = "limit", required = false) Integer limit) {
+	@RequestMapping(path = { "/account/{account}/operations", "/account/{account}/operation",
+			"/account/{account}/operations/page/{page}" }, method = { RequestMethod.GET })
+	public ResponseEntity<List<Operation>> getLastOperations(//
+			@PathVariable("account") long accountId, //
+			@PathVariable("page") int page, //
+			@RequestParam(value = "limit", required = false) Integer limit,//
+			@RequestParam(value = "orderBy", required = false) String orderBy,//
+			@RequestParam(value = "reverse", required = false) boolean reverseOrder)//
+	{
 		List<io.biologeek.expenses.domain.beans.operations.Operation> result = null;
 		if (limit == null || limit.equals(Integer.valueOf(0)))
 			limit = 20;
@@ -48,7 +53,7 @@ public class AndroidExpensesController {
 		if (account == null) {
 			return new ResponseEntity<List<Operation>>(HttpStatus.NOT_FOUND);
 		}
-		result = opService.getLastOperationsForAccount(account, limit);
+		result = opService.getLastOperationsForAccount(account, page, limit, orderBy, reverseOrder);
 		if (result.isEmpty())
 			return new ResponseEntity<List<Operation>>(HttpStatus.NO_CONTENT);
 

@@ -86,7 +86,7 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 				public boolean test(Cookie t) {
 					return t.getName().equals("user");
 				}
-			}).findFirst().get().getValue();
+			}).findFirst().orElse(new Cookie("user", null)).getValue();
 		}
 		String token = request.getHeader("Authorization");
 		if (token == null) {
@@ -95,7 +95,7 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 				public boolean test(Cookie t) {
 					return t.getName().equals("token");
 				}
-			}).findFirst().get().getValue();
+			}).findFirst().orElse(new Cookie("token", null)).getValue();
 		}
 		if (token != null && userID != null) {
 			if (authentService.checkToken(Long.valueOf(userID), token)) {
