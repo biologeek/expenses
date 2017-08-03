@@ -1,59 +1,59 @@
-<div ng-controller="AddOrUpdateController as addOrUpdateController">
+<div ng-controller="AddOrUpdateController as addCtrl">
 	<div id="header-title">
 		<h3>Menu</h3>
 	</div>
 
 	<div id="form-container">
 
-		<form name="form" ng-submit="addOrUpdateController.saveOrUpdateOperation(form)">
+		<form name="form" ng-submit="addCtrl.saveOrUpdateOperation(form)">
 
-			<input type="text" ng-model="addOrUpdateController.currentOperation.amount"
+			<input type="text" ng-model="addCtrl.currentOperation.amount"
 				placeholder="{{'addorupdate.form.amount' | translate}}">
 				<span class="highlight"></span>
 			</input>
 			<br />
 			<input type="text"
-				ng-model="addOrUpdateController.currentOperation.description"
+				ng-model="addCtrl.currentOperation.description"
 				placeholder="{{'addorupdate.form.description' | translate}}">
 				<span class="highlight"></span>
 			</input>
 			<br />
 			<select name="operationType"
-				ng-options="category.name | translate for category in addOrUpdateController.categoryTypes"
-				ng-model="addOrUpdateController.currentOperation.type">
-  				<option value="" disabled selected>{{"addorupdate.form.type" | translate}}</option>
+				ng-options="category.name for category in addCtrl.categoryTypes"
+				ng-model="addCtrl.currentOperation.type">
+  				<option value="" disabled ng-selected="!addCtrl.currentOperation">{{"addorupdate.form.type" | translate}}</option>
 			</select>
 			<br />
 			<h4>{{'addorupdate.form.nomenclature' | translate}}</h4>
 			<div class="nomenclature-container">
 				<select name="nomenc0"
-					ng-options="category.name for category in addOrUpdateController.categoryLevels[0]"
-					ng-model="addOrUpdateController.nomenc[0]" ng-change="addOrUpdateController.getSubCategories(0)">
+					ng-options="category as category.name for category in addCtrl.categoryLevels[0] track by category.id"
+					data-ng-model="addCtrl.nomenc[0]" ng-change="addCtrl.getSubCategories(0)">
 
 				</select>
 				<br />
 				<select name="nomenc1"
-					ng-options="category.name for category in addOrUpdateController.categoryLevels[1]"
-					ng-show="addOrUpdateController.show[1]" ng-model="addOrUpdateController.nomenc[1]"
-					ng-change="addOrUpdateController.getSubCategories(1)">
+					ng-options="category as category.name for category in addCtrl.categoryLevels[1] track by category.id"
+					ng-show="addCtrl.show[1]" data-ng-model="addCtrl.nomenc[1]"
+					ng-change="addCtrl.getSubCategories(1)">
 
 				</select>
 				<br />
 				<select name="nomenc2"
-					ng-options="category.name for category in addOrUpdateController.categoryLevels[2]"
-					ng-show="addOrUpdateController.show[2]" ng-model="addOrUpdateController.nomenc[2]"
-					ng-change="addOrUpdateController.getSubCategories(2)">
+					ng-options="category.name for category in addCtrl.categoryLevels[2] track by category.id"
+					ng-show="addCtrl.show[2]" data-ng-model="addCtrl.nomenc[2]"
+					ng-change="addCtrl.getSubCategories(2)">
 
 				</select>
 				<br />
 				<select name="nomenc3"
-					ng-options="category.name for category in addOrUpdateController.categoryLevels[3]"
-					ng-show="addOrUpdateController.show[3]" ng-model="addOrUpdateController.nomenc[3]">
+					ng-options="category.name for category in addCtrl.categoryLevels[3] track by category.id"
+					ng-show="addCtrl.show[3]" data-ng-model="addCtrl.nomenc[3]">
 
 				</select>
 			</div>
 
-			<input type="submit" id="submit" value="{{'addorupdate.form.submit' | translate}}"  ng-click="addOrUpdateController.saveOrUpdateOperation(form)"/>
+			<input type="submit" id="submit" value="{{'addorupdate.form.submit' | translate}}"  ng-click="addCtrl.saveOrUpdateOperation(form)"/>
 
 		</form>
 

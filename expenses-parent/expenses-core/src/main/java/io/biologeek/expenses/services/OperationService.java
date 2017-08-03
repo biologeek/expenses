@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.beans.TimeUnit;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
@@ -71,16 +72,23 @@ public class OperationService {
 		return null;
 	}
 
-	public List<Operation> getLastOperationsForAccount(Account account, int page, Integer limit, String orderBy,
+	public OperationList getLastOperationsForAccount(Account account, int page, Integer limit, String orderBy,
 			boolean reverseOrder) {
-
+		OperationList listResult = new OperationList();
 		String orderByField = "creationDate";
 
 		if ("date".equals(orderBy))
 			orderByField = "creationDate";
 
-		return operationsRepository.getOperationsForAccountWithLimit(account.getId(), new PageRequest(page, limit),
-				orderByField+" "+(reverseOrder ? "desc" : "asc"));
+		List<Operation> operations = operationsRepository.getOperationsForAccountWithLimit(account.getId(),
+				new PageRequest(page - 1, limit), orderByField + " " + (reverseOrder ? "desc" : "asc"));
+		listResult.setOperations(operations);
+		listResult.setOperationPerPage(limit);
+		int totalOperations = operationsRepository.countOperationsForAccount(account.getId());
+		listResult.setTotalOperations(totalOperations);
+		listResult.setTotalPages((int) Math.round(totalOperations / limit));
+		listResult.setCurrentPage(page);
+		return listResult;
 	}
 
 	/**

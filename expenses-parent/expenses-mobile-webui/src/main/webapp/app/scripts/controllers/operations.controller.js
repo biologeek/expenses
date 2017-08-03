@@ -5,38 +5,52 @@
 	'use strict';
 	var controllerModule = angular.module('myApp');
 	
-	controllerModule.controller('OperationsController', ['$scope', 'MobileService', '$translate', '$cookies', '$routeParams', 
-		function($scope, MobileService, $translate, $cookies, $routeParams) {
+	controllerModule.controller('OperationsController', ['$scope', 'MobileService', '$translate', '$cookies', '$routeParams', '$location', 
+		function($scope, MobileService, $translate, $cookies, $routeParams, $location) {
 	    
 		var vm = this;
 		
 		vm.currentOperationsList = null;
 		
-		var pager = 0;
-		
+		vm.pager = 1;
+		vm.limit = $routeParams.limit;
+		vm.totalItems = null;
 		vm.getOperations = function(){
-			
-			var limit = $routeParams.limit;
-			
-			MobileService.list(limit, pager).then(function(response){
-				vm.currentOperationsList = response.data;
-			}, function(response){
-				console.log('Error '+response.status+' : '+response.data.key);
+			MobileService.list(vm.limit, vm.pager).then(function(response){
+					vm.currentOperationsList = response.data.operations;
+					vm.pager = response.data.currentPage;
+					vm.totalPages = response.data.totalPages;
+					vm.totalOperations = response.data.totalOperations;
+					vm.totalItems = response.data.totalOperations;
+				}, function(response){
+					console.log('Error '+response.status+' : '+response.data.key);
 			});	
 		};
 		
 		
 		vm.remove = function(id){
 			if (id > 0){
-				MobileService.delete(id).then(function(resp){
-					
-				},function(response){
+				MobileService.delete(id).then(function(resp){},function(response){
 					console.log('Error '+response.status+' : '+response.data.key);
 				});
 			}
 		};
 		
-		vm.getOperations();
+		
+		vm.openOperation = function(id){
+			if (id > 0){
+				var op = _.find(vm.currentOperationsList, function(o){
+					return o.id == id;
+				});
+				
+				if (typeof op !== "undefined"){
+					$location.path("/account/"+$routeParams.accountId+"/operation/"+op.id);
+				}
+			}
+		};
+		
+		if ($routeParams.limit)
+			vm.getOperations();
 	}]);
 	
 })();

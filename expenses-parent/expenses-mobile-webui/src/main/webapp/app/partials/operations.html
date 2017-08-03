@@ -1,19 +1,17 @@
 <div ng-controller="OperationsController as opCtrl">
-	<div id="header-title">
-		<h3>Menu</h3>
-	</div>
-
-	<div id="listContainer">
-		<ul class="list">
-			<li class="list-item">
-				<a ng-href="#!/add">{{"welcome.list.add" | translate}}</a>
-			</li>
-			<li class="list-item">
-				<a ng-href="#!/accounts">{{"welcome.list.accounts" | translate }}</a>
-			</li>
-			<li class="list-item">
-				<a ng-href="#!/operations/list">{{"welcome.list.list" | translate}}</a>
-			</li>
-		</ul>
+	<div class="container">
+		<div class="header-title">{{"operationWelcome.title" | translate}}</div>
+		<div class="content-body">
+			<div id="listContainer">
+				<ul class="list">
+					<li class="list-item"><a ng-href="#!/account/{{opCtrl.accountId}}/operation/add">{{"welcome.list.add"
+							| translate}}</a></li>
+					<li class="list-item"><a ng-href="#!/accounts">{{"welcome.list.accounts"
+							| translate }}</a></li>
+					<li class="list-item"><a ng-href="#!/account/{{opCtrl.accountId}}/operations">{{"welcome.list.list"
+							| translate}}</a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
 </div>

@@ -4,7 +4,8 @@
 		'ngCookies',
 		'ngSanitize',
 		'pascalprecht.translate',// angular-translate
-        'tmh.dynamicLocale'// angular-dynamic-locale
+        'tmh.dynamicLocale',// angular-dynamic-locale
+        'ui.bootstrap.pagination'
 	]);
 
 	myApp.config([ '$routeProvider', function($routeProvider) {
@@ -19,7 +20,11 @@
 			controller : 'AddOrUpdateController'
 		});
 
-		$routeProvider.when('/update/:operationId', {
+		$routeProvider.when('/account/:accountId/operation?id=:operationId', {
+			templateUrl : 'partials/addOrUpdate.html',
+			controller : 'AddOrUpdateController'
+		});
+		$routeProvider.when('/account/:accountId/operation/add', {
 			templateUrl : 'partials/addOrUpdate.html',
 			controller : 'AddOrUpdateController'
 		});
@@ -34,13 +39,18 @@
 			controller : 'AccountController'
 		});	
 
-		$routeProvider.when('/operations/', {
+		$routeProvider.when('/account/:accountId/', {
 			templateUrl : 'partials/operations.html',
 			controller : 'OperationsController'
 		});	
 
 		$routeProvider.when('/account/:accountId/operations/list/:limit', {
 			templateUrl : 'partials/operations.list.html',
+			controller : 'OperationsController'
+		});	
+
+		$routeProvider.when('/account/:accountId/operation/:opId/edit', {
+			templateUrl : 'partials/addOrUpdate.html',
 			controller : 'OperationsController'
 		});	
 	/*	$routeProvider.otherwise({

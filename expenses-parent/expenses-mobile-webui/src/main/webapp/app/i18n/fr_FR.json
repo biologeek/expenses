@@ -1,17 +1,17 @@
 {
-	"EXPENSE": "Dépense", 
+	"EXPENSE": "Depense", 
 	"INCOME": "Revenu", 
-	"LOAN": "Prêt", 
+	"LOAN": "Pret", 
 	"DEBT": "Dette", 
-	"REGULAR_EXPENSE": "Dépense régulière", 
-	"REGULAR_INCOME": "Revenu régulier", 
-	"REGULAR_LOAN": "Prêt régulier", 
-	"REGULAR_DEBT": "Dette régulière",
+	"REGULAR_EXPENSE": "Depense reguliere", 
+	"REGULAR_INCOME": "Revenu regulier", 
+	"REGULAR_LOAN": "Pret regulier", 
+	"REGULAR_DEBT": "Dette reguliere",
 	"welcome" : {
 		"list" : {
-			"add" : "Ajouter une opération",
+			"add" : "Ajouter une operations",
 			"accounts" : "Lister les comptes",
-			"list" : "Lister les opérations"
+			"list" : "Lister les operations"
 		}
 	},
 	"login": {
@@ -27,5 +27,11 @@
 			"type" : "Type",
 			"nomenclature" : "Nomenclature"
 		}
+	},
+	"operationList": {
+		"title": "Liste d'operations"
+	},
+	"operationEdit": {
+		"title": "Modifier"
 	}
 }

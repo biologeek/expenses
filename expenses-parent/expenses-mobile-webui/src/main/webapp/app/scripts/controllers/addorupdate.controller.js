@@ -19,13 +19,13 @@
 				/**
 				 * Selected items
 				 */
-				vm.nomenc = [];
-				vm.nomencInNumbers = [];
+				vm.nomenc = new Array(4);
+				vm.nomencInNumbers = new Array(4);
 				/**
 				 * Stores categories displayed in each field;
 				 */
 				vm.categoryLevels = new Array(4);
-				vm.show = [];
+				vm.show = new Array(4);
 
 
 				/**
@@ -78,27 +78,47 @@
 				 */
 
 				vm.initUpdate = function() {
-					MobileService.getOperationById($routeParams.operationId, function(
-							operation) {
+					MobileService.getOperationById($routeParams.opId, function(operation) {
 						vm.currentOperation = operation;
 						// Feeds first category select
-						vm.nomenc[0] = operation.category;
+						vm.reverseCategoryTree(operation.category);
+						
 					}, function(error) {
 						// TODO
 					});
 				};
 
 				vm.initCreate = function() {
-					CategoryService.list(0, function(categoryList){
+					CategoryService.list(0).then(function(categoryList){
 						vm.categoryLevels[0] = categoryList;
 						console.log(categoryList);
-					}, function(error){
+					}).then(function(error){
 						console.log(error);
 					});
 					console.log("Blabla");
 
 				};
 				
+				vm.reverseCategoryTree = function(category){
+					var currentCategory = _.cloneDeep(category);
+					var final = [];
+					// FIXME : Got a problem here !!
+					// Need to do synchrone loop
+						while(typeof currentCategory !== "undefined"){
+							CategoryService.list(currentCategory.level).then(function(categoryList){
+								var level = categoryList[0].level;
+								vm.categoryLevels[level] = [];
+								vm.categoryLevels[level].push(categoryList);
+							}).then(function(error){
+								console.log(error);
+							});
+							
+							final.push(currentCategory);
+							currentCategory = currentCategory.parent;
+						}					
+					
+					vm.nomenc = _.reverse(final);
+				};
 				
 				CategoryService.getTypes(function(data) {
 					vm.categoryTypes = data;
@@ -106,7 +126,7 @@
 					console.log(response.data);
 				});	
 				
-				if ($routeParams.operationId) {
+				if ($routeParams.accountId && $routeParams.opId) {
 					vm.initUpdate();
 				} else {
 					vm.initCreate();

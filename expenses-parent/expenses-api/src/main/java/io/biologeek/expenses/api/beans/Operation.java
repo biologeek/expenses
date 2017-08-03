@@ -187,4 +187,9 @@ public class Operation {
 		this.currency = convert;
 		return this;
 	}
+
+	public Operation description(String description2) {
+		this.description = description2;
+		return this;
+	}
 }

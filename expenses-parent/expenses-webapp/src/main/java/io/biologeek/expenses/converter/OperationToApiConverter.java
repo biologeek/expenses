@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 
 import io.biologeek.expenses.api.beans.Operation;
+import io.biologeek.expenses.api.beans.PaginatedOperationsList;
 import io.biologeek.expenses.api.beans.charts.PieChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
+import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.data.converters.CurrencyConverter;
 import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
@@ -29,6 +31,15 @@ public class OperationToApiConverter {
 		return result;
 	}
 
+	public static PaginatedOperationsList convert(OperationList toConvert) {
+		return new PaginatedOperationsList()//
+				.operations(convert(toConvert.getOperations()))//
+				.operationsPerPage(toConvert.getOperationPerPage())//
+				.totalOperations(toConvert.getTotalOperations())//
+				.totalPages(toConvert.getTotalPages())//
+				.currentPage(toConvert.getCurrentPage());//
+	}
+
 	public static Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert) {
 		return new Operation()//
 				.account(toConvert.getAccount().getId())//
@@ -37,20 +48,21 @@ public class OperationToApiConverter {
 				.beneficiary(UserConverter.convert(toConvert.getBeneficiary()))//
 				.emitter(UserConverter.convert(toConvert.getEmitter()))//
 				.category(CategoryConverter.convert(toConvert.getCategory()))//
+				.description(toConvert.getDescription())//
 				.creationDate(toConvert.getCreationDate())//
 				.updateDate(toConvert.getUpdateDate())//
 				.id(toConvert.getId())//
 				.version(toConvert.getVersion());
 	}
 
-	public static io.biologeek.expenses.api.beans.Operation convert(
-			io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
+	public static io.biologeek.expenses.api.beans.Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
 
 		res.setAccount(toConvert.getAccount().getId());
 		res.setAmount(toConvert.getAmount());
 		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
 		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
 		res.setCategory(CategoryConverter.convert(toConvert.getCategory()));
+		res.setDescription(toConvert.getDescription());
 		res.setCreationDate(toConvert.getCreationDate());
 		res.setUpdateDate(toConvert.getUpdateDate());
 		res.setId(toConvert.getId());

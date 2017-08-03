@@ -31,4 +31,7 @@ public interface OperationsRepository extends JpaRepository<Operation, Long> {
 	 */
 	@Query("from Operation where account_id = :accountId and operationType IN (EXPENSE, REGULAR_EXPENSE) order by effective_date desc")
 	public List<Operation> getExpensesForAccountWithLimit(@Param("accountId") Long accountId, Pageable pager);
+
+	@Query("select count(*) from Operation where account_id = :accountId")
+	public int countOperationsForAccount(@Param("accountId") Long accountId);
 }

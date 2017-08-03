@@ -77,7 +77,15 @@
 .text-discrete {
 	color: #999999;
 	font-style: italic;
-	font-size: 10px;
+	font-size: 9px;
+}
+
+.text-amount-negative {
+	color: red;
+}
+
+.text-amount-positive {
+	color: green;
 }
 
 .small-button {
@@ -85,7 +93,70 @@
 	height: 12px;
 }
 
-.item-type-icon{
+.item-type-icon {
 	max-width: 32px;
 	max-height: 32px;
+	padding-right: 3px;
+}
+
+.container {
+	border: 1px solid #777777;
+	border-radius: 2px;
+	overflow: hidden;
+	width: 100%;
+}
+
+.header-title {
+	float: left;
+	width: 100%;
+	background-color: #777777 !important;
+	color: white;
+	border-radius: 3px;
+	border: 2px solid #777777;
+	vertical-align: middle;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+	padding: 3px;
+	text-align: left;
+	height: 30px;
+	font-family: Helvetica Neue sans-serif;
+}
+
+.list-operation-item {
+	border-style: solid;
+	border-bottom: 2px solid black;
+}
+
+.content-body {
+	margin-left: 0px;
+	margin-top: 0px;
+}
+
+.paginator {
+	vertical-align: bottom;
+	height: 30px;
+	width: 100%;
+	align: center;
+}
+
+.paginator>ul {
+	display: table-cell !important;
+}
+
+.pagination-sm>li {
+	width: 20px;
+	font-size: 14px;
+	display: inline-block;
+}
+
+.pager li>a:hover, .pager li>a:focus {
+	font-size: 11px !important;
+}
+
+table {
+	float: left;
+	position: relative;
+	margin-left: 0px;
+	margin-top: 0px;
 }

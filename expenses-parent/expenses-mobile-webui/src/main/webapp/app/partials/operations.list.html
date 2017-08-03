@@ -1,25 +1,33 @@
 <div ng-controller="OperationsController as opCtrl">
-	<div id="header-title">
-		<h3>Menu</h3>
-	</div>
+	<div class="container">
+		<div class="header-title">{{"operationList.title" | translate}}</div>
+		<div class="content-body">
+			<table id="list-container">
+				<tr class="list-operation-item"
+					ng-repeat="item in opCtrl.currentOperationsList"
+					ng-click="opCtrl.openOperation(item.id)">
+					<td><img class="item-type-icon"
+						ng-src="images/{{item.category.picture}}" /></td>
+					<td><span
+						ng-class="item.amount < 0 ? 'text-amount-negative text-currency' : 'text-amount-positive text-currency'">{{item.amount}}
+							{{item.currency}} </span> <span class="text-discrete">{{item.category.name}}</span>
+						<br /> <span class="text-description">{{item.description}}</span>
+					</td>
+					<td><a
+						href="#!/account/{{item.account}}/operation/{{item.id}}/edit">
+							<img alt="edit" src="images/edit-button.png" class="small-button" />
+					</a> <a> <img alt="del" ng-click="opCtrl.delete(item.id)"
+							src="images/delete-button.png" class="small-button" />
+					</a></td>
+				</tr>
+			</table>
 
-	<table id="list-container">
-		<tr class="list-operation-item"
-			ng-repeat="item in opCtrl.currentOperationsList">
-			<td ><img class="item-type-icon"
-				ng-src="images/{{item.category.picture}}" /></td>
-			<td><span class="text-currency">{{item.amount}}
-					{{item.currency}} </span> - <span class="text-discrete">{{item.category.name}}</span>
-				<br />
-				<hr /> <br /> <span class="text-description">{{item.description}}</span>
-			</td>
-			<td><a
-				href="#!/account/{{item.account}}/operation/{{item.id}}/edit"> <img
-					alt="edit" src="images/edit-button.png" class="small-button" /></a> 
-					<a>
-						<img alt="del" ng-click="opCtrl.delete(item.id)" src="images/delete-button.png" class="small-button" />
-					</a> 
-			</td>
-		</tr>
-	</table>
+		</div>
+	</div>
+		<div class="paginator">
+			<ul uib-pagination total-items="opCtrl.totalItems"
+				ng-model="opCtrl.pager" class="pagination-sm"
+				boundary-link-numbers="true" direction-links="false"
+				items-per-page="opCtrl.limit" ng-change="opCtrl.getOperations()"></ul>
+		</div>
 </div>

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import io.biologeek.expenses.api.beans.Operation;
+import io.biologeek.expenses.api.beans.PaginatedOperationsList;
+import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.converter.AccountToApiConverter;
 import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.converter.OperationToModelConverter;
@@ -38,24 +40,24 @@ public class AndroidExpensesController {
 
 	@RequestMapping(path = { "/account/{account}/operations", "/account/{account}/operation",
 			"/account/{account}/operations/page/{page}" }, method = { RequestMethod.GET })
-	public ResponseEntity<List<Operation>> getLastOperations(//
+	public ResponseEntity<PaginatedOperationsList> getLastOperations(//
 			@PathVariable("account") long accountId, //
-			@PathVariable("page") int page, //
+ 			@PathVariable(value = "page", required = false) int page, //
 			@RequestParam(value = "limit", required = false) Integer limit,//
 			@RequestParam(value = "orderBy", required = false) String orderBy,//
 			@RequestParam(value = "reverse", required = false) boolean reverseOrder)//
 	{
-		List<io.biologeek.expenses.domain.beans.operations.Operation> result = null;
+		OperationList result = null;
 		if (limit == null || limit.equals(Integer.valueOf(0)))
 			limit = 20;
 		Account account = accountService.getAccount(accountId);
 
 		if (account == null) {
-			return new ResponseEntity<List<Operation>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		result = opService.getLastOperationsForAccount(account, page, limit, orderBy, reverseOrder);
-		if (result.isEmpty())
-			return new ResponseEntity<List<Operation>>(HttpStatus.NO_CONTENT);
+		if (result.getOperations().isEmpty())
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.OK);
 	}
