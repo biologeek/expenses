@@ -1,0 +1,37 @@
+{
+	"EXPENSE": "Depense", 
+	"INCOME": "Revenu", 
+	"LOAN": "Pret", 
+	"DEBT": "Dette", 
+	"REGULAR_EXPENSE": "Depense reguliere", 
+	"REGULAR_INCOME": "Revenu regulier", 
+	"REGULAR_LOAN": "Pret regulier", 
+	"REGULAR_DEBT": "Dette reguliere",
+	"welcome" : {
+		"list" : {
+			"add" : "Ajouter une operations",
+			"accounts" : "Lister les comptes",
+			"list" : "Lister les operations"
+		}
+	},
+	"login": {
+		"username": "Nom d'utilisateur",
+		"password": "Mot de passe",
+		"submitButton": "Connexion"
+	},
+	"addorupdate" : {
+		"form" : {
+			"amount" : "Montant",
+			"description" : "Description",
+			"submit" : "OK",
+			"type" : "Type",
+			"nomenclature" : "Nomenclature"
+		}
+	},
+	"operationList": {
+		"title": "Liste d'operations"
+	},
+	"operationEdit": {
+		"title": "Modifier"
+	}
+}

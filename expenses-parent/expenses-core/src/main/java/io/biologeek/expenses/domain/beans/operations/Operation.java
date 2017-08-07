@@ -5,8 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,7 +28,7 @@ import io.biologeek.expenses.domain.beans.Receiver;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Operation {
+public abstract class Operation {
 
 	@Id
 	@GeneratedValue
@@ -64,10 +62,6 @@ public class Operation {
 	private Date effectiveDate;
 
 	private String description;
-	
-	@Enumerated(EnumType.STRING)
-	private OperationType operationType;
-
 
 	@Convert(converter = CurrencyConverter.class)
 	Currency currency;
@@ -166,14 +160,6 @@ public class Operation {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public OperationType getOperationType() {
-		return operationType;
-	}
-
-	public void setOperationType(OperationType operationType) {
-		this.operationType = operationType;
 	}
 
 }

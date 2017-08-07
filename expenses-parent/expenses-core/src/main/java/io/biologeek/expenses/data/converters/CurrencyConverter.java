@@ -19,4 +19,8 @@ public class CurrencyConverter implements AttributeConverter<Currency, String>{
 		return Currency.getInstance(dbData);
 	}
 
+	public static String convert(Currency currency) {
+		return currency.getSymbol();
+	}
+
 }

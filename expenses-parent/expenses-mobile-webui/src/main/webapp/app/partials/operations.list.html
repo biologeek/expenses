@@ -1,0 +1,41 @@
+<div ng-controller="OperationsController as opCtrl">
+	<div class="container">
+		<div class="header-title">{{"operationList.title" | translate}}</div>
+		<div class="content-body">
+		<div class="paginator">
+			<button class="transparent blue" ng-click="opCtrl.getPreviousOperations()">
+		</div>
+			<table id="list-container">
+				<tr class="list-operation-item"
+					ng-repeat="item in opCtrl.currentOperationsList"
+					ng-click="opCtrl.openOperation(item.id)">
+					<td><img class="item-type-icon"
+						ng-src="images/{{item.category.picture}}" /></td>
+					<td><span
+						ng-class="item.amount < 0 ? 'text-amount-negative text-currency' : 'text-amount-positive text-currency'">{{item.amount}}
+							{{item.currency}} </span> <span class="text-discrete">{{item.category.name}}</span>
+						<br /> <span class="text-description">{{item.description}}</span>
+					</td>
+					<td><a
+						href="#!/account/{{item.account}}/operation/{{item.id}}/edit">
+							<img alt="edit" src="images/edit-button.png" class="small-button" />
+					</a> <a> <img alt="del" ng-click="opCtrl.delete(item.id)"
+							src="images/delete-button.png" class="small-button" />
+					</a></td>
+				</tr>
+			</table>
+
+			<div class="paginator">
+				<button class="transparent blue" ng-click="opCtrl.getNextOperations()">
+		
+		<!--
+				<ul uib-pagination total-items="opCtrl.totalItems"
+					ng-model="opCtrl.pager" class="pagination-sm"
+					boundary-link-numbers="true" direction-links="false"
+					items-per-page="opCtrl.limit" ng-change="opCtrl.getOperations()"></ul>
+		-->
+			</div>
+
+		</div>
+	</div>
+</div>

@@ -2,15 +2,14 @@ package io.biologeek.expenses.config;
 
 import java.util.Properties;
 
+import javax.servlet.Filter;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,8 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.web.servlet.DispatcherServlet;
+
+import io.biologeek.expenses.config.security.SimpleTokenAuthenticationFilter;
 
 @Configuration
 @PropertySources({ @PropertySource("${app.parameters}/application.properties") })
@@ -40,7 +40,10 @@ public class ApplicationConfig {
 
 	@Value("${jdbc.connection.password}")
 	String connectionPassword;
+	
 
+	
+	
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer properties() {
 		return new PropertySourcesPlaceholderConfigurer();
@@ -86,4 +89,19 @@ public class ApplicationConfig {
 		};
 	}
 
+
+	@Bean
+	public FilterRegistrationBean loginFilterRegistration() {
+	    FilterRegistrationBean registration = new FilterRegistrationBean();
+	    registration.setFilter(loginFilter());
+	    registration.addUrlPatterns("/expenses/*");
+	    registration.setName("loginFilter");
+	    registration.setOrder(1);
+	    return registration;
+	}
+
+	@Bean
+	public Filter loginFilter() {
+		return new SimpleTokenAuthenticationFilter();
+	}
 }

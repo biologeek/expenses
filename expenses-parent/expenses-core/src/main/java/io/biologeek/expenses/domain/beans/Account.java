@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import io.biologeek.expenses.domain.beans.operations.Operation;
@@ -17,13 +19,13 @@ public class Account {
 	@GeneratedValue
 	private Long id;
 	private String name;
-	/**
-	 * For the moment, user is only a String. Then it could be an object
-	 */
-	private String owner;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private RegisteredUser owner;
 	private Long number;
 	@OneToMany(mappedBy = "account")
 	private List<Operation> expenses;
+	
 	
 	private Date creationDate;
 	private Date updateDate;
@@ -45,11 +47,11 @@ public class Account {
 		this.name = name;
 	}
 
-	public String getOwner() {
+	public RegisteredUser getOwner() {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(RegisteredUser owner) {
 		this.owner = owner;
 	}
 

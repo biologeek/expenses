@@ -14,14 +14,14 @@ import javax.persistence.OneToMany;
 @javax.persistence.Entity
 public class Person extends Entity {
 
-	private String firstName;
-	private String lastName;
-	private Integer age;
-	private String mailAddress;
-	private String phoneNumber;
+	protected String firstName;
+	protected String lastName;
+	protected Integer age;
+	protected String mailAddress;
+	protected String phoneNumber;
 	
 	@OneToMany(mappedBy="mainContact")
-	private List<Organization> organization;
+	protected List<Organization> organization;
 
 	public String getMailAddress() {
 		return mailAddress;

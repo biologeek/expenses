@@ -11,9 +11,13 @@ public class Operation {
 	User beneficiary;
 	User emitter;
 
-	private Account account;
+	private Long account;
+	private String description;
+	private OperationType type;
 
 	private Double amount;
+	private String currency;
+	private Date effectiveDate;
 
 	Category category;
 
@@ -29,6 +33,14 @@ public class Operation {
 		this.id = id;
 	}
 
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
 	public User getBeneficiary() {
 		return beneficiary;
 	}
@@ -37,7 +49,15 @@ public class Operation {
 		this.beneficiary = beneficiary;
 	}
 
-	public User getEmitter() {
+	public OperationType getType() {
+		return type;
+	}
+
+	public void setType(OperationType type) {
+		this.type = type;
+	}
+
+	public User getOperationAgent() {
 		return emitter;
 	}
 
@@ -45,12 +65,32 @@ public class Operation {
 		this.emitter = emitter;
 	}
 
-	public Account getAccount() {
+	public Long getAccount() {
 		return account;
 	}
 
-	public void setAccount(Account account) {
+	public void setAccount(Long account) {
 		this.account = account;
+	}
+
+	public Date getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+	public User getEmitter() {
+		return emitter;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Double getAmount() {
@@ -91,5 +131,65 @@ public class Operation {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	/*
+	 * Builder
+	 * 
+	 */
+
+	public Operation account(Long convert) {
+		this.account = convert;
+		return this;
+	}
+
+	public Operation updateDate(Date convert) {
+		this.updateDate = convert;
+		return this;
+	}
+
+	public Operation amount(Double convert) {
+		this.amount = convert;
+		return this;
+	}
+
+	public Operation beneficiary(User convert) {
+		this.beneficiary = convert;
+		return this;
+	}
+
+	public Operation emitter(User convert) {
+		this.emitter = convert;
+		return this;
+	}
+
+	public Operation category(Category convert) {
+		this.category = convert;
+		return this;
+	}
+
+	public Operation creationDate(Date convert) {
+		this.creationDate = convert;
+		return this;
+	}
+
+	public Operation id(Long convert) {
+		this.id = convert;
+		return this;
+	}
+
+	public Operation version(int convert) {
+		this.version = convert;
+		return this;
+	}
+
+	public Operation currency(String convert) {
+		this.currency = convert;
+		return this;
+	}
+
+	public Operation description(String description2) {
+		this.description = description2;
+		return this;
 	}
 }

@@ -1,0 +1,11 @@
+<div ng-controller="AccountController as accCtrl">
+	<div id="header-title">
+	</div>
+
+	<div id="listContainer">
+		<select ng-model="accCtrl.accountName"
+			ng-options="account.name for account in accCtrl.availableAccounts"
+			ng-change="accCtrl.selectAccount()">
+		</select>
+	</div>
+</div>

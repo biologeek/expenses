@@ -13,7 +13,7 @@ public class Account {
 	/**
 	 * For the moment, user is only a String. Then it could be an object
 	 */
-	private String owner;
+	private Long owner;
 	private Long number;
 	private List<? extends Operation> expenses;
 
@@ -36,12 +36,12 @@ public class Account {
 		this.name = name;
 	}
 
-	public String getOwner() {
+	public Long getOwner() {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void setOwner(Long user) {
+		this.owner = user;
 	}
 
 	public Long getNumber() {

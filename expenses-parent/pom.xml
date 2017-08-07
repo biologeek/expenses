@@ -12,6 +12,7 @@
 		<module>expenses-webapp</module>
 		<module>expenses-ui</module>
 		<module>expenses-android</module>
+		<module>expenses-mobile-webui</module>
 	</modules>
 	<build>
 		<plugins>
