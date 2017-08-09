@@ -20,7 +20,6 @@ import io.biologeek.expenses.exceptions.ModelException;
  * Object that compiles all operations of the day to a single value with details
  * for each category
  * 
- * @author xcaron
  *
  */
 

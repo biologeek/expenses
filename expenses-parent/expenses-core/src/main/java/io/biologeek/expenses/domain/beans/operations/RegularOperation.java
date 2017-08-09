@@ -1,5 +1,7 @@
 package io.biologeek.expenses.domain.beans.operations;
 
+import java.util.Date;
+
 import io.biologeek.expenses.domain.beans.Interval;
 
 /**
@@ -7,19 +9,36 @@ import io.biologeek.expenses.domain.beans.Interval;
  * 
  * @author xcaron
  */
-public interface RegularOperation {
+public class RegularOperation implements Regular {
 
-	/**
-	 * Sets interval to regular {@link Operation}
-	 * 
-	 * @param interval
-	 */
-	public void setInterval(Interval interval);
+	@Override
+	public void setInterval(Interval interval) {
+		// TODO Auto-generated method stub
+		
+	}
 
-	/**
-	 * Returns interval of regular {@link Operation}
-	 * 
-	 * @param interval
-	 */
-	public Interval getInterval();
+	@Override
+	public Interval getInterval() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Date getFirstOccurence() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Date getLastOccurence() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Operation getInstantOperation(Date dateOfTheDay) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

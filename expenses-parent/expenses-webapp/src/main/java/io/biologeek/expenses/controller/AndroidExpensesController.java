@@ -72,9 +72,9 @@ public class AndroidExpensesController {
 		}
 
 		try {
-			result = opService.addExpenseToAccount(account, OperationToModelConverter.convert(expense));
-		} catch (TechnicalException e) {
-			e.printStackTrace();
+			io.biologeek.expenses.domain.beans.operations.Operation op = OperationToModelConverter.convert(expense);
+			op.setAccount(account);
+			result = opService.addOperationToAccount(op);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
@@ -92,12 +92,8 @@ public class AndroidExpensesController {
 		}
 
 		try {
-			result = opService.editExpenseForAccount(account, OperationToModelConverter.convert(expense));
-		} catch (TechnicalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			result = opService.updateOperation(account, OperationToModelConverter.convert(expense));
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.OK);

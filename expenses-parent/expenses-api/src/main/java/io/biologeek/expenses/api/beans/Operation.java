@@ -20,10 +20,20 @@ public class Operation {
 	private Date effectiveDate;
 
 	Category category;
+	
+	Nomenclature nomenclature;
 
 	private Date creationDate;
 	private Date updateDate;
 	private int version;
+
+	public Nomenclature getNomenclature() {
+		return nomenclature;
+	}
+
+	public void setNomenclature(Nomenclature nomenclature) {
+		this.nomenclature = nomenclature;
+	}
 
 	public Long getId() {
 		return id;

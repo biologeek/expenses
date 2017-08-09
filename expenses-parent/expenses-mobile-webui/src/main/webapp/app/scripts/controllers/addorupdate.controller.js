@@ -80,7 +80,7 @@
 					MobileService.getOperationById($routeParams.opId, function(operation) {
 						vm.currentOperation = operation;
 						// Feeds first category select
-						vm.reverseCategoryTree(operation.category);
+						vm.reverseCategoryTree(operation.nomenclature);
 						
 					}, function(error) {
 						// TODO
@@ -98,27 +98,8 @@
 
 				};
 				
-				vm.reverseCategoryTree = function(category){
-					var currentCategory = _.cloneDeep(category);
-					var final = [];
-					// FIXME : Got a problem here !!
-					// Need to do synchrone loop
-						for (let i = 0 ; i < 4 ; i++){
-							if (typeof currentCategory !== "undefined"){
-								CategoryService.list(currentCategory.level).then(function(categoryList){
-									var level = categoryList[0].level;
-									vm.categoryLevels[level] = [];
-									vm.categoryLevels[level].push(categoryList);
-								}).then(function(error){
-									console.log(error);
-								});
-								
-								final.push(currentCategory);
-								currentCategory = currentCategory.parent;
-							}
-						}					
-					
-					vm.nomenc = _.reverse(final);
+				vm.reverseCategoryTree = function(categories){
+					vm.nomenc = _.reverse(categories);
 				};
 				
 				CategoryService.getTypes(function(data) {

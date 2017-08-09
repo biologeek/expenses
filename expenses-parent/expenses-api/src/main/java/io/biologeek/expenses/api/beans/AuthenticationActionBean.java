@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonAutoDetect
 /**
  * Bean containing all necesary to login for a user. Note that 
- * @author 20005828
  *
  */
 public class AuthenticationActionBean {

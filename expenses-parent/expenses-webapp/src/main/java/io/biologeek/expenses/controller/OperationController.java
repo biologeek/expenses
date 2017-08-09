@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.api.beans.OperationType;
-import io.biologeek.expenses.converter.OperationToApiConverter.OperationTypeConverter;
+import io.biologeek.expenses.converter.OperationTypeConverter;
 
 @RestController
 @RequestMapping("/operation")

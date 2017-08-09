@@ -2,7 +2,7 @@ package io.biologeek.expenses.domain.beans.operations;
 
 import io.biologeek.expenses.exceptions.BusinessException;
 
-public interface TemporaryOperation {
+public class TemporaryOperation implements Temporary{
 	/**
 	 * Method that will allow to solve the temporary operation. For example
 	 * reimbursing a debt, a loan, ...
@@ -10,5 +10,6 @@ public interface TemporaryOperation {
 	 * @param sum trasferred sum
 	 * @throws BusinessException 
 	 */
-	public void solveTemporaryOperation(Double sum) throws BusinessException;
+	public void solveTemporaryOperation(Double sum) throws BusinessException {
+	}
 }

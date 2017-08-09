@@ -16,8 +16,7 @@ import javax.persistence.ManyToOne;
 import io.biologeek.expenses.data.converters.CurrencyConverter;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
-import io.biologeek.expenses.domain.beans.Emitter;
-import io.biologeek.expenses.domain.beans.Receiver;
+import io.biologeek.expenses.domain.beans.OperationAgent;
 
 /**
  * An {@link Operation} is an exchange between an emitter and a receiver. It is
@@ -28,15 +27,15 @@ import io.biologeek.expenses.domain.beans.Receiver;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Operation {
+public class Operation {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 	@ManyToOne(fetch = FetchType.EAGER)
-	Receiver beneficiary;
+	OperationAgent beneficiary;
 	@ManyToOne(fetch = FetchType.EAGER)
-	Emitter emitter;
+	OperationAgent emitter;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Account account;
@@ -46,6 +45,8 @@ public abstract class Operation {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "operation_category")
 	Category category;
+	
+	OperationType operationType;
 
 	/**
 	 * The date the operation was created
@@ -114,19 +115,19 @@ public abstract class Operation {
 		this.version = version;
 	}
 
-	public Receiver getBeneficiary() {
+	public OperationAgent getBeneficiary() {
 		return beneficiary;
 	}
 
-	public void setBeneficiary(Receiver beneficiary) {
+	public void setBeneficiary(OperationAgent beneficiary) {
 		this.beneficiary = beneficiary;
 	}
 
-	public Emitter getEmitter() {
+	public OperationAgent getEmitter() {
 		return emitter;
 	}
 
-	public void setEmitter(Emitter emitter) {
+	public void setEmitter(OperationAgent emitter) {
 		this.emitter = emitter;
 	}
 
@@ -144,6 +145,14 @@ public abstract class Operation {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public OperationType getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(OperationType operationType) {
+		this.operationType = operationType;
 	}
 
 	public Category getCategory() {
