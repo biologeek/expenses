@@ -21,7 +21,7 @@ public class OperationToModelConverter {
 		result.setDescription(expense.getDescription());
 		result.setEffectiveDate(expense.getEffectiveDate());
 		if (expense.getType() != null)
-			result.setOperationType(OperationType.valueOf(expense.getType().getName()));
+			result.setOperationType(OperationType.valueOf(expense.getType().name()));
 		return result;
 	}
 

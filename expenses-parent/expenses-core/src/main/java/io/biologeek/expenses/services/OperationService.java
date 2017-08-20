@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import javax.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.domain.beans.Account;
+import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.DailyBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
@@ -103,9 +105,14 @@ public class OperationService {
 
 	}
 
+	public FullPeriodicBalance getDailyBalanceForPeriod(long account, Date begin, Date end,
+			List<OperationType> collect) {
+		return getFullBalanceForPeriod(account, begin, end, collect, false);
+	}
+
 	public FullPeriodicBalance getFullBalanceForPeriod(long account, Date begin, Date end,
 			List<OperationType> collect) {
-		return null;
+		return getFullBalanceForPeriod(account, begin, end, collect, true);
 	}
 
 	/**
@@ -267,5 +274,13 @@ public class OperationService {
 	public Operation updateOperation(Account account, Operation convert) throws BusinessException {
 		convert.setAccount(account);
 		return updateOperation(convert);
+	}
+
+	public FullPeriodicBalance getCategoryBalanceForAccount(Long account, Date begin, Date end,
+			List<OperationType> operationTypes) {
+		CategoryBalance balance = new CategoryBalance();
+		
+		Map<String, BigDecimal> categories = operationsRepository.findOperationsForIntervalGroupedByCategories(account, begin, end, operationTypes);
+		return null;
 	}
 }

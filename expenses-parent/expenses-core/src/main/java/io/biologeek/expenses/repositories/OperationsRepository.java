@@ -1,7 +1,9 @@
 package io.biologeek.expenses.repositories;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 
@@ -22,5 +25,10 @@ public interface OperationsRepository extends JpaRepository<Operation, Long>{
 
 	@Query("from Operation where account_id = :accountId and operationType IN (EXPENSE, REGULAR_EXPENSE) order by effectiveDate")
 	public List<Operation> getExpensesForAccountWithLimit(@Param("accountId") Long accountId, Pageable pager);
+
+	@Query("select category.name, sum(amount) from Operation where account_id = :accountId and effectiveDate >= begin "
+			+ "and effectiveDate <= end group by category")
+	public Map<String, BigDecimal> findOperationsForIntervalGroupedByCategories(Long account, Date begin, Date end,
+			List<OperationType> operationTypes);
 	
 }

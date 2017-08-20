@@ -2,6 +2,7 @@ package io.biologeek.expenses.converter;
 
 import io.biologeek.expenses.api.beans.AuthenticationActionBean;
 import io.biologeek.expenses.api.beans.CorpUser;
+import io.biologeek.expenses.api.beans.Entity;
 import io.biologeek.expenses.api.beans.User;
 import io.biologeek.expenses.domain.beans.OperationAgent;
 import io.biologeek.expenses.domain.beans.Organization;
@@ -25,7 +26,6 @@ public class UserConverter {
 	}
 
 	public static User convert(RegisteredUser result) {
-
 		return new User()//
 				.accounts(AccountToApiConverter.convert(result.getAccounts()))//
 				.age(result.getAge())//
@@ -37,34 +37,36 @@ public class UserConverter {
 				.authToken(result.getAuthentication().getAuthToken());
 	}
 	
-	
 	public static User convert(Person result) {
-
 		return new User()//
 				.age(result.getAge())//
 				.firstName(result.getFirstName())//
 				.id(result.getId())//
 				.lastName(result.getLastName())//
-				.phoneNumber(result.getPhoneNumber())//
+				.phoneNumber(result.getPhoneNumber());//
 	}
 
 	public static AuthenticationInformation toModel(AuthenticationActionBean bean) {
 		AuthenticationInformation info = new AuthenticationInformation();
-
 		info.setAuthToken(bean.getToken());
 		info.setLogin(bean.getLogin());
 		info.setPassword(bean.getPassword());
-
 		return info;
 	}
 
 	public static AuthenticationActionBean toApi(AuthenticationInformation bean) {
 		AuthenticationActionBean info = new AuthenticationActionBean();
-
 		info.setToken(bean.getAuthToken());
 		info.setLogin(bean.getLogin());
 		info.setPassword(bean.getPassword());
-
 		return info;
+	}
+
+	public static <T extends Entity> T convert(OperationAgent agent) {
+		if (agent.getAgentEntity() instanceof Person)
+			return (T) convert((Person) agent.getAgentEntity());
+		else if (agent.getAgentEntity() instanceof Organization)
+			return (T) convertToCorp((Organization) agent.getAgentEntity());
+		return null;
 	}
 }

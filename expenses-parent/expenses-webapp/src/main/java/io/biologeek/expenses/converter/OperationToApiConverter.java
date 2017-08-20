@@ -66,8 +66,6 @@ public class OperationToApiConverter {
 				.xLabel(xLabel)//
 				.yLabel(yLabel))//
 				.data(operations.getDailyBalances().stream().map(OperationToApiConverter::convertToXYChartPoint).collect(Collectors.toList()));
-		
-		
 		return null;
 	}
 	
