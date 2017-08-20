@@ -83,7 +83,7 @@ public class ApplicationConfig {
 			
 			@Override
 			public void customize(ConfigurableEmbeddedServletContainer container) {
-				container.setPort(8080);
+				container.setPort(8090);
 				container.setContextPath("/expenses");
 			}
 		};

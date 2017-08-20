@@ -17,13 +17,15 @@ public class CategoryToApiConverter {
 			cat.setPicture(category.getCategoryPicture());
 			cat.setLevel(category.getLevel());
 			cat.setNomenclature(category.getNomenclature());
+			result.add(cat);
+			category = category.getParent();
 		}
 		return result;
 	}
 
 	public static Category convertToCategory(io.biologeek.expenses.domain.beans.Category category) {
-		Category result = new Category();
-		if (category != null) {
+		if (category != null && category.getId() != null) {
+			Category result = new Category();
 			result.setId(category.getId());
 			result.setName(category.getName());
 			result.setPicture(category.getCategoryPicture());

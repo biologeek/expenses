@@ -6,22 +6,13 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect
-public class Nomenclature {
+public class Nomenclature extends ArrayList<Category>{
 	
-	List<Category> categories;
 
-	public Nomenclature() {
-		categories = new ArrayList<Category>();
-	}
-	public List<Category> getCategories() {
-		return categories;
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7350278700653148183L;
 
-	public void setCategories(List<Category> categories) {
-		this.categories = categories;
-	}
-	
-	public void add(Category cat) {
-		this.categories.add(cat);
-	}
+
 }

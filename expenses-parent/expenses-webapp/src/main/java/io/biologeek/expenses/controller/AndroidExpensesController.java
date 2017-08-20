@@ -19,10 +19,13 @@ import io.biologeek.expenses.converter.AccountToApiConverter;
 import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.converter.OperationToModelConverter;
 import io.biologeek.expenses.domain.beans.Account;
+import io.biologeek.expenses.domain.beans.RegisteredUser;
+import io.biologeek.expenses.domain.beans.operations.Regular;
 import io.biologeek.expenses.exceptions.BusinessException;
 import io.biologeek.expenses.exceptions.TechnicalException;
 import io.biologeek.expenses.services.AccountService;
 import io.biologeek.expenses.services.OperationService;
+import io.biologeek.expenses.services.RegisteredUserService;
 
 @Controller
 @RequestMapping("/mobile")
@@ -32,6 +35,9 @@ public class AndroidExpensesController {
 	OperationService opService;
 	@Autowired
 	AccountService accountService;
+	
+	@Autowired
+	RegisteredUserService registeredUserService;
 
 	@RequestMapping(path = { "/" }, method = { RequestMethod.GET })
 	public ResponseEntity<Void> voidmethod() {
@@ -42,11 +48,15 @@ public class AndroidExpensesController {
 			"/account/{account}/operations/page/{page}" }, method = { RequestMethod.GET })
 	public ResponseEntity<PaginatedOperationsList> getLastOperations(//
 			@PathVariable("account") long accountId, //
- 			@PathVariable(value = "page", required = false) int page, //
+ 			@PathVariable(value = "page", required = false) Integer page, //
 			@RequestParam(value = "limit", required = false) Integer limit,//
 			@RequestParam(value = "orderBy", required = false) String orderBy,//
 			@RequestParam(value = "reverse", required = false) boolean reverseOrder)//
 	{
+		
+		if (page == null)
+			page = 1;
+		
 		OperationList result = null;
 		if (limit == null || limit.equals(Integer.valueOf(0)))
 			limit = 20;
@@ -81,9 +91,8 @@ public class AndroidExpensesController {
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(path = { "/account/{account}/operation/{id}" }, method = { RequestMethod.PUT })
-	public ResponseEntity<Operation> editExpense(@PathVariable("account") long accountId,
-			@PathVariable("id") long expenseId, @RequestBody Operation expense) {
+	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.PUT })
+	public ResponseEntity<Operation> editExpense(@PathVariable("account") long accountId, @RequestBody Operation expense) {
 		io.biologeek.expenses.domain.beans.operations.Operation result = null;
 		Account account = accountService.getAccount(accountId);
 
@@ -105,9 +114,15 @@ public class AndroidExpensesController {
 		return ResponseEntity.ok(OperationToApiConverter.convert(op, new Operation()));
 	}
 
-	@RequestMapping(path = { "/account" }, method = { RequestMethod.GET })
-	public ResponseEntity<List<io.biologeek.expenses.api.beans.Account>> getAccounts() {
-		List<Account> accounts = accountService.getAccounts();
-		return ResponseEntity.ok(AccountToApiConverter.convert(accounts));
+	@SuppressWarnings("unchecked")
+	@RequestMapping(path = { "/account/{user}" }, method = { RequestMethod.GET })
+	public ResponseEntity<List<io.biologeek.expenses.api.beans.Account>> getAccounts(@PathVariable("user") Long user) {
+		RegisteredUser regUser = registeredUserService.findUserById(user);
+		if (regUser != null) {
+			return ResponseEntity.ok(AccountToApiConverter.convert(accountService.getAccountsForUser(regUser)));
+		} else {
+			return (ResponseEntity<List<io.biologeek.expenses.api.beans.Account>>) ResponseEntity.notFound();
+		}
+		
 	}
 }

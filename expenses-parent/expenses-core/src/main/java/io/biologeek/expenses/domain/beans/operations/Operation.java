@@ -3,8 +3,11 @@ package io.biologeek.expenses.domain.beans.operations;
 import java.util.Currency;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.TableGenerator;
 
 import io.biologeek.expenses.data.converters.CurrencyConverter;
 import io.biologeek.expenses.domain.beans.Account;
@@ -37,15 +41,15 @@ public class Operation {
 	@ManyToOne(fetch = FetchType.EAGER)
 	OperationAgent emitter;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Account account;
 
 	private Double amount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "operation_category")
 	Category category;
-	
+	@Enumerated(EnumType.STRING)
 	OperationType operationType;
 
 	/**

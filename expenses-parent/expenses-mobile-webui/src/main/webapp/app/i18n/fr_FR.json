@@ -25,7 +25,8 @@
 			"description" : "Description",
 			"submit" : "OK",
 			"type" : "Type",
-			"nomenclature" : "Nomenclature"
+			"nomenclature" : "Nomenclature",
+			"currency": "monnaie"
 		}
 	},
 	"operationList": {

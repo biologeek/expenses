@@ -1,6 +1,7 @@
 package io.biologeek.expenses.data.converters;
 
 import java.util.Currency;
+import java.util.Set;
 
 import javax.persistence.AttributeConverter;
 
@@ -16,7 +17,13 @@ public class CurrencyConverter implements AttributeConverter<Currency, String>{
 	}
 
 	public Currency convertToEntityAttribute(String dbData) {
-		return Currency.getInstance(dbData);
+		Set<Currency> currencies = Currency.getAvailableCurrencies();
+		for (Currency cur : currencies) {
+			if (cur.getCurrencyCode().equals(dbData) || cur.getSymbol().equals(dbData)) {
+				return cur;
+			}
+		}
+		return null;
 	}
 
 	public static String convert(Currency currency) {

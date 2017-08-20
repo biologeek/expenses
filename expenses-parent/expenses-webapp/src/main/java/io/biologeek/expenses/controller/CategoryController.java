@@ -30,7 +30,7 @@ public class CategoryController {
 	@RequestMapping(method = RequestMethod.GET, path = "/{nomenc}")
 	public ResponseEntity<List<Category>> getCategoriesByNomenclature(@PathVariable("nomenc") String nomenclature) {
 		
-		io.biologeek.expenses.domain.beans.Category parent = categoryService.getCategoriesByNomenclature(nomenclature);
+		io.biologeek.expenses.domain.beans.Category parent = categoryService.getCategoryByNomenclature(nomenclature);
 		int level = 0;
 		if (parent != null){
 			level = parent.getLevel() + 1;

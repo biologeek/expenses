@@ -11,6 +11,7 @@ public class OperationToModelConverter {
 		Operation result = new Operation();
 		Account account = new Account();
 		account.setId(expense.getAccount());
+		result.setId(expense.getId());
 		result.setAccount(account);
 		result.setAmount(expense.getAmount());
 		result.setCategory(CategoryConverter.convert(expense.getCategory()));
@@ -19,7 +20,8 @@ public class OperationToModelConverter {
 		result.setCurrency(new CurrencyConverter().convertToEntityAttribute(expense.getCurrency()));
 		result.setDescription(expense.getDescription());
 		result.setEffectiveDate(expense.getEffectiveDate());
-		result.setOperationType(OperationType.valueOf(expense.getType().getName()));
+		if (expense.getType() != null)
+			result.setOperationType(OperationType.valueOf(expense.getType().getName()));
 		return result;
 	}
 

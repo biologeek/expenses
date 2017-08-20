@@ -39,7 +39,7 @@
 		vm.getNextOperations = function(){
 			vm.pager += 1;
 			vm.getOperations();
-		}
+		};
 		
 		
 		vm.remove = function(id){

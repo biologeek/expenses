@@ -22,7 +22,7 @@ public class CategoryService {
 	 * @param nomenclature
 	 * @return
 	 */
-	public Category getCategoriesByNomenclature(String nomenclature) {
+	public Category getCategoryByNomenclature(String nomenclature) {
 		return categoryRepository.findByNomenclature(nomenclature);
 	}
 

@@ -40,7 +40,7 @@
 							vm.nomenc[level].nomenclature, function(listOfCats) {
 								// Add retrieved categories to list and show
 								// corresponding select item
-									vm.categoryLevels[level+1] = listOfCats;
+								vm.categoryLevels[level+1] = listOfCats;
 								vm.show[level+1] = true;
 							}, function(error) {
 								vm.show[level+1] = false;
@@ -51,12 +51,20 @@
 				vm.saveOrUpdateOperation = function(form){
 					// Check validity of form
 					if (getCategory() != null){
-						vm.currentOperation.category = getCategory().id;
-						MobileService.create(vm.currentOperation, function(data) {
-							vm.currentOperation = data;
-						}, function(response) {
-							vm.errors.push(response.data);
-						});
+						vm.currentOperation.category = getCategory();
+						if (vm.currentOperation.id){
+							MobileService.update(vm.currentOperation, function(data) {
+								vm.currentOperation = data;
+							}, function(response) {
+								vm.errors.push(response.data);
+							});
+						} else {
+							MobileService.create(vm.currentOperation, function(data) {
+								vm.currentOperation = data;
+							}, function(response) {
+								vm.errors.push(response.data);
+							});
+						}
 					} else {
 						vm.errors.push("error.missing.category");
 					}					
@@ -65,8 +73,8 @@
 				var getCategory = function (){
 					var lastCat = null;
 					for(var category in vm.nomenc){
-						if (category){
-							lastCat = category;
+						if (vm.nomenc[category]){
+							lastCat = vm.nomenc[category];
 						}
 					}
 					return lastCat;
@@ -100,6 +108,14 @@
 				
 				vm.reverseCategoryTree = function(categories){
 					vm.nomenc = _.reverse(categories);
+					for (let i = 0; i < vm.nomenc.length;i++){
+						
+						CategoryService.list(i).then(function(resp){
+							vm.categoryLevels[i] = resp.data;
+							vm.show[i] = true;
+						});
+					}
+					vm.getSubCategories(vm.nomenc.length - 1);
 				};
 				
 				CategoryService.getTypes(function(data) {
