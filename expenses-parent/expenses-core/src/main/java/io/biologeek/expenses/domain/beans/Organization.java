@@ -5,7 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * A {@link Organization} can be a company, assciation, club, ...
+ * A {@link Organization} can be a company, association, club, ...
  * 
  * @author xcaron
  */
