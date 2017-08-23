@@ -19,7 +19,7 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
  * It implements a recursive relation in order to classify categories in a
  * nomenclature
  * 
- * @author xcaron
+ * 
  *
  */
 @Entity

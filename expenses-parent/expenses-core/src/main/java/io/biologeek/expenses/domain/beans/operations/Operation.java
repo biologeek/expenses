@@ -26,7 +26,7 @@ import io.biologeek.expenses.domain.beans.OperationAgent;
  * An {@link Operation} is an exchange between an emitter and a receiver. It is
  * attached to an account
  * 
- * @author xcaron
+ * 
  *
  */
 @Entity

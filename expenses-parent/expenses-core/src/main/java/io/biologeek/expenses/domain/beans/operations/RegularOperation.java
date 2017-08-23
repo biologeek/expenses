@@ -7,7 +7,7 @@ import io.biologeek.expenses.domain.beans.Interval;
 /**
  * An {@link Operation} that occurs regularly
  * 
- * @author xcaron
+ * 
  */
 public class RegularOperation implements Regular {
 

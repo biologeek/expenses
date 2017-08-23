@@ -7,6 +7,6 @@ public class EmptyXYChartData extends XYChartData {
 	EmptyXYChartData(String title) {
 		super();
 		this.setTitle(title);
-		this.setData(Collections.<XYChartPoint>emptyList());
+		this.setData(Collections.<XYChartPoint> emptyList());
 	}
 }

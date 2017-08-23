@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * A delegate service that 
- * @author xcaron
+ * 
  *
  */
 @Service

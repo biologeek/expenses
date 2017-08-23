@@ -2,8 +2,7 @@ package io.biologeek.expenses.controller;
 
 import java.util.Arrays;
 import java.util.List;
-
-import javax.ws.rs.PathParam;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.api.beans.Category;
-import io.biologeek.expenses.converter.CategoryConverter;
 import io.biologeek.expenses.converter.CategoryToApiConverter;
-import io.biologeek.expenses.converter.OperationTypeConverter;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.services.CategoryService;
 
@@ -56,7 +53,9 @@ public class CategoryController {
 
 	@RequestMapping(method = RequestMethod.GET, path = "/types")
 	public ResponseEntity<List<io.biologeek.expenses.api.beans.OperationType>> getTypes() {
-		return new ResponseEntity<>(OperationTypeConverter.convert(Arrays.asList(OperationType.values())),
+		return new ResponseEntity<>(Arrays.asList(OperationType.values()).stream()//
+				.map(t->io.biologeek.expenses.api.beans.OperationType.valueOf(t.name()))//
+				.collect(Collectors.toList()),
 				HttpStatus.OK);
 	}
 	

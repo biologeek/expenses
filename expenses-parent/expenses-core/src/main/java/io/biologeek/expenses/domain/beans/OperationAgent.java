@@ -20,7 +20,7 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
  * table, as one can be an OperationAgent or a receiver or whatever in an operation and
  * have a different role in another
  * 
- * @author xcaron
+ * 
  *
  */
 @javax.persistence.Entity

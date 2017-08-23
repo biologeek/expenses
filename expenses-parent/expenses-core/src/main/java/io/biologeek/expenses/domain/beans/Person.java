@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
  * A Person is a physical Entity, meaning a Person that has a name, ... in
  * opposition with a {@link Organization}
  * 
- * @author xcaron
+ * 
  *
  */
 @javax.persistence.Entity

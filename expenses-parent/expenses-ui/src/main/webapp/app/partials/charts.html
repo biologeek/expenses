@@ -1,8 +1,14 @@
 <div class="container" ng-controller="ChartsController as chartController">
 	
 
-		<div id="content" class="col-md-9">
-blblsdfsd
+		<div id="content" class="col-md-10">
+			
+			<div class="col-md-10">
+				<canvas id="line" class="chart chart-line" chart-data="data"
+					chart-labels="labels" chart-series="series" chart-options="options"
+					chart-dataset-override="datasetOverride" chart-click="onClick">
+				</canvas>
+			</div>
 		</div>
 
 	</div>

@@ -1,16 +1,20 @@
 package io.biologeek.expenses.converter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
-
-import org.springframework.http.ResponseEntity;
 
 import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.PaginatedOperationsList;
+import io.biologeek.expenses.api.beans.charts.ChartJSChartData;
+import io.biologeek.expenses.api.beans.charts.PieChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
 import io.biologeek.expenses.beans.OperationList;
+import io.biologeek.expenses.domain.beans.Category;
+import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.DailyBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 
@@ -23,6 +27,7 @@ public class OperationToApiConverter {
 		}
 		return result;
 	}
+
 	public static PaginatedOperationsList convert(OperationList toConvert) {
 		PaginatedOperationsList result = new PaginatedOperationsList();
 		List<Operation> partial = new ArrayList<>();
@@ -37,13 +42,13 @@ public class OperationToApiConverter {
 		result.setTotalPages(toConvert.getTotalPages());
 		return result;
 	}
+
 	public static io.biologeek.expenses.api.beans.Operation convert(
-			io.biologeek.expenses.domain.beans.operations.Operation toConvert) {		
-				return convert(toConvert, new Operation());		
+			io.biologeek.expenses.domain.beans.operations.Operation toConvert) {
+		return convert(toConvert, new Operation());
 	}
 
-	public static Operation convert(
-			io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
+	public static Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
 
 		res.setAccount(toConvert.getAccount().getId());
 		res.setAmount(toConvert.getAmount());
@@ -58,28 +63,79 @@ public class OperationToApiConverter {
 
 		return res;
 	}
-	
-	public static ResponseEntity<XYChartData> convertToXYChartData(
-			FullPeriodicBalance operations, String title, String xLabel, String yLabel) {
+
+
+	public static List<XYChartData> convertToXYChartData(List<FullPeriodicBalance> operations, String title,
+			String xLabel, String yLabel) {
+		List<XYChartData> result = new ArrayList<>();
+		
+		for (FullPeriodicBalance e : operations) {
+			result.add(convertToXYChartData(e, title, xLabel, yLabel));
+		}
+		return result;
+	}
+	public static XYChartData convertToXYChartData(FullPeriodicBalance operations, String title,
+			String xLabel, String yLabel) {
 		XYChartData chart = ((XYChartData) new XYChartData()//
 				.title(title)//
 				.xLabel(xLabel)//
 				.yLabel(yLabel))//
-				.data(operations.getDailyBalances().stream().map(OperationToApiConverter::convertToXYChartPoint).collect(Collectors.toList()));
-		return null;
+						.data(operations.getDailyBalances().stream().map(OperationToApiConverter::convertToXYChartPoint)
+								.collect(Collectors.toList()));
+		return chart;
 	}
-	
-	
+
 	/**
-	 * Converts a {@link DailyBalance}
+	 * Converts a {@link DailyBalance} to a point of an XY chart
+	 * 
 	 * @param operation
-	 * @return
+	 *            the balance of the day with date and value set
+	 * @return a point with x an y positions
 	 */
-	public static XYChartPoint convertToXYChartPoint(DailyBalance operation){
+	public static XYChartPoint convertToXYChartPoint(DailyBalance operation) {
 		XYChartPoint point = new XYChartData.XYChartPoint();
 		point.setLabel(null);
 		point.setX(operation.getBalanceDate().getTime());
 		point.setY(operation.getBalanceValue().doubleValue());
 		return null;
+	}
+
+	/**
+	 * Converts a Category Balance in a Pie chart data object.
+	 * 
+	 * @param categoryBalanceForAccount
+	 * @param title
+	 * @param xLabel
+	 * @param yLabel
+	 * @return
+	 */
+	public static PieChartData convertToPieChartData(CategoryBalance categoryBalanceForAccount,
+			String title, String xLabel, String yLabel) {
+		
+		PieChartData data = new PieChartData();
+		
+		data.setTitle(title);
+		data.setxLabel(xLabel);
+		data.setyLabel(yLabel);
+		for (Entry<Category, BigDecimal> elt : categoryBalanceForAccount.getCategories().entrySet()) {
+			data.getValues().put(elt.getKey().getName(), elt.getValue().doubleValue());
+		}
+		return data;
+	}
+	
+	
+	public ChartJSChartData convertToChartJS(FullPeriodicBalance balance, String title, String xLabel, String yLabel) {
+		ChartJSChartData result = new ChartJSChartData();
+		
+		result.getData().put(title, new ArrayList<>());
+		result.setxLabel(xLabel);
+		result.setyLabel(yLabel);
+		
+		for (DailyBalance bl : balance.getDailyBalances()) {
+			result.getData().get(title).add(bl.getBalanceValue().doubleValue());
+			result.getLabels().add(new Double(bl.getBalanceDate().getTime()));
+		}
+		
+		return result;
 	}
 }

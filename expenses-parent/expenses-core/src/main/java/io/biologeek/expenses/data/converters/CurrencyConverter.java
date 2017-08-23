@@ -7,7 +7,7 @@ import javax.persistence.AttributeConverter;
 
 /**
  * Used to map {@link java.util.Currency} to a string in database
- * @author xcaron
+ * 
  *
  */
 public class CurrencyConverter implements AttributeConverter<Currency, String>{

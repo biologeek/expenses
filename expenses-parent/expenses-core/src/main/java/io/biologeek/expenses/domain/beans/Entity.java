@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
  * <br>
  * In database, every type of entity has its own table
  * 
- * @author xcaron
+ * 
  *
  */
 @javax.persistence.Entity

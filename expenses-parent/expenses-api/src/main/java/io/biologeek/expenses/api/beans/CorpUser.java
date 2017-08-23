@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 /**
  * Corporate entity
  * 
- * @author xcaron
+ * 
  *
  */
 @JsonAutoDetect

@@ -1,7 +1,7 @@
 package io.biologeek.expenses.domain.beans.operations;
 
 public enum OperationType {
-    EXPENSE(-1), INCOME(1), LOAN(1), DEBT(-1), REGULAR_EXPENSE(-1), REGULAR_INCOME(1), REGULAR_LOAN(1), REGULAR_DEBT(-1);
+    EXPENSE(-1), INCOME(1), LOAN(1), DEBT(-1), REGULAR_EXPENSE(-1), REGULAR_INCOME(1), REGULAR_LOAN(1), REGULAR_DEBT(-1), ALL(0);
     
     private int sign;
 

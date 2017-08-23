@@ -15,7 +15,7 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
  * Object that compiles all operations of the day to a single value with details
  * for each category
  * 
- * @author xcaron
+ * 
  *
  */
 public class DailyBalance extends Balance {

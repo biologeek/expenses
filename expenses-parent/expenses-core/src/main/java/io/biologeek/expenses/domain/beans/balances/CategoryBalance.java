@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class CategoryBalance {
 	private Date balanceDate;
+	private Date balanceBeginDate;
+	private Date balanceEndDate;
 	private Map<Category, BigDecimal> categories;
 	
 	
@@ -32,6 +34,22 @@ public class CategoryBalance {
 
 	public void setCategories(Map<Category, BigDecimal> categories) {
 		this.categories = categories;
+	}
+
+	public Date getBalanceBeginDate() {
+		return balanceBeginDate;
+	}
+
+	public void setBalanceBeginDate(Date balanceBeginDate) {
+		this.balanceBeginDate = balanceBeginDate;
+	}
+
+	public Date getBalanceEndDate() {
+		return balanceEndDate;
+	}
+
+	public void setBalanceEndDate(Date balanceEndDate) {
+		this.balanceEndDate = balanceEndDate;
 	}
 
 }

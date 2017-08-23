@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 /**
  * A {@link Organization} can be a company, association, club, ...
  * 
- * @author xcaron
+ * 
  */
 @javax.persistence.Entity
 public class Organization extends Entity {

@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * An {@link Operation} that occurs regularly
  * 
- * @author xcaron
+ * 
  */
 public interface Regular {
 

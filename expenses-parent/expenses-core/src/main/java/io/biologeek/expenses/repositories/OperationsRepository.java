@@ -26,9 +26,12 @@ public interface OperationsRepository extends JpaRepository<Operation, Long>{
 	@Query("from Operation where account_id = :accountId and operationType IN (EXPENSE, REGULAR_EXPENSE) order by effectiveDate")
 	public List<Operation> getExpensesForAccountWithLimit(@Param("accountId") Long accountId, Pageable pager);
 
-	@Query("select category.name, sum(amount) from Operation where account_id = :accountId and effectiveDate >= begin "
-			+ "and effectiveDate <= end group by category")
-	public Map<String, BigDecimal> findOperationsForIntervalGroupedByCategories(Long account, Date begin, Date end,
-			List<OperationType> operationTypes);
+	@Query("select category.id, sum(amount) from Operation where account_id = :accountId and effectiveDate >= begin "
+			+ "and effectiveDate <= end and operationType in (:opTypes) group by category")
+	public Map<Long, BigDecimal> findOperationsForIntervalGroupedByCategories(//
+			  @Param("accountId") Long account//
+			, @Param("begin") Date begin //
+			, @Param("end") Date end //
+			, @Param("opTypes") List<OperationType> operationTypes);
 	
 }

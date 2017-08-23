@@ -1,6 +1,7 @@
 package io.biologeek.expenses.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,10 @@ public class CategoryService {
 
 	public List<Category> getCategoryByLevels(int nomenclature) {
 		return categoryRepository.getCategoriesByLevel(nomenclature);
+	}
+
+	public List<Category> getCategoriesByIds(Set<Long> set) {
+		return categoryRepository.findAll(set);
 	}
 
 }

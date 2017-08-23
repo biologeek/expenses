@@ -15,16 +15,6 @@ public class FullPeriodicBalance extends Balance {
 	private Date begin;
 	private Date end;
 
-	private Map<Category, BigDecimal> categories;
-
-	public Map<Category, BigDecimal> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(Map<Category, BigDecimal> categories) {
-		this.categories = categories;
-	}
-
 	public Date getBegin() {
 		return begin;
 	}
