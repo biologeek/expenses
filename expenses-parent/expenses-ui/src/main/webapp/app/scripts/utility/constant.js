@@ -2,10 +2,8 @@
  * Contants
  */
 'use strict';
-var constantsModule = angular.module('myApp.constants', []);
+var constantsModule = angular.module('myApp');
 
-constantsModule.constant('liaisonConstants', {
-    appName: 'Liaison My Psych Track',
-    loginErrorUsernamePassword: 'You must enter username and password to log in',
-    loginErrorInvalidCredentials: 'Invalid credentials,Try Again!'
+constantsModule.constant('Constants', {
+	timeIntervals: ['MILLISECONDS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'MONTHS', 'YEARS', 'ERA']
 });

@@ -98,7 +98,7 @@ public class OperationService {
 		return operationsRepository.getOne(id);
 	}
 
-	public List<FullPeriodicBalance> getFullBalanceForPeriod(long account, DateTimeUnit interval, Date begin, Date end,
+	private List<FullPeriodicBalance> getFullBalanceForPeriod(long account, DateTimeUnit interval, Date begin, Date end,
 			List<OperationType> collect, boolean withCategories, boolean separateOperations) {
 		List<FullPeriodicBalance> balances = new ArrayList<>();
 		List<Operation> operations = operationsRepository.getGroupedByDayOperationsForAccountByPeriod(account, begin,

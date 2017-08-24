@@ -31,7 +31,7 @@ public class ChartsController {
 	
 
 	@RequestMapping("/daily/account/{account}/interval/{interval}")
-	public ResponseEntity<List<XYChartData>> getDailyChart(//
+	public ResponseEntity<List<XYChartData>> getTimeChartForIntervalAndTypes(//
 			@PathVariable("account") Long account,//
 			@PathVariable("interval") DateTimeUnit interval,//
 			@RequestParam("types") List<OperationType> types, //

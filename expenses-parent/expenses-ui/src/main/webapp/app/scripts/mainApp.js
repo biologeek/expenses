@@ -2,7 +2,9 @@
 	'use strict';
 
 var myApp = angular.module('expenses.ui', [
-    'ngRoute' // Route service
+    'ngRoute', // Route service
+    'ui.bootstrap',
+    'btorfs.multiselect'
 ]);
 
 myApp.config(['$routeProvider', function($routeProvider) {
