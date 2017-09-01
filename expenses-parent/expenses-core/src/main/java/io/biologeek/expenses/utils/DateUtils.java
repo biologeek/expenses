@@ -35,11 +35,42 @@ public class DateUtils {
 		return cal.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
 	}
 	
-	public static Date dateFromArgs(int year, int month, int day){
+	public static Date benginningOfDay(int year, int month, int day){
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, year);
 		cal.set(Calendar.MONTH, month);
 		cal.set(Calendar.DAY_OF_MONTH, day);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		return cal.getTime();
+	}
+
+
+	public static Date dateFromArgs(int year, int month, int day, int hour, int minute, int second){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(benginningOfDay(year, month, day));
+		cal.set(Calendar.HOUR, hour);
+		cal.set(Calendar.MINUTE, minute);
+		cal.set(Calendar.SECOND, second);
+		return cal.getTime();
+	}
+
+	public static Date endOfTheDay(int year, int month, int day){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(benginningOfDay(year, month, day));
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		return cal.getTime();
+	}
+
+	public static Date midDay(int year, int month, int day){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(benginningOfDay(year, month, day));
+		cal.set(Calendar.HOUR, 12);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
 		return cal.getTime();
 	}
 

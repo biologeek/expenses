@@ -1,24 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.biologeek</groupId>
+
+	<parent>
+		<groupId>io.biologeek</groupId>
+		<artifactId>expenses-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+
 	<artifactId>expenses-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-
-	<properties>
-		<dbh2.version>1.4.194</dbh2.version>
-		<org.springframework.version>4.3.7.RELEASE</org.springframework.version>
-		<spring.boot.version>1.5.2.RELEASE</spring.boot.version>
-		<org.springframework-security.version>4.2.0.RELEASE</org.springframework-security.version>
-		<junit.version>4.12</junit.version>
-	</properties>
 	<dependencies>
-
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${dbh2.version}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Core utilities used by other modules. Define this if you use Spring 

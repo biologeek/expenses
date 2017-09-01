@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class FullPeriodicBalance extends Balance {
 
-	private List<DailyBalance> dailyBalances;
+	private List<BalanceUnit> dailyBalances;
 
 	private Date begin;
 	private Date end;
@@ -31,11 +31,11 @@ public class FullPeriodicBalance extends Balance {
 		this.end = end;
 	}
 
-	public void setDailyBalances(List<DailyBalance> dailyBalances) {
+	public void setDailyBalances(List<BalanceUnit> dailyBalances) {
 		this.dailyBalances = dailyBalances;
 	}
 
-	public List<DailyBalance> getDailyBalances() {
+	public List<BalanceUnit> getDailyBalances() {
 		return dailyBalances;
 	}
 

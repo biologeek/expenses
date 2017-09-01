@@ -6,7 +6,7 @@
 	 * Login controller
 	 */
 	'use strict';
-	var controllerModule = angular.module('myApp');
+	var controllerModule = angular.module('expenses.ui');
 
 	controllerModule.controller('LoginController', [
 		'$scope',

@@ -3,6 +3,7 @@
 
 var myApp = angular.module('expenses.ui', [
     'ngRoute', // Route service
+    'ngCookies', // Cookies service
     'ui.bootstrap',
     'btorfs.multiselect'
 ]);
@@ -10,8 +11,8 @@ var myApp = angular.module('expenses.ui', [
 myApp.config(['$routeProvider', function($routeProvider) {
         // Login
         $routeProvider.when('/', {
-            templateUrl: 'partials/index.html',
-            controller: 'WelcomeController'
+            templateUrl: 'partials/connection.html',
+            controller: 'LoginController'
         }).when('/balance/:period', {
             templateUrl: 'partials/balance.html',
             controller: 'ChartsController'

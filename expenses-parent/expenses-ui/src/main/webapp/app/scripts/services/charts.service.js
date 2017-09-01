@@ -13,17 +13,15 @@
 	        			account = $cookies.get('accountId');
 	        		}
 	        		
-	        		return $http.get('/expenses/charts/daily/account/'+account+'/interval/'+interval
-	        			+'?begin='+begin+'&end='+end+'&types='+types);
+	        		return $http.get('/expenses/charts/daily/account/'+account+'/interval/'+interval+'?begin='+begin+'&end='+end+'&types='+types);
 	        	},
 	        	getPieChartForTypes: function(types, begin, end, account){
 	        		if (typeof(account) === 'undefined'){
 	        			account = $cookies.get('accountId');
 	        		}
 	        		
-	        		return $http.get('/expenses/charts/daily/account/'+account
-	        			+'?begin='+begin+'&end='+end+'&types='+types);
+	        		return $http.get('/expenses/charts/daily/account/'+account+'?begin='+begin+'&end='+end+'&types='+types);
 	        	}
-	        }
+	        };
 	}]);
 })();

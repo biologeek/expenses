@@ -7,7 +7,9 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         
-        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" /> 
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" type="text/css" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css" />
+        
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <!-- build:css styles/vendor.css -->
@@ -43,22 +45,29 @@
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <script src="bower_components/chart.js/dist/Chart.js"></script>
         <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
-        <script src="bower_components/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js"></script>
-        
+        <script src="bower_components/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
         <!-- Any include make it between the build comments below -->
         <!-- build:js({app,.tmp}) scripts/main.js -->
         <script src="scripts/mainApp.js"></script>
-        <script src="scripts/controllers/sampleController.js"></script>
-        <script src="scripts/services/sampleService.js"></script>
+        <script src="scripts/utility/constant.js"></script>
+        <script src="scripts/services/category.service.js"></script>
+        <script src="scripts/services/mobile.service.js"></script>
+        <script src="scripts/services/charts.service.js"></script>
+        <script src="scripts/services/operation.service.js"></script>
+        <script src="scripts/services/user.service.js"></script>
+        <script src="scripts/controllers/charts.controller.js"></script>
+        <script src="scripts/controllers/welcome.controller.js"></script>
+        <script src="scripts/controllers/login.controller.js"></script>
         <script src="scripts/directives/sampleDirective.js"></script>
         <script src="scripts/filters/sampleFilter.js"></script>
-        <script src="scripts/utility/constant.js"></script>
         <script src="scripts/utility/util.js"></script>
         <!-- inject:partials -->
         <!-- endinject -->

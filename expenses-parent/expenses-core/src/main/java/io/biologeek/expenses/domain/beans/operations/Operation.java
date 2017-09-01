@@ -175,4 +175,15 @@ public class Operation {
 		this.id = id;
 	}
 
+	
+	public Operation amount(Double amount) {
+		this.amount = amount;
+		return this;
+	}
+	
+	public Operation currency(Currency currency) {
+		this.currency = currency;
+		return this;
+	}
+
 }

@@ -15,7 +15,7 @@ import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
 import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
-import io.biologeek.expenses.domain.beans.balances.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.BalanceUnit;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 
 public class OperationToApiConverter {
@@ -86,13 +86,13 @@ public class OperationToApiConverter {
 	}
 
 	/**
-	 * Converts a {@link DailyBalance} to a point of an XY chart
+	 * Converts a {@link BalanceUnit} to a point of an XY chart
 	 * 
 	 * @param operation
 	 *            the balance of the day with date and value set
 	 * @return a point with x an y positions
 	 */
-	public static XYChartPoint convertToXYChartPoint(DailyBalance operation) {
+	public static XYChartPoint convertToXYChartPoint(BalanceUnit operation) {
 		XYChartPoint point = new XYChartData.XYChartPoint();
 		point.setLabel(null);
 		point.setX(operation.getBalanceDate().getTime());
@@ -131,7 +131,7 @@ public class OperationToApiConverter {
 		result.setxLabel(xLabel);
 		result.setyLabel(yLabel);
 		
-		for (DailyBalance bl : balance.getDailyBalances()) {
+		for (BalanceUnit bl : balance.getDailyBalances()) {
 			result.getData().get(title).add(bl.getBalanceValue().doubleValue());
 			result.getLabels().add(new Double(bl.getBalanceDate().getTime()));
 		}

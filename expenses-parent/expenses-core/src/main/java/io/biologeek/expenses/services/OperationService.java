@@ -2,6 +2,7 @@ package io.biologeek.expenses.services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -20,8 +24,9 @@ import org.springframework.stereotype.Service;
 import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
+import io.biologeek.expenses.domain.beans.RegisteredUser;
 import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
-import io.biologeek.expenses.domain.beans.balances.DailyBalance;
+import io.biologeek.expenses.domain.beans.balances.BalanceUnit;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
@@ -42,6 +47,8 @@ public class OperationService {
 	CurrencyDelegate currrencyDelegate;
 	@Autowired
 	CategoryService cateoryService;
+
+	
 
 	/**
 	 * Validates operations and stores in datasource
@@ -98,7 +105,7 @@ public class OperationService {
 		return operationsRepository.getOne(id);
 	}
 
-	private List<FullPeriodicBalance> getFullBalanceForPeriod(long account, DateTimeUnit interval, Date begin, Date end,
+	List<FullPeriodicBalance> getFullBalanceForPeriod(long account, DateTimeUnit interval, Date begin, Date end,
 			List<OperationType> collect, boolean withCategories, boolean separateOperations) {
 		List<FullPeriodicBalance> balances = new ArrayList<>();
 		List<Operation> operations = operationsRepository.getGroupedByDayOperationsForAccountByPeriod(account, begin,
@@ -110,11 +117,11 @@ public class OperationService {
 		if (separateOperations)
 			separatedTypes = separateOperations(operations);
 		else
-			separatedTypes.put(OperationType.ALL, new TreeSet(operations));
+			separatedTypes.put(OperationType.ALL, new TreeSet<>(operations));
 		if (withCategories)
 			balances.add(buildFullBalanceWithCategoryDetail(operations));
 		else
-			balances.add(buildFullBalanceWithoutCategoryDetail(operations, interval));
+			balances.add(buildFullBalanceWithoutCategoryDetail(operations, interval, begin, end));
 
 		return balances;
 	}
@@ -157,8 +164,8 @@ public class OperationService {
 	 * @param collect
 	 * @return
 	 */
-	public List<FullPeriodicBalance> getPeriodicBalanceForPeriodWithoutCategoriesNorSeparatingTypes(long account, DateTimeUnit interval, Date begin,
-			Date end, List<OperationType> collect) {
+	public List<FullPeriodicBalance> getPeriodicBalanceForPeriodWithoutCategoriesNorSeparatingTypes(long account,
+			DateTimeUnit interval, Date begin, Date end, List<OperationType> collect) {
 		return getFullBalanceForPeriod(account, interval, begin, end, collect, false, false);
 	}
 
@@ -170,8 +177,8 @@ public class OperationService {
 	 * For example for a daily balance of operations (meaning daily total of
 	 * operations), use {@link DateTimeUnit.DAYS}.
 	 * 
-	 * Note that this method does generate detail per category but does not
-	 * separate per type of operation (expenses are summed with incomes)
+	 * Note that this method does generate detail per category but does not separate
+	 * per type of operation (expenses are summed with incomes)
 	 * 
 	 * @param account
 	 * @param interval
@@ -180,8 +187,8 @@ public class OperationService {
 	 * @param collect
 	 * @return
 	 */
-	public List<FullPeriodicBalance> getFullBalanceWithCategoriesForPeriodWithoutSeparatingTypes(long account, DateTimeUnit interval, Date begin, Date end,
-			List<OperationType> collect) {
+	public List<FullPeriodicBalance> getFullBalanceWithCategoriesForPeriodWithoutSeparatingTypes(long account,
+			DateTimeUnit interval, Date begin, Date end, List<OperationType> collect) {
 		return getFullBalanceForPeriod(account, interval, begin, end, collect, true, false);
 	}
 
@@ -193,9 +200,10 @@ public class OperationService {
 	 * For example for a daily balance of operations (meaning daily total of
 	 * operations), use {@link DateTimeUnit.DAYS}.
 	 * 
-	 * Note that this method does generate detail per category and
-	 * separate per type of operation (expenses and incomes have different {@link FullPeriodicBalance}).
-	 * Thus list contains as much {@link FullPeriodicBalance} as <i>collect</i> size.
+	 * Note that this method does generate detail per category and separate per type
+	 * of operation (expenses and incomes have different
+	 * {@link FullPeriodicBalance}). Thus list contains as much
+	 * {@link FullPeriodicBalance} as <i>collect</i> size.
 	 * 
 	 * @param account
 	 * @param interval
@@ -204,8 +212,8 @@ public class OperationService {
 	 * @param collect
 	 * @return
 	 */
-	public List<FullPeriodicBalance> getFullBalanceWithCategoriesForPeriodWithSeparatingTypes(long account, DateTimeUnit interval, Date begin, Date end,
-			List<OperationType> collect) {
+	public List<FullPeriodicBalance> getFullBalanceWithCategoriesForPeriodWithSeparatingTypes(long account,
+			DateTimeUnit interval, Date begin, Date end, List<OperationType> collect) {
 		return getFullBalanceForPeriod(account, interval, begin, end, collect, true, true);
 	}
 
@@ -217,9 +225,10 @@ public class OperationService {
 	 * For example for a daily balance of operations (meaning daily total of
 	 * operations), use {@link DateTimeUnit.DAYS}.
 	 * 
-	 * Note that this method does not generate detail per category but
-	 * separates per type of operation (expenses and incomes have different {@link FullPeriodicBalance}).
-	 * Thus list contains as much {@link FullPeriodicBalance} as <i>collect</i> size.
+	 * Note that this method does not generate detail per category but separates per
+	 * type of operation (expenses and incomes have different
+	 * {@link FullPeriodicBalance}). Thus list contains as much
+	 * {@link FullPeriodicBalance} as <i>collect</i> size.
 	 * 
 	 * @param account
 	 * @param interval
@@ -228,8 +237,8 @@ public class OperationService {
 	 * @param collect
 	 * @return
 	 */
-	public List<FullPeriodicBalance> getFullBalanceWithoutCategoriesForPeriodWithSeparatingTypes(long account, DateTimeUnit interval, Date begin, Date end,
-			List<OperationType> collect) {
+	public List<FullPeriodicBalance> getFullBalanceWithoutCategoriesForPeriodWithSeparatingTypes(long account,
+			DateTimeUnit interval, Date begin, Date end, List<OperationType> collect) {
 		return getFullBalanceForPeriod(account, interval, begin, end, collect, false, true);
 	}
 
@@ -242,7 +251,7 @@ public class OperationService {
 	private FullPeriodicBalance buildFullBalanceWithCategoryDetail(List<Operation> operations) {
 		FullPeriodicBalance fullBalance = new FullPeriodicBalance();
 
-		DailyBalance balanceOfTheDay = new DailyBalance();
+		BalanceUnit balanceOfTheDay = new BalanceUnit();
 
 		for (Operation op : operations) {
 
@@ -273,31 +282,60 @@ public class OperationService {
 	 * @param operations
 	 * @param interval
 	 *            the interval unit
+	 * @param end
+	 * @param begin
 	 * @return
 	 */
-	private FullPeriodicBalance buildFullBalanceWithoutCategoryDetail(List<Operation> operations,
-			DateTimeUnit interval) {
+	private FullPeriodicBalance buildFullBalanceWithoutCategoryDetail(List<Operation> operations, DateTimeUnit interval,
+			Date begin, Date end) {
 		FullPeriodicBalance fullBalance = new FullPeriodicBalance();
 
-		for (Operation op : operations) {
-			DailyBalance balanceOfTheDay = new DailyBalance();
+		Calendar incrementingCal = Calendar.getInstance();
+		incrementingCal.setTime(begin);
 
-			if (isOperationDayAlreadyBalanced(op, fullBalance, interval)) {
-				if (op instanceof Regular
-						&& ((Regular) op).getInterval().isAnOperationOfTheDay(balanceOfTheDay.getBalanceDate())) {
-					//
-					op = ((Regular) op).getInstantOperation(balanceOfTheDay.getBalanceDate());
+		while (incrementingCal.getTime().before(end)) {
 
-				}
-				balanceOfTheDay = updateBalanceWithOperation(op, balanceOfTheDay);
-			} else {
-				balanceOfTheDay = addOperationToNewBalance(op);
-			}
+			Calendar nextCal = (Calendar) incrementingCal.clone();
+			nextCal.add(DateTimeUnit.getCalendarUnit(interval), 1);
 
-			fullBalance.getDailyBalances().add(balanceOfTheDay);
+			fullBalance.getDailyBalances()
+					.add(buildBalanceForUnitOfTime(operations, incrementingCal.getTime(), nextCal.getTime()));
 
+			incrementingCal = nextCal;
 		}
 		return fullBalance;
+	}
+
+	/**
+	 * Builds a unit balance (generally a daily balance) from the list of operations given in parameter. 
+	 * 
+	 * It filters operations to keep only those respecting constrait defined by periodBegin and periodEnd
+	 * 
+	 * @param operations a list of operations 
+	 * @param periodBegin beginning datetime of the balance
+	 * @param periodEnd end datetime of the balance
+	 * @return
+	 */
+	BalanceUnit buildBalanceForUnitOfTime(List<Operation> operations, Date periodBegin, Date periodEnd) {
+
+		BalanceUnit unit = new BalanceUnit();
+		unit.computeBalanceDate(periodBegin, periodEnd);
+		List<Operation> stream = operations.stream().filter(new Predicate<Operation>() {
+			@Override
+			public boolean test(Operation arg0) {
+				return arg0.getEffectiveDate().before(periodEnd) && arg0.getEffectiveDate().after(periodBegin);
+			}
+		}).collect(Collectors.toList());
+		// Convert to correct unit and add amount to balance value
+		for(Operation t : stream){
+			t.amount(
+					convertToBalanceCurrency(t.getAmount().doubleValue(), t.getCurrency(), unit.getBalanceCurrency()))//
+			.currency(unit.getBalanceCurrency());
+			unit.setBalanceValue(unit.getBalanceValue().add(new BigDecimal(t.getAmount())));
+		}
+
+		
+		return unit;
 	}
 
 	/**
@@ -316,8 +354,8 @@ public class OperationService {
 		return fullBalance//
 				.getDailyBalances()//
 				.stream()//
-				.anyMatch(new Predicate<DailyBalance>() {
-					public boolean test(DailyBalance t) {
+				.anyMatch(new Predicate<BalanceUnit>() {
+					public boolean test(BalanceUnit t) {
 						switch (interval) {
 						case DAYS:
 							return DateUtils.areSameDate(dateOfOperation, t.getBalanceDate());
@@ -333,14 +371,14 @@ public class OperationService {
 	}
 
 	/**
-	 * Creates a new {@link DailyBalance} and adds operation to it
+	 * Creates a new {@link BalanceUnit} and adds operation to it
 	 * 
 	 * @param op
 	 *            the operation to add
-	 * @return a {@link DailyBalance} for the day of the operation
+	 * @return a {@link BalanceUnit} for the day of the operation
 	 */
-	DailyBalance addOperationToNewBalance(Operation op) {
-		DailyBalance res = new DailyBalance();
+	BalanceUnit addOperationToNewBalance(Operation op) {
+		BalanceUnit res = new BalanceUnit();
 		res.setBalanceDate(op.getEffectiveDate());
 		res.setBalanceValue(new BigDecimal(op.getAmount()));
 		res.setBalanceCurrency(op.getCurrency());
@@ -358,9 +396,9 @@ public class OperationService {
 	 * @param balance
 	 * @return
 	 */
-	DailyBalance updateBalanceWithOperation(Operation op, DailyBalance balance) {
+	BalanceUnit updateBalanceWithOperation(Operation op, BalanceUnit balance) {
 		if (!op.getEffectiveDate().equals(balance.getBalanceDate())) {
-			balance = new DailyBalance();
+			balance = new BalanceUnit();
 		}
 
 		Double convertedAmount = op.getAmount();
@@ -398,8 +436,7 @@ public class OperationService {
 	 * @return
 	 */
 	private Double convertToBalanceCurrency(Double amount, Currency currency, Currency balanceCurrency) {
-		currrencyDelegate.convert(amount, currency, balanceCurrency);
-		return amount;
+		return currrencyDelegate.convert(amount, currency, balanceCurrency);
 	}
 
 	public Operation updateOperation(Account account, Operation convert) throws BusinessException {

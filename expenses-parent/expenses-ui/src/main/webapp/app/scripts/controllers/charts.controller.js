@@ -3,9 +3,9 @@
 	 * Dashboard controller
 	 */
 	'use strict';
-	angular.module('expenses.ui').controller('ChartsController', ChartsController);
+	var chartsController = angular.module('expenses.ui').controller('ChartsController', ChartsController);
 
-	ChartsController.$inject = ['ChartsService', 'OperationService', 'Constants', '$cookies'];
+	chartsController.$inject = ['ChartsService', 'OperationService', 'Constants', '$cookies'];
 
 	function ChartsController($scope, ChartsService, OperationService, Constants, $cookies) {
 		var vm = this;
@@ -16,6 +16,10 @@
 		vm.intervalUnits = Constants.timeIntervals;
 		vm.chosenTypes = [];
 		vm.types = [];
+		
+		vm.xLabels=[];
+		vm.series = [];
+		vm.dataSeries = [];
 		
 		/**
 		 * Returns operation types and sets dropdown multiselect
@@ -29,8 +33,13 @@
 						console.log(response.data);
 					}
 				);
-		}
+		};
 		
+		/**
+		 * 
+		 * From options input by user, get Chart data and generate chart
+		 * 
+		 */
 		vm.processOptionsAndGenerateChartData = function(){
 			if (vm.chosenTypes.length == 0){
 				vm.chosenTypes = vm.types;
@@ -39,8 +48,25 @@
 				console.log('Wrong interval unit');
 			}
 			// TODO
-		}
+			var rawChartData = [];
+			
+			ChartsService.getTimeChartForIntervalAndTypes(vm.intervalUnit, vm.chosenTypes, vm.begin, vm.end, vm.account)
+				.then(function(response){
+					rawChartData = response.data;
+				}, function(response){
+					console.log("Error "+response.statusText+" : "+response.data);
+				});
+			
+			vm.generateChartData(rawchartData);
+		};
+		
+		vm.generateChartData = function(raw){
+			
+			for(var chartIndex in raw){
+				
+			}			
+		};
 	        
-    };
+    }
     
 })();
