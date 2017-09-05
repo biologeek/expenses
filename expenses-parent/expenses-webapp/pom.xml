@@ -13,6 +13,23 @@
 	<properties>
 	</properties>
 	<dependencies>
+
+		<dependency>
+			<groupId>io.biologeek</groupId>
+			<artifactId>expenses-mobile-webui</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.biologeek</groupId>
+			<artifactId>expenses-ui</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,7 +104,19 @@
 				<version>2.4</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<overlays>
+						<overlay>
+							<groupId>io.biologeek</groupId>
+							<artifactId>expenses-ui</artifactId>
+						</overlay>
+						<overlay>
+							<groupId>io.biologeek</groupId>
+							<artifactId>expenses-mobile-webui</artifactId>
+							<excludes><exclude></exclude></excludes>
+						</overlay>
+					</overlays>
 				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>

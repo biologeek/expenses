@@ -17,10 +17,7 @@
 		vm.chosenTypes = [];
 		vm.types = [];
 		
-		vm.xLabels=[];
-		vm.series = [];
-		vm.dataSeries = [];
-		
+		vm.charts = [];
 		/**
 		 * Returns operation types and sets dropdown multiselect
 		 */
@@ -52,7 +49,7 @@
 			
 			ChartsService.getTimeChartForIntervalAndTypes(vm.intervalUnit, vm.chosenTypes, vm.begin, vm.end, vm.account)
 				.then(function(response){
-					rawChartData = response.data;
+					vm.charts = response.data;
 				}, function(response){
 					console.log("Error "+response.statusText+" : "+response.data);
 				});
@@ -60,12 +57,6 @@
 			vm.generateChartData(rawchartData);
 		};
 		
-		vm.generateChartData = function(raw){
-			
-			for(var chartIndex in raw){
-				
-			}			
-		};
 	        
     }
     

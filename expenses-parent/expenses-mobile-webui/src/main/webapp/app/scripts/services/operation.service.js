@@ -10,6 +10,6 @@
 	        	getTypes: function(){
 	        		return $http.get('/expenses/operation/types');
 	        	}
-	        }
+	        };
 	}]);
 })();
