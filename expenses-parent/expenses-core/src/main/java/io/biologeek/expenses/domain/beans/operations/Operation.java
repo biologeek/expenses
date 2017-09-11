@@ -31,45 +31,45 @@ import io.biologeek.expenses.domain.beans.OperationAgent;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Operation {
+public abstract class Operation implements Comparable<Operation> {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	protected Long id;
 	@ManyToOne(fetch = FetchType.EAGER)
-	OperationAgent beneficiary;
+	protected OperationAgent beneficiary;
 	@ManyToOne(fetch = FetchType.EAGER)
-	OperationAgent emitter;
+	protected OperationAgent emitter;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	private Account account;
+	protected Account account;
 
-	private Double amount;
+	protected Double amount;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "operation_category")
-	Category category;
+	protected Category category;
 	@Enumerated(EnumType.STRING)
-	OperationType operationType;
+	protected OperationType operationType;
 
 	/**
 	 * The date the operation was created
 	 */
-	private Date creationDate;
+	protected Date creationDate;
 	/**
 	 * The date the operation was updated
 	 */
-	private Date updateDate;
-	private int version;
+	protected Date updateDate;
+	protected int version;
 	/**
 	 * The date the operation was effectively made
 	 */
-	private Date effectiveDate;
+	protected Date effectiveDate;
 
-	private String description;
+	protected String description;
 
 	@Convert(converter = CurrencyConverter.class)
-	Currency currency;
+	protected Currency currency;
 
 	public Currency getCurrency() {
 		return currency;

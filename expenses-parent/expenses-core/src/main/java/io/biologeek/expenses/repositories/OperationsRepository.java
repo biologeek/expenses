@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
@@ -21,7 +23,7 @@ public interface OperationsRepository extends JpaRepository<Operation, Long>{
 	public List<Operation> getOperationsForAccountWithLimit(@Param("accountId") Long accountId, Pageable pager);
 
 	@Query("from Operation where account_id = :accountId and effectiveDate >= :begin and effectiveDate <= :end order by effectiveDate asc")
-	public List<Operation> getGroupedByDayOperationsForAccountByPeriod(@Param("accountId") long account, @Param("begin") Date begin, @Param("end") Date end);
+	public SortedSet<Operation> getGroupedByDayOperationsForAccountByPeriod(@Param("accountId") long account, @Param("begin") Date begin, @Param("end") Date end);
 
 	@Query("from Operation where account_id = :accountId and operationType IN (EXPENSE, REGULAR_EXPENSE) order by effectiveDate")
 	public List<Operation> getExpensesForAccountWithLimit(@Param("accountId") Long accountId, Pageable pager);
@@ -33,5 +35,9 @@ public interface OperationsRepository extends JpaRepository<Operation, Long>{
 			, @Param("begin") Date begin //
 			, @Param("end") Date end //
 			, @Param("opTypes") List<OperationType> operationTypes);
+
+	public int countOperationsByAccount(Account id);
+
+	
 	
 }

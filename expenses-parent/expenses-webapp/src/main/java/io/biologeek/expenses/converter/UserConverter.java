@@ -14,6 +14,7 @@ public class UserConverter {
 
 	/**
 	 * Converts domain OperationAgent
+	 * 
 	 * @param result
 	 * @return
 	 */
@@ -36,7 +37,7 @@ public class UserConverter {
 				.phoneNumber(result.getPhoneNumber())//
 				.authToken(result.getAuthentication().getAuthToken());
 	}
-	
+
 	public static User convert(Person result) {
 		return new User()//
 				.age(result.getAge())//
@@ -63,10 +64,12 @@ public class UserConverter {
 	}
 
 	public static <T extends Entity> T convert(OperationAgent agent) {
-		if (agent.getAgentEntity() instanceof Person)
-			return (T) convert((Person) agent.getAgentEntity());
-		else if (agent.getAgentEntity() instanceof Organization)
-			return (T) convertToCorp((Organization) agent.getAgentEntity());
+		if (agent != null) {
+			if (agent.getAgentEntity() instanceof Person)
+				return (T) convert((Person) agent.getAgentEntity());
+			else if (agent.getAgentEntity() instanceof Organization)
+				return (T) convertToCorp((Organization) agent.getAgentEntity());
+		}
 		return null;
 	}
 }

@@ -43,23 +43,23 @@ public class ChartsController {
 			@RequestParam("types") List<OperationType> types, //
 			@RequestParam("begin") String beginStr,//
 			@RequestParam("end") String endStr) {
-		return mockDefaultAndReturn();
+		//	return mockDefaultAndReturn();
 		// Default is all types
-//		if (types == null || types.size() == 0)
-//			types = Arrays.asList(OperationType.values());
-//		if (interval == null)
-//			interval = DateTimeUnit.DAYS;
-//		
-//		Date begin, end;
-//
-//		begin = MultiPatternDateConverter.convert(beginStr);
-//		end = MultiPatternDateConverter.convert(beginStr);
-//		List<io.biologeek.expenses.domain.beans.operations.OperationType> operationTypes = types.stream()//
-//				.map(t->io.biologeek.expenses.domain.beans.operations.OperationType.valueOf(t.name()))//
-//				.collect(Collectors.toList());
-//		List<FullPeriodicBalance> result = operationService.getPeriodicBalanceForPeriodWithoutCategoriesNorSeparatingTypes(account, interval, begin, end, operationTypes);
-//		return new ResponseEntity<>(OperationToApiConverter.convertToXYChartData(result,//
-//				"charts.daily.title", "charts.x.label", "chart.y.label"), HttpStatus.OK);
+		if (types == null || types.size() == 0)
+			types = Arrays.asList(OperationType.values());
+		if (interval == null)
+			interval = DateTimeUnit.DAYS;
+		
+		Date begin, end;
+
+		begin = MultiPatternDateConverter.convert(beginStr);
+		end = MultiPatternDateConverter.convert(endStr);
+		List<io.biologeek.expenses.domain.beans.operations.OperationType> operationTypes = types.stream()//
+				.map(t->io.biologeek.expenses.domain.beans.operations.OperationType.valueOf(t.name()))//
+				.collect(Collectors.toList());
+		List<FullPeriodicBalance> result = operationService.getPeriodicBalanceForPeriodWithoutCategoriesNorSeparatingTypes(account, interval, begin, end, operationTypes);
+		return new ResponseEntity<>(OperationToApiConverter.convertToChartJS(result,//
+				"charts.daily.title", "charts.x.label", "chart.y.label"), HttpStatus.OK);
 	}
 	
 	private ResponseEntity<List<? extends AbstractChartDataset>> mockDefaultAndReturn() {

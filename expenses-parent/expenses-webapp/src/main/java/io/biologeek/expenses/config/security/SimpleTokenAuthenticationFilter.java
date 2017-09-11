@@ -79,15 +79,26 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 	 */
 	private void authenticateWithToken(ServletResponse response, FilterChain chain, HttpServletRequest request)
 			throws IOException, ServletException {
-		String userID = request.getHeader("user");
-		if (userID == null) {
-			userID = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
-				@Override
-				public boolean test(Cookie t) {
-					return t.getName().equals("user");
-				}
-			}).findFirst().orElse(new Cookie("user", null)).getValue();
+		String userID = extractUserId(request);
+		
+		
+		String token = extractToken(request);
+		
+		if (token != null && userID != null) {
+			if (authentService.checkToken(Long.valueOf(userID), token)) {
+				// User is authenticated and token is valid
+				chain.doFilter(request, response);
+			} else {
+				// Else HTTP 401 error
+				((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.token.invalid");
+			}
+		} else {
+			// Else HTTP 401 error
+			((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.token.invalid");
 		}
+	}
+
+	private String extractToken(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		if (token == null) {
 			token = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
@@ -97,15 +108,21 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 				}
 			}).findFirst().orElse(new Cookie("token", null)).getValue();
 		}
-		if (token != null && userID != null) {
-			if (authentService.checkToken(Long.valueOf(userID), token)) {
-				// User is authenticated and token is valid
-				chain.doFilter(request, response);
-			}
-		} else {
-			// Else HTTP 401 error
-			((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.token.invalid");
+		return token;
+	}
+
+	private String extractUserId(HttpServletRequest request) {
+		String userID = request.getHeader("user");
+		
+		if (userID == null && request.getCookies().length > 0) {
+			userID = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
+				@Override
+				public boolean test(Cookie t) {
+					return t.getName().equals("user");
+				}
+			}).findFirst().orElse(new Cookie("user", null)).getValue();
 		}
+		return userID;
 	}
 
 	@Override

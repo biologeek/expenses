@@ -4,6 +4,7 @@ import io.biologeek.expenses.domain.beans.Balance;
 import io.biologeek.expenses.domain.beans.Category;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,9 @@ public class FullPeriodicBalance extends Balance {
 	private Date begin;
 	private Date end;
 
+	public FullPeriodicBalance() {
+		this.dailyBalances = new ArrayList<>();
+	}
 	public Date getBegin() {
 		return begin;
 	}

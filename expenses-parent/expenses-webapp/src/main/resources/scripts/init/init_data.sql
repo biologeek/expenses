@@ -3,7 +3,8 @@ INSERT INTO person VALUES (2, 'Marjo', 27, 'Marjolaine', null, null, null);
 INSERT INTO person VALUES (3, 'Parents', 60, 'Famille', 'Caron', null, null);
 INSERT INTO person VALUES (4, 'Guillaume', 29, 'Guillaume', 'Hocquet', null, null);
 INSERT INTO person VALUES (5, 'Bobby', 22, 'Benoit', 'Martin', null, null);
-INSERT INTO person VALUES (6, 'Anna', 27, 'Anna', 'Fuchet', null, null);
+INSERT INTO person VALUES (6, 'Anna', 27, 'Anna', 'Fichet', null, null);
+INSERT INTO person VALUES (6, 'Proprio Lille', NULL, 'Ben Youssef', 'Echikr', null, null);
 
 
 INSERT INTO organization VALUES (2, 'Match', true, null, 3);
@@ -28,8 +29,8 @@ INSERT INTO category VALUES (7, 'brewery.png', 1, 'Brasserie', '002-001', 6);
 INSERT INTO category VALUES (8, null, 1, 'Sport', '002-002', 6);
 INSERT INTO category VALUES (29, 'bike.png', 2, 'Cyclisme', '002-002-001', 6);
 INSERT INTO category VALUES (30, null, 2, 'Muscu', '002-002-002', 6);
-INSERT INTO category VALUES (9, 'culture.png', 1, 'Culture', '001-003', 6);
-INSERT INTO category VALUES (10, null, 1, 'Bricolage', '001-004', 6);
+INSERT INTO category VALUES (9, 'culture.png', 1, 'Culture', '002-003', 6);
+INSERT INTO category VALUES (10, null, 1, 'Bricolage', '002-004', 6);
 
 INSERT INTO category VALUES (11, null, 0, 'Transports', '003', null);
 INSERT INTO category VALUES (12, null, 1, 'Transports en commun', '003-001', 11);

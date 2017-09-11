@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -31,6 +32,8 @@ import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.domain.beans.operations.Regular;
+import io.biologeek.expenses.domain.beans.operations.RegularOperation;
+import io.biologeek.expenses.domain.beans.operations.UsualOperation;
 import io.biologeek.expenses.exceptions.BusinessException;
 import io.biologeek.expenses.repositories.OperationsRepository;
 import io.biologeek.expenses.utils.DateTimeUnit;
@@ -87,11 +90,13 @@ public class OperationService {
 		OperationList list = new OperationList();
 		List<Operation> operations = operationsRepository.getOperationsForAccountWithLimit(account.getId(),
 				new PageRequest(0, limit));
+		
+		int totalOperations = operationsRepository.countOperationsByAccount(account);
 		list.setOperations(operations);
 		list.setCurrentPage(page);
 		list.setOperationPerPage(limit);
-		list.setTotalOperations(operations.size());
-		list.setTotalPages(new Double(Math.ceil(operations.size() / limit) + 1).intValue());
+		list.setTotalOperations(totalOperations);
+		list.setTotalPages(new Double(Math.ceil(totalOperations / limit)).intValue());
 		return list;
 	}
 
@@ -105,10 +110,23 @@ public class OperationService {
 		return operationsRepository.getOne(id);
 	}
 
+	/**
+	 * Generic method with all necesary options to generate a List of {@link FullPeriodicBalance}s
+	 * 
+	 * @param account user account ID
+	 * @param interval type of unit for balance (balance per day, per month, ...)
+	 * @param begin beginning of calculation period
+	 * @param end end of calculation period
+	 * @param collect operation types to collect in balance
+	 * @param withCategories include balance per category for every period unit
+	 * @param separateOperations Will generate separate balances for every {@link OperationType}
+	 * 
+	 * @return a list of {@link FullPeriodicBalance} 
+	 */
 	List<FullPeriodicBalance> getFullBalanceForPeriod(long account, DateTimeUnit interval, Date begin, Date end,
 			List<OperationType> collect, boolean withCategories, boolean separateOperations) {
 		List<FullPeriodicBalance> balances = new ArrayList<>();
-		List<Operation> operations = operationsRepository.getGroupedByDayOperationsForAccountByPeriod(account, begin,
+		SortedSet<Operation> operations = operationsRepository.getGroupedByDayOperationsForAccountByPeriod(account, begin,
 				end);
 		if (operations != null && operations.isEmpty())
 			return new ArrayList<>();
@@ -135,7 +153,7 @@ public class OperationService {
 	 * 
 	 * @return a {@link Map} with {@link OperationType}s as keys
 	 */
-	Map<OperationType, Set<Operation>> separateOperations(List<Operation> operations) {
+	Map<OperationType, Set<Operation>> separateOperations(SortedSet<Operation> operations) {
 		Map<OperationType, Set<Operation>> result = new HashMap<>();
 		for (Operation op : operations) {
 			if (!result.containsKey(op.getOperationType()))
@@ -248,7 +266,7 @@ public class OperationService {
 	 * @param operations
 	 * @return
 	 */
-	private FullPeriodicBalance buildFullBalanceWithCategoryDetail(List<Operation> operations) {
+	private FullPeriodicBalance buildFullBalanceWithCategoryDetail(SortedSet<Operation> operations) {
 		FullPeriodicBalance fullBalance = new FullPeriodicBalance();
 
 		BalanceUnit balanceOfTheDay = new BalanceUnit();
@@ -286,12 +304,15 @@ public class OperationService {
 	 * @param begin
 	 * @return
 	 */
-	private FullPeriodicBalance buildFullBalanceWithoutCategoryDetail(List<Operation> operations, DateTimeUnit interval,
+	private FullPeriodicBalance buildFullBalanceWithoutCategoryDetail(SortedSet<Operation> operations, DateTimeUnit interval,
 			Date begin, Date end) {
 		FullPeriodicBalance fullBalance = new FullPeriodicBalance();
 
 		Calendar incrementingCal = Calendar.getInstance();
 		incrementingCal.setTime(begin);
+		
+		fullBalance.setBegin(begin);
+		fullBalance.setEnd(end);
 
 		while (incrementingCal.getTime().before(end)) {
 
@@ -316,7 +337,7 @@ public class OperationService {
 	 * @param periodEnd end datetime of the balance
 	 * @return
 	 */
-	BalanceUnit buildBalanceForUnitOfTime(List<Operation> operations, Date periodBegin, Date periodEnd) {
+	BalanceUnit buildBalanceForUnitOfTime(SortedSet<Operation> operations, Date periodBegin, Date periodEnd) {
 
 		BalanceUnit unit = new BalanceUnit();
 		unit.computeBalanceDate(periodBegin, periodEnd);

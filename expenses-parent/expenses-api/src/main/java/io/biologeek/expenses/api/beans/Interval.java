@@ -1,14 +1,35 @@
 package io.biologeek.expenses.api.beans;
 
-public class Interval {
-	double interval;
-	int unit;
+import java.util.Date;
 
-	public double getInterval() {
+public class Interval {
+	private int interval;
+	private int unit;
+	
+	private Date first;
+	private Date last;
+
+	public Date getFirst() {
+		return first;
+	}
+
+	public void setFirst(Date first) {
+		this.first = first;
+	}
+
+	public Date getLast() {
+		return last;
+	}
+
+	public void setLast(Date last) {
+		this.last = last;
+	}
+
+	public int getInterval() {
 		return interval;
 	}
 
-	public void setInterval(double interval) {
+	public void setInterval(int interval) {
 		this.interval = interval;
 	}
 
@@ -20,7 +41,7 @@ public class Interval {
 		this.unit = unit;
 	}
 
-	public Interval interval(double interval) {
+	public Interval interval(int interval) {
 		this.interval = interval;
 		return this;
 	}

@@ -3,6 +3,7 @@ package io.biologeek.expenses.utils;
 import java.util.Calendar;
 import java.util.Date;
 
+
 /**
  * Enum containing all common date and time units
  */
@@ -10,10 +11,10 @@ public enum DateTimeUnit {
 
 	NANOSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS, MONTHS, YEARS, ERA;
 
-	public static int getCalendarUnit(DateTimeUnit unit) {
+	public static int getCalendarUnit(DateTimeUnit unit) throws UnsupportedOperationException {
 		switch (unit) {
 		case NANOSECONDS:
-			return 0;
+			throw new UnsupportedOperationException("interval.invalid");
 		case MILLISECONDS:
 			return Calendar.MILLISECOND;
 		case SECONDS:

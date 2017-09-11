@@ -64,18 +64,18 @@ public class OperationToApiConverter {
 		return res;
 	}
 
-
 	public static List<XYChartData> convertToXYChartData(List<FullPeriodicBalance> operations, String title,
 			String xLabel, String yLabel) {
 		List<XYChartData> result = new ArrayList<>();
-		
+
 		for (FullPeriodicBalance e : operations) {
 			result.add(convertToXYChartData(e, title, xLabel, yLabel));
 		}
 		return result;
 	}
-	public static XYChartData convertToXYChartData(FullPeriodicBalance operations, String title,
-			String xLabel, String yLabel) {
+
+	public static XYChartData convertToXYChartData(FullPeriodicBalance operations, String title, String xLabel,
+			String yLabel) {
 		XYChartData chart = ((XYChartData) new XYChartData()//
 				.title(title)//
 				.xLabel(xLabel)//
@@ -109,11 +109,11 @@ public class OperationToApiConverter {
 	 * @param yLabel
 	 * @return
 	 */
-	public static PieChartData convertToPieChartData(CategoryBalance categoryBalanceForAccount,
-			String title, String xLabel, String yLabel) {
-		
+	public static PieChartData convertToPieChartData(CategoryBalance categoryBalanceForAccount, String title,
+			String xLabel, String yLabel) {
+
 		PieChartData data = new PieChartData();
-		
+
 		data.setTitle(title);
 		data.setxLabel(xLabel);
 		data.setyLabel(yLabel);
@@ -122,20 +122,28 @@ public class OperationToApiConverter {
 		}
 		return data;
 	}
-	
-	
-	public ChartJSChartData convertToChartJS(FullPeriodicBalance balance, String title, String xLabel, String yLabel) {
+
+	public static ChartJSChartData convertToChartJS(FullPeriodicBalance balance, String title, String xLabel, String yLabel) {
 		ChartJSChartData result = new ChartJSChartData();
-		
+
 		result.getData().put(title, new ArrayList<>());
 		result.setxLabel(xLabel);
 		result.setyLabel(yLabel);
-		
+
 		for (BalanceUnit bl : balance.getDailyBalances()) {
 			result.getData().get(title).add(bl.getBalanceValue().doubleValue());
 			result.getLabels().add(new Double(bl.getBalanceDate().getTime()));
 		}
-		
+
 		return result;
+	}
+
+	public static List<ChartJSChartData> convertToChartJS(List<FullPeriodicBalance> balance, String title, String xLabel,
+			String yLabel) {
+		List<ChartJSChartData> res = new ArrayList<>();
+		for (FullPeriodicBalance bl : balance) {
+			res.add(convertToChartJS(bl, title, xLabel, yLabel));
+		}
+		return res;
 	}
 }
