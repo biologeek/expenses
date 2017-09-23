@@ -11,10 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -25,16 +23,14 @@ import org.springframework.stereotype.Service;
 import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.Category;
-import io.biologeek.expenses.domain.beans.RegisteredUser;
-import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.BalanceUnit;
+import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.domain.beans.operations.Regular;
-import io.biologeek.expenses.domain.beans.operations.RegularOperation;
-import io.biologeek.expenses.domain.beans.operations.UsualOperation;
 import io.biologeek.expenses.exceptions.BusinessException;
+import io.biologeek.expenses.exceptions.ValidationException;
 import io.biologeek.expenses.repositories.OperationsRepository;
 import io.biologeek.expenses.utils.DateTimeUnit;
 import io.biologeek.expenses.utils.DateUtils;
@@ -51,8 +47,6 @@ public class OperationService {
 	@Autowired
 	CategoryService cateoryService;
 
-	
-
 	/**
 	 * Validates operations and stores in datasource
 	 * 
@@ -60,29 +54,30 @@ public class OperationService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	public Operation addOperationToAccount(Operation operation) throws BusinessException {
+	public Operation addOperationToAccount(Operation operation) throws ValidationException, BusinessException {
 		if (operation == null)
 			return null;
-		if (operation.getId() != null)
-			return this.updateOperation(operation);
-
+		if (operation.getId() != null) {
+			if (!operation.getId().equals(0L))
+				return this.updateOperation(operation);
+		}
 		OperationValidator.validateOperation(operation);
 
 		return operationsRepository.save(operation);
 
 	}
 
-	public Operation updateOperation(Operation operation) throws BusinessException {
+	public Operation updateOperation(Operation operation) throws BusinessException, ValidationException {
 		OperationValidator.validateOperation(operation);
 
 		if (operation.getId() != null) {
 			Operation storedOperation = operationsRepository.getOne(operation.getId());
 
-			if (storedOperation == null) {
-				new OperationMerger().merge(operation, storedOperation);
-			}
+			storedOperation = new OperationMerger().merge(operation, storedOperation);
+			
+			return operationsRepository.save(storedOperation);
 		}
-		return null;
+		throw new ValidationException("operation.update.id_null");
 	}
 
 	public OperationList getLastOperationsForAccount(Account account, int page, Integer limit, String orderBy,
@@ -90,7 +85,7 @@ public class OperationService {
 		OperationList list = new OperationList();
 		List<Operation> operations = operationsRepository.getOperationsForAccountWithLimit(account.getId(),
 				new PageRequest(0, limit));
-		
+
 		int totalOperations = operationsRepository.countOperationsByAccount(account);
 		list.setOperations(operations);
 		list.setCurrentPage(page);
@@ -111,23 +106,31 @@ public class OperationService {
 	}
 
 	/**
-	 * Generic method with all necesary options to generate a List of {@link FullPeriodicBalance}s
+	 * Generic method with all necesary options to generate a List of
+	 * {@link FullPeriodicBalance}s
 	 * 
-	 * @param account user account ID
-	 * @param interval type of unit for balance (balance per day, per month, ...)
-	 * @param begin beginning of calculation period
-	 * @param end end of calculation period
-	 * @param collect operation types to collect in balance
-	 * @param withCategories include balance per category for every period unit
-	 * @param separateOperations Will generate separate balances for every {@link OperationType}
+	 * @param account
+	 *            user account ID
+	 * @param interval
+	 *            type of unit for balance (balance per day, per month, ...)
+	 * @param begin
+	 *            beginning of calculation period
+	 * @param end
+	 *            end of calculation period
+	 * @param collect
+	 *            operation types to collect in balance
+	 * @param withCategories
+	 *            include balance per category for every period unit
+	 * @param separateOperations
+	 *            Will generate separate balances for every {@link OperationType}
 	 * 
-	 * @return a list of {@link FullPeriodicBalance} 
+	 * @return a list of {@link FullPeriodicBalance}
 	 */
 	List<FullPeriodicBalance> getFullBalanceForPeriod(long account, DateTimeUnit interval, Date begin, Date end,
 			List<OperationType> collect, boolean withCategories, boolean separateOperations) {
 		List<FullPeriodicBalance> balances = new ArrayList<>();
-		SortedSet<Operation> operations = operationsRepository.getGroupedByDayOperationsForAccountByPeriod(account, begin,
-				end);
+		SortedSet<Operation> operations = operationsRepository.getGroupedByDayOperationsForAccountByPeriod(account,
+				begin, end);
 		if (operations != null && operations.isEmpty())
 			return new ArrayList<>();
 
@@ -304,13 +307,13 @@ public class OperationService {
 	 * @param begin
 	 * @return
 	 */
-	private FullPeriodicBalance buildFullBalanceWithoutCategoryDetail(SortedSet<Operation> operations, DateTimeUnit interval,
-			Date begin, Date end) {
+	private FullPeriodicBalance buildFullBalanceWithoutCategoryDetail(SortedSet<Operation> operations,
+			DateTimeUnit interval, Date begin, Date end) {
 		FullPeriodicBalance fullBalance = new FullPeriodicBalance();
 
 		Calendar incrementingCal = Calendar.getInstance();
 		incrementingCal.setTime(begin);
-		
+
 		fullBalance.setBegin(begin);
 		fullBalance.setEnd(end);
 
@@ -328,13 +331,18 @@ public class OperationService {
 	}
 
 	/**
-	 * Builds a unit balance (generally a daily balance) from the list of operations given in parameter. 
+	 * Builds a unit balance (generally a daily balance) from the list of operations
+	 * given in parameter.
 	 * 
-	 * It filters operations to keep only those respecting constrait defined by periodBegin and periodEnd
+	 * It filters operations to keep only those respecting constrait defined by
+	 * periodBegin and periodEnd
 	 * 
-	 * @param operations a list of operations 
-	 * @param periodBegin beginning datetime of the balance
-	 * @param periodEnd end datetime of the balance
+	 * @param operations
+	 *            a list of operations
+	 * @param periodBegin
+	 *            beginning datetime of the balance
+	 * @param periodEnd
+	 *            end datetime of the balance
 	 * @return
 	 */
 	BalanceUnit buildBalanceForUnitOfTime(SortedSet<Operation> operations, Date periodBegin, Date periodEnd) {
@@ -344,18 +352,17 @@ public class OperationService {
 		List<Operation> stream = operations.stream().filter(new Predicate<Operation>() {
 			@Override
 			public boolean test(Operation arg0) {
-				return arg0.getEffectiveDate().before(periodEnd) && arg0.getEffectiveDate().after(periodBegin);
+				return (arg0.getEffectiveDate().before(periodEnd) || arg0.getEffectiveDate().equals(periodEnd))
+						&& (arg0.getEffectiveDate().after(periodBegin) || arg0.getEffectiveDate().equals(periodBegin));
 			}
 		}).collect(Collectors.toList());
 		// Convert to correct unit and add amount to balance value
-		for(Operation t : stream){
-			t.amount(
-					convertToBalanceCurrency(t.getAmount().doubleValue(), t.getCurrency(), unit.getBalanceCurrency()))//
-			.currency(unit.getBalanceCurrency());
-			unit.setBalanceValue(unit.getBalanceValue().add(new BigDecimal(t.getAmount())));
+		for (Operation t : stream) {
+			t.amount(convertToBalanceCurrency(t.getAmount().doubleValue(), t.getCurrency(), unit.getBalanceCurrency()))//
+					.currency(unit.getBalanceCurrency());
+			unit.setBalanceValue(unit.getBalanceValue().add(BigDecimal.valueOf(t.getAmount())));
 		}
 
-		
 		return unit;
 	}
 
@@ -460,7 +467,7 @@ public class OperationService {
 		return currrencyDelegate.convert(amount, currency, balanceCurrency);
 	}
 
-	public Operation updateOperation(Account account, Operation convert) throws BusinessException {
+	public Operation updateOperation(Account account, Operation convert) throws BusinessException, ValidationException {
 		convert.setAccount(account);
 		return updateOperation(convert);
 	}

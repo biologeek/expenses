@@ -3,11 +3,21 @@ package io.biologeek.expenses.controller;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect
-public class ExceptionWrapper {
+public class ExceptionWrapper extends Exception {
 
 	private String message;
 	private String translationKey;
 	private String exceptionClass;
+
+	public ExceptionWrapper(Exception e) {
+		this.exceptionClass = e.getClass().getName();
+		this.message = e.getMessage();
+		this.translationKey = e.getMessage().split(".").length > 1 ? e.getMessage() : null;
+	}
+
+	public ExceptionWrapper() {
+		super();
+	}
 
 	public String getMessage() {
 		return message;

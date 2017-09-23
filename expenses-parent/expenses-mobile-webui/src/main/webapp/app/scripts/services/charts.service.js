@@ -22,6 +22,6 @@
 	        		
 	        		return $http.get('/expenses/charts/daily/account/'+account+'?begin='+begin+'&end='+end+'&types='+types);
 	        	}
-	        }
+	        };
 	}]);
 })();

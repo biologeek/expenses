@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 (function() {
 	/*
 	 * Dashboard controller
@@ -27,12 +28,21 @@
 				vm.categoryLevels = new Array(4);
 				vm.show = new Array(4);
 
-
+				vm.categoryTypes = [];
+				
+				vm.datePopup = {};
+				vm.popupDate = new Date();
+				vm.popupTime = new Date();
 				/**
 				 * Returns categories for certain level
 				 */
 				vm.getSubCategories = function(level) {
 					var selectedItem = vm.nomenc[level];
+					if (selectedItem == null){
+						vm.show[level + 1] = false;
+						vm.nomencInNumbers[level] = null;
+						return;
+					}
 				
 					vm.categoryLevels[level+1] = [];
 					// Call service
@@ -52,6 +62,7 @@
 					// Check validity of form
 					if (getCategory() != null){
 						vm.currentOperation.category = getCategory();
+						vm.currentOperation.effectiveDate = extractDate();
 						if (vm.currentOperation.id){
 							MobileService.update(vm.currentOperation, function(data) {
 								vm.currentOperation = data;
@@ -68,6 +79,14 @@
 					} else {
 						vm.errors.push("error.missing.category");
 					}					
+				};
+				
+				var extractDate = function(){
+					var date = vm.datePopup;
+					
+					date.setHours(vm.timePopup.getHours());
+					date.setMinutes(vm.timePopup.getMinutes());
+					return date;
 				};
 				
 				var getCategory = function (){
@@ -129,6 +148,62 @@
 				} else {
 					vm.initCreate();
 				}
-
+				
+				
+				vm.openDatePopup = function(){
+					vm.datePopup.opened = true;				
+				};
+				
+				// Disable weekend selection
+			  	function disabled(data) {
+			    	var date = data.date,
+			      	mode = data.mode;
+			   		return false;//mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+			  	}	
+			  	function getDayClass(data) {
+					var date = data.date,
+					  mode = data.mode;
+					if (mode === 'day') {
+					  var dayToCheck = new Date(date).setHours(0,0,0,0);
+					
+					  for (var i = 0; i < $scope.events.length; i++) {
+					    var currentDay = new Date(vm.events[i].date).setHours(0,0,0,0);
+					
+					    if (dayToCheck === currentDay) {
+					      return $scope.events[i].status;
+					    }
+					  }
+					}
+					return '';
+				}
+			  	vm.inlineOptions = {
+					customClass: getDayClass,
+					showWeeks: true
+				};
+				var tomorrow = new Date();
+				tomorrow.setDate(tomorrow.getDate() + 1);
+				var afterTomorrow = new Date();
+				afterTomorrow.setDate(tomorrow.getDate() + 1);
+				
+				vm.events = [
+			    
+		  		];
+							  	
+			  	vm.datePopupOptions = {
+			  		dateDisabled: disabled,
+			    	formatYear: 'yy',
+			    	maxDate: new Date(2020, 5, 22),
+			    	minDate: new Date(),
+			    	startingDay: 1
+			  	};
+			  	
+			  	vm.timeOptions = {
+    				hstep: [1, 2, 3],
+    				mstep: [1, 5, 10, 15, 25, 30]
+  				};
+  				
+			  				
+			  vm.hstep = 0.5;
+			  vm.mstep = 0.5;
 			} ]);
 })();

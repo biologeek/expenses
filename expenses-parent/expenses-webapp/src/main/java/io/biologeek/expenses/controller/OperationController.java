@@ -14,7 +14,7 @@ import io.biologeek.expenses.api.beans.OperationType;
 
 @RestController
 @RequestMapping("/operation")
-public class OperationController {
+public class OperationController extends ExceptionWrappedRestController{
 
 	@RequestMapping(method = RequestMethod.GET, path = "/types")
 	public ResponseEntity<List<OperationType>> getTypes() {

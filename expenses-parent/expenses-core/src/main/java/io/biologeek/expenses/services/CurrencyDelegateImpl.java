@@ -16,6 +16,8 @@ public class CurrencyDelegateImpl implements CurrencyDelegate {
 	public Double convert(Double amount, Currency fromUnit, Currency toUnit) {
 		if (amount == null || amount.equals(0d))
 			return 0D;
+		if (fromUnit.equals(toUnit))
+			return amount;
 		return this.convertFromService(amount, fromUnit, toUnit);
 	}
 

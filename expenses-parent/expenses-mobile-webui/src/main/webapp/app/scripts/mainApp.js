@@ -3,6 +3,8 @@
 	var myApp = angular.module('myApp', [ 'ngRoute', // Route service
 		'ngCookies',
 		'ngSanitize',
+		'ui.bootstrap.datepickerPopup',
+		'ui.bootstrap.timepicker',
 		'pascalprecht.translate',// angular-translate
         'tmh.dynamicLocale',// angular-dynamic-locale
         'ui.bootstrap.pagination'

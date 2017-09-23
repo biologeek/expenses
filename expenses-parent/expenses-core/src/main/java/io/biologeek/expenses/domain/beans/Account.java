@@ -39,12 +39,21 @@ public class Account {
 		this.id = id;
 	}
 
+	public Account id(Long id) {
+		this.id = id;
+		return this;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Account name(String name) {
+		this.name = name;
+		return this;
 	}
 
 	public RegisteredUser getOwner() {
@@ -54,6 +63,10 @@ public class Account {
 	public void setOwner(RegisteredUser owner) {
 		this.owner = owner;
 	}
+	public Account owner(RegisteredUser owner) {
+		this.owner = owner;
+		return this;
+	}
 
 	public Long getNumber() {
 		return number;
@@ -61,6 +74,11 @@ public class Account {
 
 	public void setNumber(Long number) {
 		this.number = number;
+	}
+
+	public Account number(Long number) {
+		this.number = number;
+		return this;
 	}
 
 	public List<Operation> getExpenses() {
@@ -79,12 +97,22 @@ public class Account {
 		this.creationDate = creationDate;
 	}
 
+	public Account creationDate(Date creationDate) {
+		this.creationDate = creationDate;
+		return this;
+	}
+
 	public Date getUpdateDate() {
 		return updateDate;
 	}
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public Account updateDate(Date updateDate) {
+		this.updateDate = updateDate;
+		return this;
 	}
 
 }

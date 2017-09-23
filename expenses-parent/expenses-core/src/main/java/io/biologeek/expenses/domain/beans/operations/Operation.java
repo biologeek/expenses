@@ -175,15 +175,69 @@ public abstract class Operation implements Comparable<Operation> {
 		this.id = id;
 	}
 
-	
 	public Operation amount(Double amount) {
 		this.amount = amount;
 		return this;
 	}
-	
+
 	public Operation currency(Currency currency) {
 		this.currency = currency;
 		return this;
 	}
 
+	public Operation id(Long l) {
+		id = l;
+		return this;
+	}
+
+	public Operation account(Account account) {
+		this.account = account;
+		return this;
+	}
+
+	public Operation emitter(OperationAgent emitter2) {
+		this.emitter = emitter2;
+		return this;
+	}
+
+	public Operation beneficiary(OperationAgent beneficiary2) {
+		this.beneficiary = beneficiary2;
+		return this;
+	}
+
+	public Operation category(Category beneficiary2) {
+		this.category = beneficiary2;
+		return this;
+	}
+
+	public Operation updateDate(Date beneficiary2) {
+		this.updateDate = beneficiary2;
+		return this;
+	}
+
+	public Operation effectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+		return this;
+	}
+
+	public Operation creationDate(Date creationDate) {
+		this.creationDate = creationDate;
+		return this;
+	}
+
+	public Operation description(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Operation operationType(OperationType operationType) {
+		this.operationType = operationType;
+		return this;
+	}
+
+	public Operation version(int version) {
+		this.version = version;
+		return this;
+	}
+	
 }

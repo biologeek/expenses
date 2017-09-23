@@ -20,16 +20,13 @@ import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.converter.OperationToModelConverter;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.RegisteredUser;
-import io.biologeek.expenses.domain.beans.operations.Regular;
-import io.biologeek.expenses.exceptions.BusinessException;
-import io.biologeek.expenses.exceptions.TechnicalException;
 import io.biologeek.expenses.services.AccountService;
 import io.biologeek.expenses.services.OperationService;
 import io.biologeek.expenses.services.RegisteredUserService;
 
 @Controller
 @RequestMapping("/mobile")
-public class AndroidExpensesController {
+public class AndroidExpensesController extends ExceptionWrappedRestController {
 
 	@Autowired
 	OperationService opService;
@@ -74,7 +71,7 @@ public class AndroidExpensesController {
 
 	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.POST })
 	public ResponseEntity<Operation> addOperation(@PathVariable("account") long accountId,
-			@RequestBody Operation expense) {
+			@RequestBody Operation expense) throws ExceptionWrapper {
 		io.biologeek.expenses.domain.beans.operations.Operation result = null;
 		Account account = accountService.getAccount(accountId);
 		if (account == null) {
@@ -85,14 +82,14 @@ public class AndroidExpensesController {
 			io.biologeek.expenses.domain.beans.operations.Operation op = OperationToModelConverter.convert(expense);
 			op.setAccount(account);
 			result = opService.addOperationToAccount(op);
-		} catch (BusinessException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new ExceptionWrapper(e);
 		}
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.PUT })
-	public ResponseEntity<Operation> editExpense(@PathVariable("account") long accountId, @RequestBody Operation expense) {
+	public ResponseEntity<Operation> editExpense(@PathVariable("account") long accountId, @RequestBody Operation expense) throws ExceptionWrapper {
 		io.biologeek.expenses.domain.beans.operations.Operation result = null;
 		Account account = accountService.getAccount(accountId);
 
@@ -102,8 +99,8 @@ public class AndroidExpensesController {
 
 		try {
 			result = opService.updateOperation(account, OperationToModelConverter.convert(expense));
-		} catch (BusinessException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new ExceptionWrapper(e);
 		}
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.OK);
 	}

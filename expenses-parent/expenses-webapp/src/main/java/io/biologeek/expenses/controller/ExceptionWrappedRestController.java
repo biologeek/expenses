@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.exceptions.KeyTranslatedException;
 
-@RestController
+
 /**
  * Wraps errors from application to a nice object sent to API users
  *

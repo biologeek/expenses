@@ -20,12 +20,11 @@
 				<configuration>
 					<webResources>
 						<resource>
-							<directory>src/main/webapp/</directory>
+							<directory>src/main/webapp/dist</directory>
 						</resource>
 					</webResources>
 				</configuration>
 			</plugin>
-		</plugin>
 		</plugins>
 	</build>
 </project>

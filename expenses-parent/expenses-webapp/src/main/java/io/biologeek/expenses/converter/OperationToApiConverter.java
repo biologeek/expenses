@@ -60,6 +60,8 @@ public class OperationToApiConverter {
 		res.setUpdateDate(toConvert.getUpdateDate());
 		res.setId(toConvert.getId());
 		res.setVersion(toConvert.getVersion());
+		res.setCurrency(toConvert.getCurrency().getCurrencyCode());
+		res.setDescription(toConvert.getDescription());
 
 		return res;
 	}

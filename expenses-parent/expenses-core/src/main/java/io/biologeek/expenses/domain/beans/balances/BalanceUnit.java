@@ -65,8 +65,8 @@ public class BalanceUnit extends Balance {
 	}
 
 	public void setBalanceValue(BigDecimal balanceValue) {
+		this.balanceValue.setScale(2, RoundingMode.DOWN);
 		this.balanceValue = balanceValue;
-		this.balanceValue.setScale(2);
 	}
 
 	public Currency getBalanceCurrency() {

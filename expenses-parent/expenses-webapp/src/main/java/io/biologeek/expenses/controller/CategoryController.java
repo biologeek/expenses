@@ -19,7 +19,7 @@ import io.biologeek.expenses.services.CategoryService;
 
 @RestController
 @RequestMapping("/category")
-public class CategoryController {
+public class CategoryController extends ExceptionWrappedRestController {
 
 	@Autowired
 	private CategoryService categoryService;

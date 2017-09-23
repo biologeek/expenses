@@ -56,6 +56,10 @@ gulp.task('html', ['styles', 'scripts', 'partials'], function () {
     .pipe($.size());
 });
 
+gulp.task('clear', function (go) {
+  $.cache.clearAll(go);
+});
+
 gulp.task('images', function () {
   return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({

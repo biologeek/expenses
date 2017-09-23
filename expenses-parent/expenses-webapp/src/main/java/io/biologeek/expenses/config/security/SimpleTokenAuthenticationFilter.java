@@ -114,7 +114,7 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 	private String extractUserId(HttpServletRequest request) {
 		String userID = request.getHeader("user");
 		
-		if (userID == null && request.getCookies().length > 0) {
+		if (userID == null && request.getCookies() != null && request.getCookies().length > 0) {
 			userID = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
 				@Override
 				public boolean test(Cookie t) {

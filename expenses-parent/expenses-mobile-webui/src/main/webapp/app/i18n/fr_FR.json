@@ -26,7 +26,8 @@
 			"submit" : "OK",
 			"type" : "Type",
 			"nomenclature" : "Nomenclature",
-			"currency": "monnaie"
+			"currency": "monnaie",
+			"date.label": "Date"
 		}
 	},
 	"operationList": {
