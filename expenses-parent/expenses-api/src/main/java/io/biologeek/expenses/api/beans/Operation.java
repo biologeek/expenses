@@ -25,7 +25,7 @@ public class Operation {
 
 	private Date creationDate;
 	private Date updateDate;
-	private int version;
+	private Integer version;
 
 	public Nomenclature getNomenclature() {
 		return nomenclature;
@@ -135,11 +135,11 @@ public class Operation {
 		this.updateDate = updateDate;
 	}
 
-	public int getVersion() {
+	public Integer getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(Integer version) {
 		this.version = version;
 	}
 
@@ -188,7 +188,7 @@ public class Operation {
 		return this;
 	}
 
-	public Operation version(int convert) {
+	public Operation version(Integer convert) {
 		this.version = convert;
 		return this;
 	}

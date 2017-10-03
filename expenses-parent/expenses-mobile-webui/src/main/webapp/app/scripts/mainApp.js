@@ -5,6 +5,8 @@
 		'ngSanitize',
 		'ui.bootstrap.datepickerPopup',
 		'ui.bootstrap.timepicker',
+		'ui.bootstrap.accordion',
+		'ui.bootstrap.typeahead',
 		'pascalprecht.translate',// angular-translate
         'tmh.dynamicLocale',// angular-dynamic-locale
         'ui.bootstrap.pagination'
@@ -22,7 +24,7 @@
 			controller : 'AddOrUpdateController'
 		});
 
-		$routeProvider.when('/account/:accountId/operation?id=:operationId', {
+		$routeProvider.when('/account/:accountId/operation/:opId', {
 			templateUrl : 'partials/addOrUpdate.html',
 			controller : 'AddOrUpdateController'
 		});
@@ -55,6 +57,7 @@
 			templateUrl : 'partials/addOrUpdate.html',
 			controller : 'OperationsController'
 		});	
+
 	/*	$routeProvider.otherwise({
 			templateUrl : 'partials/connection.html',
 			controller : 'LoginController'

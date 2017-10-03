@@ -5,8 +5,8 @@
 
 	/* passer body (et tous les éléments de largeur fixe) en largeur automatique */
 	body {
-		width: auto;
-		margin: 0;
+	    width: inherit;
+		margin: 0 auto;
 		padding: 0;
 	}
 
@@ -99,10 +99,7 @@
 	padding-right: 3px;
 }
 
-.container {
-	border: 1px solid #777777;
-	border-radius: 2px;
-	overflow: hidden;
+.bio-container {
 	width: 100%;
 }
 
@@ -114,20 +111,23 @@
 	border-radius: 3px;
 	border: 2px solid #777777;
 	vertical-align: middle;
-	margin-left: 0px;
+	padding-left: 5px;
 	margin-top: 0px;
 	margin-bottom: 5px;
-	padding: 3px;
 	text-align: left;
+	font-variant: small-caps;
 	height: 30px;
-	font-family: Helvetica Neue sans-serif;
+	font-family: Arial sans-serif;
 }
 
 .list-operation-item {
-	border-style: solid;
-	border-bottom: 2px solid black;
+	background-color: #F5F5F5;
+	border: 1px solid silver;
 }
 
+.list-operation-item td{
+	padding: 3px;
+}
 .content-body {
 	margin-left: 0px;
 	margin-top: 0px;
@@ -137,7 +137,8 @@
 	vertical-align: bottom;
 	height: 30px;
 	width: 100%;
-	align: center;
+	float: left;
+	text-align: center;
 }
 
 .paginator>ul {
@@ -157,6 +158,38 @@
 table {
 	float: left;
 	position: relative;
+	width: 100%;
 	margin-left: 0px;
 	margin-top: 0px;
+}
+
+.controllerCntainer {
+}
+
+.icon-small {
+	width: 16px;
+	height: 16px;
+}
+
+.icon-left {
+	margin-left: 10px;
+}
+
+.form-container {
+	margin: 10px;
+}
+
+.accordion-element {
+	width: auto;
+	background-color: #EEEEEE !important;
+}
+
+.content-body-upper {
+	margin-left: 10px;
+	width: 100%;
+	vertical-align: middle;
+}
+
+.form-element{
+	 margin: auto 10px;
 }

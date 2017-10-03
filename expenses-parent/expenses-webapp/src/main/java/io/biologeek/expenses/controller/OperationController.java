@@ -19,9 +19,7 @@ public class OperationController extends ExceptionWrappedRestController{
 	@RequestMapping(method = RequestMethod.GET, path = "/types")
 	public ResponseEntity<List<OperationType>> getTypes() {
 		return new ResponseEntity<>(
-				Arrays.asList(io.biologeek.expenses.domain.beans.operations.OperationType.values()).stream()//
-				.map(t -> OperationType.valueOf(t.name()))//
-				.collect(Collectors.toList()),
+				Arrays.asList(OperationType.values()),
 				HttpStatus.OK);
 	}
 

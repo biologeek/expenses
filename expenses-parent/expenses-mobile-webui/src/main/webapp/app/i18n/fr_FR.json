@@ -7,6 +7,7 @@
 	"REGULAR_INCOME": "Revenu regulier", 
 	"REGULAR_LOAN": "Pret regulier", 
 	"REGULAR_DEBT": "Dette reguliere",
+	"ALL": "Tout",
 	"welcome" : {
 		"list" : {
 			"add" : "Ajouter une operations",
@@ -20,6 +21,7 @@
 		"submitButton": "Connexion"
 	},
 	"addorupdate" : {
+		"title": "Ajout/modification",
 		"form" : {
 			"amount" : "Montant",
 			"description" : "Description",
@@ -31,7 +33,7 @@
 		}
 	},
 	"operationList": {
-		"title": "Liste d'operations"
+		"title": "Mes operations"
 	},
 	"operationEdit": {
 		"title": "Modifier"

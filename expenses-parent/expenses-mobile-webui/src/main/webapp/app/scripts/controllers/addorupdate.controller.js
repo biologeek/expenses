@@ -9,34 +9,37 @@
 	controllerModule.controller('AddOrUpdateController', [
 			'$scope',
 			'CategoryService',
+			'OperationService',
 			'MobileService',
 			'$routeParams',
-			function($scope, CategoryService, MobileService, $routeParams) {
+			'$location',
+			function($scope, CategoryService, OperationService, MobileService, $routeParams, $location) {
 
 				var vm = this;
 
 				vm.errors = [];
 				vm.currentOperation = null;
 				/**
-				 * Selected items
+				 * Selected category item
 				 */
-				vm.nomenc = new Array(4);
-				vm.nomencInNumbers = new Array(4);
-				/**
-				 * Stores categories displayed in each field;
-				 */
-				vm.categoryLevels = new Array(4);
-				vm.show = new Array(4);
+				vm.nomenc = {};
+				
+				vm.categoryLevels = [];
 
 				vm.categoryTypes = [];
 				
 				vm.datePopup = {};
 				vm.popupDate = new Date();
 				vm.popupTime = new Date();
+				vm.datePopup = new Date();
+				vm.timePopup = new Date();
+				vm.computedDate = new Date();
+				vm.isOpenDatePanel = false;
+				vm.isOpenAmountPanel = true;
 				/**
 				 * Returns categories for certain level
 				 */
-				vm.getSubCategories = function(level) {
+				vm.getSubCategory = function(level) {
 					var selectedItem = vm.nomenc[level];
 					if (selectedItem == null){
 						vm.show[level + 1] = false;
@@ -62,41 +65,42 @@
 					// Check validity of form
 					if (getCategory() != null){
 						vm.currentOperation.category = getCategory();
-						vm.currentOperation.effectiveDate = extractDate();
-						if (vm.currentOperation.id){
-							MobileService.update(vm.currentOperation, function(data) {
-								vm.currentOperation = data;
-							}, function(response) {
-								vm.errors.push(response.data);
-							});
-						} else {
-							MobileService.create(vm.currentOperation, function(data) {
-								vm.currentOperation = data;
-							}, function(response) {
-								vm.errors.push(response.data);
-							});
-						}
+						rebuildNomenclature(function(){
+							vm.currentOperation.effectiveDate = vm.extractDate();
+							if ($routeParams.accountId && $routeParams.opId){
+								MobileService.update(vm.currentOperation, function(data) {
+									vm.currentOperation = data;
+								}, function(response) {
+									vm.errors.push(response.data);
+								});
+							} else {
+								MobileService.create(vm.currentOperation, function(data) {
+									vm.currentOperation = data;
+								}, function(response) {
+									vm.errors.push(response.data);
+								});
+							}
+						});
 					} else {
 						vm.errors.push("error.missing.category");
 					}					
 				};
 				
-				var extractDate = function(){
+				vm.extractDate = function(){
 					var date = vm.datePopup;
 					
 					date.setHours(vm.timePopup.getHours());
 					date.setMinutes(vm.timePopup.getMinutes());
+					
+					vm.computedDate = date;
 					return date;
 				};
 				
 				var getCategory = function (){
-					var lastCat = null;
-					for(var category in vm.nomenc){
-						if (vm.nomenc[category]){
-							lastCat = vm.nomenc[category];
-						}
-					}
-					return lastCat;
+					
+					return _.find(vm.categoryLevels, function(o){
+						return o.name == vm.nomenc.name;
+					});
 				};
 
 				/*
@@ -107,16 +111,24 @@
 					MobileService.getOperationById($routeParams.opId, function(operation) {
 						vm.currentOperation = operation;
 						// Feeds first category select
-						vm.reverseCategoryTree(operation.nomenclature);
-						
+						vm.nomenc = operation.category;
+						CategoryService.listAll().then(function(categoryList){
+							vm.categoryLevels = categoryList.data;
+						}).then(function(error){
+							console.log(error);
+						});
+						vm.datePopup = vm.currentOperation.effectiveDate;
+						vm.timePopup = vm.currentOperation.effectiveDate;
+						vm.popupDate = vm.currentOperation.effectiveDate;
+						vm.popupTime = vm.currentOperation.effectiveDate;
 					}, function(error) {
 						// TODO
 					});
 				};
 
 				vm.initCreate = function() {
-					CategoryService.list(0).then(function(categoryList){
-						vm.categoryLevels[0] = categoryList;
+					CategoryService.listAll().then(function(categoryList){
+						vm.categoryLevels = categoryList.data;
 						console.log(categoryList);
 					}).then(function(error){
 						console.log(error);
@@ -125,29 +137,56 @@
 
 				};
 				
-				vm.reverseCategoryTree = function(categories){
-					vm.nomenc = _.reverse(categories);
-					for (let i = 0; i < vm.nomenc.length;i++){
-						
-						CategoryService.list(i).then(function(resp){
-							vm.categoryLevels[i] = resp.data;
-							vm.show[i] = true;
-						});
-					}
-					vm.getSubCategories(vm.nomenc.length - 1);
-				};
 				
-				CategoryService.getTypes(function(data) {
-					vm.categoryTypes = data;
-				}, function(response) {
+				OperationService.getTypes().then(function(response) {
+					vm.categoryTypes = response.data;
+				}).catch(function(response) {
 					console.log(response.data);
 				});	
+				
+				/**
+				 * Rebuilds the nomenclature of the operation when saving or updating 
+				 *
+				 */
+				var rebuildNomenclature = function(callback){
+						var currentOperationNomenclature = [];
+						var nomenclatureStr = _.find(vm.categoryLevels, function(o){
+								return o.name == vm.nomenc.name;
+						}).nomenclature;
+						vm.currentOperation.nomenclature = [];
+						var nomencArray = _.split(nomenclatureStr, '-');
+						
+						var rebuiltString = nomencArray[0];
+						_.forEach(nomencArray, function(o){
+							if(rebuiltString != o ){
+								rebuiltString = rebuiltString + "-" + o;
+							}
+							
+							var foundCategory = _.find(vm.categoryLevels, function(p){
+										return rebuiltString == p.nomenclature;
+										});	
+							
+							currentOperationNomenclature.push(foundCategory);				
+						});
+						vm.currentOperation.nomenclature = currentOperationNomenclature;
+						callback();
+				};
+				
 				
 				if ($routeParams.accountId && $routeParams.opId) {
 					vm.initUpdate();
 				} else {
 					vm.initCreate();
 				}
+				
+				
+				vm.goToPrevious = function(){
+					$location.path('/account/'+$routeParams.accountId+'/operations/list/20');
+				}
+				
+				/*
+				 * Date and time widgets configuration
+				 */
 				
 				
 				vm.openDatePopup = function(){

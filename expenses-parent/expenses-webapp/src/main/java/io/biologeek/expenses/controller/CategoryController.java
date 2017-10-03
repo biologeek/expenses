@@ -45,19 +45,15 @@ public class CategoryController extends ExceptionWrappedRestController {
 				HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "/")
+	@RequestMapping(method = RequestMethod.GET, path = "/top")
 	public ResponseEntity<List<Category>> getTopCategories() {
 		return new ResponseEntity<>(CategoryToApiConverter.convert(categoryService.getTopLevelCategories()),
 				HttpStatus.OK);
-	}
+	}	
 
-	@RequestMapping(method = RequestMethod.GET, path = "/types")
-	public ResponseEntity<List<io.biologeek.expenses.api.beans.OperationType>> getTypes() {
-		return new ResponseEntity<>(Arrays.asList(OperationType.values()).stream()//
-				.map(t->io.biologeek.expenses.api.beans.OperationType.valueOf(t.name()))//
-				.collect(Collectors.toList()),
+	@RequestMapping(method = RequestMethod.GET, path = "/")
+	public ResponseEntity<List<Category>> getAllCategories() {
+		return new ResponseEntity<>(CategoryToApiConverter.convert(categoryService.getAllCategories()),
 				HttpStatus.OK);
-	}
-	
-	
+	}	
 }

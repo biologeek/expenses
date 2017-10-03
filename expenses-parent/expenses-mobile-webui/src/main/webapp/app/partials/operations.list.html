@@ -1,10 +1,11 @@
 <div ng-controller="OperationsController as opCtrl">
-	<div class="container">
+	<div class="bio-container">
 		<div class="header-title">{{"operationList.title" | translate}}</div>
 		<div class="content-body">
-		<div class="paginator">
-			<button class="transparent blue" ng-click="opCtrl.getPreviousOperations()">
-		</div>
+			<div class="content-body-upper">
+				<span class="glyphicon glyphicon-plus" style="margin: 5px;" ng-click="opCtrl.goToNewOperation()"/>
+			</div>
+
 			<table id="list-container">
 				<tr class="list-operation-item"
 					ng-repeat="item in opCtrl.currentOperationsList"
@@ -24,11 +25,16 @@
 					</a></td>
 				</tr>
 			</table>
-
+			<br>
+			<br>
 			<div class="paginator">
-				<button class="transparent blue" ng-click="opCtrl.getNextOperations()">
-		
-		<!--
+				<button class="glyphicon glyphicon-arrow-left"
+					ng-click="opCtrl.getPreviousOperations()"
+					 />
+				<button class="glyphicon glyphicon-arrow-right"
+					ng-click="opCtrl.getNextOperations()" />
+
+				<!--
 				<ul uib-pagination total-items="opCtrl.totalItems"
 					ng-model="opCtrl.pager" class="pagination-sm"
 					boundary-link-numbers="true" direction-links="false"

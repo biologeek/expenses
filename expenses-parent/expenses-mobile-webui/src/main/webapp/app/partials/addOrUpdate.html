@@ -1,83 +1,99 @@
-<div ng-controller="AddOrUpdateController as addCtrl">
-	<div id="header-title">
-		<h3>Menu</h3>
-	</div>
-
-	<div id="form-container">
-
-		<form name="form" ng-submit="addCtrl.saveOrUpdateOperation(form)">
-
-				<div align="center" style="float: left; font-weight: bold">{{'addorupdate.form.amount' | translate}}</div> 
-				<span style="float:left; width: 50px;">
-					<input type="text" style="float:left; width: 100px;"
-						ng-model="addCtrl.currentOperation.amount"
-						placeholder="{{'addorupdate.form.amount' | translate}}" />
-				</span>
-				<span style="width: 50px;"> 
-					<input style=" float: right; width: 50px;" type="text"
-						ng-model="addCtrl.currentOperation.currency"
-						placeholder="{{'addorupdate.form.currency' | translate}}" />
-				</span>
-			<br /> 
-			<input type="text"
-				ng-model="addCtrl.currentOperation.description"
-				placeholder="{{'addorupdate.form.description' | translate}}">
-			<span class="highlight"></span> </input> <br /> <select name="operationType"
-				ng-options="types | translate for types in addCtrl.categoryTypes"
-				ng-model="addCtrl.currentOperation.type">
-				<option value="" disabled ng-selected="!addCtrl.currentOperation">{{"addorupdate.form.type" | translate}}</option>
-			</select> <br /> <br />
-
-			<p>{{'addorupdate.form.date.label' | translate}}</p>
-			<p class="input-group" style="width:100%;">
-				<input type="text" class="form-control" uib-datepicker-popup
-					ng-model="addCtrl.popupDate" is-open="addCtrl.datePopup.opened"
-					datepicker-options="addCtrl.datePopupOptions" ng-required="true"
-					close-text="Close" /> 
-					<span class="input-group-btn">
-						<button type="button" class="btn btn-default" ng-click="addCtrl.openDatePopup()">
-							<i class="glyphicon glyphicon-calendar"></i>
-						</button>
-					</span>
-				
-			   <div uib-timepicker style="width:50%;" ng-model="addCtrl.popupTime" 
-			   		ng-change="addCtrl.changed()" hour-step="addCtrl.hstep" 
-			   		minute-step="addCtrl.mstep" show-meridian="ismeridian"></div>
-
-			</p>
-			<br /> <br />
-			<h4>{{'addorupdate.form.nomenclature' | translate}}</h4>
-			<div class="nomenclature-container">
-				<select class="select-category" name="nomenc0"
-					ng-options="category as category.name for category in addCtrl.categoryLevels[0] track by category.id"
-					data-ng-model="addCtrl.nomenc[0]"
-					ng-change="addCtrl.getSubCategories(0)">
-					<option value="" selected="selected" />
-
-				</select> <br /> <select class="select-category" name="nomenc1"
-					ng-options="category as category.name for category in addCtrl.categoryLevels[1] track by category.id"
-					ng-show="addCtrl.show[1]" data-ng-model="addCtrl.nomenc[1]"
-					ng-change="addCtrl.getSubCategories(1)">
-					<option value="" selected="selected" />
-
-				</select> <br /> <select class="select-category" name="nomenc2"
-					ng-options="category.name for category in addCtrl.categoryLevels[2] track by category.id"
-					ng-show="addCtrl.show[2]" data-ng-model="addCtrl.nomenc[2]"
-					ng-change="addCtrl.getSubCategories(2)">
-					<option value="" selected="selected" />
-				</select> <br /> <select class="select-category" name="nomenc3"
-					ng-options="category.name for category in addCtrl.categoryLevels[3] track by category.id"
-					ng-show="addCtrl.show[3]" data-ng-model="addCtrl.nomenc[3]">
-					<option value="" selected="selected" />
-
-				</select>
-			</div>
-
-			<input type="submit" id="submit"
-				value="{{'addorupdate.form.submit' | translate}}"
-				ng-click="addCtrl.saveOrUpdateOperation(form)" />
-
-		</form>
-
+<div ng-controller="AddOrUpdateController as addCtrl"
+	class="controllerCntainer">
+	<div class="bio-container">
+		<div class="header-title"><span class="col-sm-2 col-xs-2" ng-click="addCtrl.goToPrevious()"><</span><span class="col-sm-10 col-xs-10">{{"addorupdate.title" | translate}}</span></div>
+			<div id="form-container" class="form-container">
+			<form name="form" ng-submit="addCtrl.saveOrUpdateOperation(form)">
+				<div class="row">
+					<uib-accordion close-others="true" class="form-element">
+						<div class="accordion-element panel-default" uib-accordion-group
+							heading="Montant"
+							is-open="addCtrl.isOpenAmountPanel">
+		
+							<span style="float: left; width: 50%"> 
+								<input type="text"
+									ng-model="addCtrl.currentOperation.amount"
+									placeholder="{{'addorupdate.form.amount' | translate}}" />
+							</span> 
+							<span style="float: left; width: 20%; margin-left: 10px;"> 
+								<select
+									ng-model="addCtrl.currentOperation.currency"
+									placeholder="{{'addorupdate.form.currency' | translate}}"><option value="EUR">€</option></select>
+							</span> <br /> 
+								<input type="text"
+									ng-model="addCtrl.currentOperation.description"
+									placeholder="{{'addorupdate.form.description' | translate}}">
+							<span class="highlight"></span> </input> <br /> 
+								<select
+									name="operationType"
+									ng-options="types.name | translate for types in addCtrl.categoryTypes"
+									ng-model="addCtrl.currentOperation.type">
+									<option value="" disabled ng-selected="!addCtrl.currentOperation">{{"addorupdate.form.type" | translate}}</option>
+							</select>
+						</div>
+						<div class="accordion-element panel-default" uib-accordion-group
+							heading="Date"
+							is-open="addCtrl.isOpenDatePanel">
+		
+							<p class="form-element input-group">
+								<input type="text" class="form-control" uib-datepicker-popup
+									ng-model="addCtrl.popupDate" ng-change="addCtrl.extractDate()"
+									is-open="addCtrl.datePopup.opened"
+									datepicker-options="addCtrl.datePopupOptions" ng-required="true"
+									close-text="Close" /> 
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default"
+										ng-click="addCtrl.openDatePopup()">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</button>
+								</span>
+								<div uib-timepicker 
+									ng-model="addCtrl.popupTime" ng-change="addCtrl.extractDate()"
+									hour-step="addCtrl.hstep"
+									minute-step="addCtrl.mstep" show-meridian="ismeridian"></div>
+			
+							</p>
+						</div>
+						<div class="accordion-element panel-default" uib-accordion-group
+								heading="{{'addorupdate.form.nomenclature' | translate}}"
+								is-open="addCtrl.isOpenNomencPanel">
+							<div class="nomenclature-container form-element">
+								<input type="text" ng-model="addCtrl.nomenc" ng-value="addCtrl.nomenc.name" style="width: 80%"
+								uib-typeahead="categoryLvl.name for categoryLvl in addCtrl.categoryLevels | filter:$viewValue | limitTo:8" class="form-control">
+								<!-- <select class="select-category" name="nomenc0"
+									ng-options="category as category.name for category in addCtrl.categoryLevels[0] track by category.id"
+									data-ng-model="addCtrl.nomenc[0]"
+									ng-change="addCtrl.getSubCategories(0)">
+									<option value="" selected="selected" />
+			
+								</select> <br /> <select class="select-category" name="nomenc1"
+									ng-options="category as category.name for category in addCtrl.categoryLevels[1] track by category.id"
+									ng-show="addCtrl.show[1]" data-ng-model="addCtrl.nomenc[1]"
+									ng-change="addCtrl.getSubCategories(1)">
+									<option value="" selected="selected" />
+			
+								</select> <br /> <select class="select-category" name="nomenc2"
+									ng-options="category.name for category in addCtrl.categoryLevels[2] track by category.id"
+									ng-show="addCtrl.show[2]" data-ng-model="addCtrl.nomenc[2]"
+									ng-change="addCtrl.getSubCategories(2)">
+									<option value="" selected="selected" />
+								</select> <br /> <select class="select-category" name="nomenc3"
+									ng-options="category.name for category in addCtrl.categoryLevels[3] track by category.id"
+									ng-show="addCtrl.show[3]" data-ng-model="addCtrl.nomenc[3]">
+									<option value="" selected="selected" />
+			
+								</select>-->
+							</div>
+						</div>
+					</uib-accordion>
+					
+	<br />
+					<input class="form-element" type="submit" id="submit" style="width: 100px;"
+						value="{{'addorupdate.form.submit' | translate}}"
+						ng-click="addCtrl.saveOrUpdateOperation(form)" />
+				</div>
+			</form>
+	
+		</div>
 	</div>
 </div>

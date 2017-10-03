@@ -8,7 +8,7 @@ var serviceModule = angular.module('myApp');
 serviceModule.factory('MobileService', ['$http', '$cookies', function($http, $cookies) {
         return {
             create: function(operation, callbackSuccess, callbackError) {
-            	$http.post('/expenses/mobile/account/${operation.account}/operation', operation)
+            	$http.post('/expenses/mobile/account/'+operation.account+'/operation', operation)
             		.then(function(response) {
             			callbackSuccess(response.data);
             		}, function(response) {

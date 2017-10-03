@@ -65,6 +65,11 @@
 		
 		if ($routeParams.limit)
 			vm.getOperations();
+	
+	
+		vm.goToNewOperation = function(){
+			$location.path("/account/1/operation/new");
+		};
 	}]);
 	
 })();

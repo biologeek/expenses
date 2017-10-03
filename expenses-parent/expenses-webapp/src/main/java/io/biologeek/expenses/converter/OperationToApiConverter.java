@@ -58,6 +58,7 @@ public class OperationToApiConverter {
 		res.setNomenclature(CategoryToApiConverter.convert(toConvert.getCategory()));
 		res.setCreationDate(toConvert.getCreationDate());
 		res.setUpdateDate(toConvert.getUpdateDate());
+		res.setEffectiveDate(toConvert.getEffectiveDate());
 		res.setId(toConvert.getId());
 		res.setVersion(toConvert.getVersion());
 		res.setCurrency(toConvert.getCurrency().getCurrencyCode());

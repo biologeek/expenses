@@ -22,13 +22,8 @@
 					list : function(level) {
 						return $http.get('/expenses/category/level/'+level);
 					},
-					getTypes: function(callbackSuccess, callbackError) {
-						$http.get('/expenses/category/types').then(
-								function(response) {
-									callbackSuccess(response.data);
-								}, function(response) {
-									callbackError(response);
-								});
+					listAll : function() {
+						return $http.get('/expenses/category/');
 					}
 				};
 			} ]);
