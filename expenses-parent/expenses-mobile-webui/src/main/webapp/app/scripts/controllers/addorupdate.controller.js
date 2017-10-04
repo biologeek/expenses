@@ -13,7 +13,8 @@
 			'MobileService',
 			'$routeParams',
 			'$location',
-			function($scope, CategoryService, OperationService, MobileService, $routeParams, $location) {
+			'$translate',
+			function($scope, CategoryService, OperationService, MobileService, $routeParams, $location, $translate) {
 
 				var vm = this;
 
@@ -36,6 +37,7 @@
 				vm.computedDate = new Date();
 				vm.isOpenDatePanel = false;
 				vm.isOpenAmountPanel = true;
+				vm.typeName = "";
 				/**
 				 * Returns categories for certain level
 				 */
@@ -86,6 +88,11 @@
 					}					
 				};
 				
+				vm.setTypeName = function(){
+					vm.typeName = vm.currentOperation.type.name;
+				};
+				
+				
 				vm.extractDate = function(){
 					var date = vm.datePopup;
 					
@@ -96,6 +103,10 @@
 					return date;
 				};
 				
+				vm.changeOperationTypeAndAmountSign = function(){
+					vm.setTypeName();
+					vm.currentOperation.amount = Math.abs(vm.currentOperation.amount) * vm.currentOperation.type.sign;
+				};
 				var getCategory = function (){
 					
 					return _.find(vm.categoryLevels, function(o){
@@ -112,15 +123,18 @@
 						vm.currentOperation = operation;
 						// Feeds first category select
 						vm.nomenc = operation.category;
+						vm.typeName = vm.currentOperation.type.name;
 						CategoryService.listAll().then(function(categoryList){
 							vm.categoryLevels = categoryList.data;
 						}).then(function(error){
 							console.log(error);
 						});
-						vm.datePopup = vm.currentOperation.effectiveDate;
-						vm.timePopup = vm.currentOperation.effectiveDate;
-						vm.popupDate = vm.currentOperation.effectiveDate;
-						vm.popupTime = vm.currentOperation.effectiveDate;
+						
+						console.log(vm.currentOperation);
+						vm.datePopup = new Date(vm.currentOperation.effectiveDate);
+						vm.timePopup = new Date(vm.currentOperation.effectiveDate);
+						vm.popupDate = new Date(vm.currentOperation.effectiveDate);
+						vm.popupTime = new Date(vm.currentOperation.effectiveDate);
 					}, function(error) {
 						// TODO
 					});
@@ -182,7 +196,7 @@
 				
 				vm.goToPrevious = function(){
 					$location.path('/account/'+$routeParams.accountId+'/operations/list/20');
-				}
+				};
 				
 				/*
 				 * Date and time widgets configuration

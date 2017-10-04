@@ -126,6 +126,11 @@ public class User extends Entity {
 		this.setSessionToken(authToken);
 		return this;
 	}
+
+	public User username(String username2) {
+		this.setUsername(username2);
+		return this;
+	}
 	
 	
 }

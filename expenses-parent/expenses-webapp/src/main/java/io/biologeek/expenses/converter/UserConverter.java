@@ -31,6 +31,7 @@ public class UserConverter {
 				.accounts(AccountToApiConverter.convert(result.getAccounts()))//
 				.age(result.getAge())//
 				.firstName(result.getFirstName())//
+				.username(result.getUsername())
 				.id(result.getId())//
 				.lastName(result.getLastName())//
 				.mailAddress(result.getEmail())//

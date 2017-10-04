@@ -21,7 +21,7 @@ public class OperationToModelConverter {
 		account.setId(expense.getAccount());
 		result.setId(expense.getId());
 		result.setAccount(account);
-		result.setAmount(expense.getAmount());
+		result.setAmount(expense.getAmount().doubleValue());
 		result.setCategory(CategoryConverter.convert(expense.getCategory()));
 		result.setCreationDate(expense.getCreationDate());
 		result.setUpdateDate(expense.getUpdateDate());

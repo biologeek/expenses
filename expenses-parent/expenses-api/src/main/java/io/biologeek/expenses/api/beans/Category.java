@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @JsonAutoDetect
 public class Category {
@@ -17,7 +19,7 @@ public class Category {
 	private int level;
 	
 	private String nomenclature;
-	
+	@JsonFormat(shape=Shape.OBJECT)
 	private Category parent;
 
 	public Long getId() {

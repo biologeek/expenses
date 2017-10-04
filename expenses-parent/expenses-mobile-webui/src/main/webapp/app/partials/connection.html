@@ -1,10 +1,10 @@
 <div ng-controller="LoginController as lCtrl">
 
 <form name="connectionForm">
-<input type="text" ng-model="lCtrl.login" placeholder="{{'login.username' | translate}}">
+<input class="form-element" type="text" ng-model="lCtrl.login" placeholder="{{'login.username' | translate}}">
 <br />
-<input type="password" ng-model="lCtrl.password" placeholder="{{'login.password' | translate}}">
+<input class="form-element" type="password" ng-model="lCtrl.password" placeholder="{{'login.password' | translate}}">
 <br />
-<input type="submit" placeholder="{{'login.submitButton' | translate}}" ng-click="lCtrl.submitted()">
+<input class="form-element" type="submit" placeholder="{{'login.submitButton' | translate}}" ng-click="lCtrl.submitted()">
 </form>
 </div>

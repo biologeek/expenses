@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import io.biologeek.expenses.api.beans.Operation;
+import io.biologeek.expenses.api.beans.OperationType;
 import io.biologeek.expenses.api.beans.PaginatedOperationsList;
 import io.biologeek.expenses.api.beans.charts.ChartJSChartData;
 import io.biologeek.expenses.api.beans.charts.PieChartData;
@@ -51,7 +52,7 @@ public class OperationToApiConverter {
 	public static Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
 
 		res.setAccount(toConvert.getAccount().getId());
-		res.setAmount(toConvert.getAmount());
+		res.setAmount(new BigDecimal(toConvert.getAmount()));
 		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
 		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
 		res.setCategory(CategoryToApiConverter.convertToCategory(toConvert.getCategory()));
@@ -59,6 +60,7 @@ public class OperationToApiConverter {
 		res.setCreationDate(toConvert.getCreationDate());
 		res.setUpdateDate(toConvert.getUpdateDate());
 		res.setEffectiveDate(toConvert.getEffectiveDate());
+		res.setType(OperationType.valueOf(toConvert.getOperationType().name()));
 		res.setId(toConvert.getId());
 		res.setVersion(toConvert.getVersion());
 		res.setCurrency(toConvert.getCurrency().getCurrencyCode());

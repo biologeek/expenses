@@ -27,7 +27,8 @@
 								<select
 									name="operationType"
 									ng-options="types.name | translate for types in addCtrl.categoryTypes"
-									ng-model="addCtrl.currentOperation.type">
+									ng-model="addCtrl.currentOperation.type"
+									ng-change="addCtrl.changeOperationTypeAndAmountSign()">
 									<option value="" disabled ng-selected="!addCtrl.currentOperation">{{"addorupdate.form.type" | translate}}</option>
 							</select>
 						</div>
@@ -58,36 +59,16 @@
 								heading="{{'addorupdate.form.nomenclature' | translate}}"
 								is-open="addCtrl.isOpenNomencPanel">
 							<div class="nomenclature-container form-element">
-								<input type="text" ng-model="addCtrl.nomenc" ng-value="addCtrl.nomenc.name" style="width: 80%"
-								uib-typeahead="categoryLvl.name for categoryLvl in addCtrl.categoryLevels | filter:$viewValue | limitTo:8" class="form-control">
-								<!-- <select class="select-category" name="nomenc0"
-									ng-options="category as category.name for category in addCtrl.categoryLevels[0] track by category.id"
-									data-ng-model="addCtrl.nomenc[0]"
-									ng-change="addCtrl.getSubCategories(0)">
-									<option value="" selected="selected" />
-			
-								</select> <br /> <select class="select-category" name="nomenc1"
-									ng-options="category as category.name for category in addCtrl.categoryLevels[1] track by category.id"
-									ng-show="addCtrl.show[1]" data-ng-model="addCtrl.nomenc[1]"
-									ng-change="addCtrl.getSubCategories(1)">
-									<option value="" selected="selected" />
-			
-								</select> <br /> <select class="select-category" name="nomenc2"
-									ng-options="category.name for category in addCtrl.categoryLevels[2] track by category.id"
-									ng-show="addCtrl.show[2]" data-ng-model="addCtrl.nomenc[2]"
-									ng-change="addCtrl.getSubCategories(2)">
-									<option value="" selected="selected" />
-								</select> <br /> <select class="select-category" name="nomenc3"
-									ng-options="category.name for category in addCtrl.categoryLevels[3] track by category.id"
-									ng-show="addCtrl.show[3]" data-ng-model="addCtrl.nomenc[3]">
-									<option value="" selected="selected" />
-			
-								</select>-->
+								<input  type="text" 
+										ng-model="addCtrl.nomenc" 
+										ng-value="addCtrl.nomenc.name" 
+										style="width: 80%"
+										uib-typeahead="categoryLvl.name for categoryLvl in addCtrl.categoryLevels | filter:$viewValue | limitTo:8" 
+										class="form-control">
 							</div>
 						</div>
 					</uib-accordion>
-					
-	<br />
+					<br />
 					<input class="form-element" type="submit" id="submit" style="width: 100px;"
 						value="{{'addorupdate.form.submit' | translate}}"
 						ng-click="addCtrl.saveOrUpdateOperation(form)" />

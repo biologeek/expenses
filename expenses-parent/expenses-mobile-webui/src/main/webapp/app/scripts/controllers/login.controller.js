@@ -23,7 +23,7 @@
 			vm.submitted = function() {
 				if (vm.login && vm.password){
 					UserService.login(vm.login, vm.password).then(function(response){
-						UserService.setAuthenticated(true, response.data.username, response.data.sessionToken, response.data.id);
+						UserService.setAuthenticated(true, response.data.lo, response.data.sessionToken, response.data.id);
 						$location.path('/accounts/'+response.data.id);
 					}, function(response){
 						console.log('Error '+response.status+' : '+response.data);

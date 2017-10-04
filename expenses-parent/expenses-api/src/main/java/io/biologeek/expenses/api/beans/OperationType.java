@@ -1,9 +1,14 @@
 package io.biologeek.expenses.api.beans;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import io.biologeek.expenses.api.deserializer.OperationTypeDeserializer;
 
 @JsonFormat(shape = Shape.OBJECT)
+@JsonAutoDetect
 public enum OperationType {
 	EXPENSE(-1, false, false), INCOME(1, false, false), LOAN(1, false, true), DEBT(-1, false, true), REGULAR_EXPENSE(-1,
 			true, false), REGULAR_INCOME(1, true,

@@ -140,7 +140,7 @@ public abstract class Operation implements Comparable<Operation> {
 	}
 
 	public void setAmount(Double amount) {
-		this.amount = Math.abs(amount);
+		this.amount = (amount == null ? 0 : Math.abs(amount));
 	}
 
 	public Account getAccount() {

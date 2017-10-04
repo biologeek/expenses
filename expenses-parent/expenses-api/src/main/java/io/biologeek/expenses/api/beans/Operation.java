@@ -1,26 +1,43 @@
 package io.biologeek.expenses.api.beans;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
+import com.fasterxml.jackson.databind.deser.std.NumberDeserializers.BigDecimalDeserializer;
+
+import io.biologeek.expenses.api.deserializer.OperationTypeDeserializer;
 
 @JsonAutoDetect
-public class Operation {
+public class Operation implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7925429032845927724L;
 	private Long id;
 	User beneficiary;
 	User emitter;
 
 	private Long account;
 	private String description;
+	@JsonDeserialize(using=OperationTypeDeserializer.class)
 	private OperationType type;
-
-	private Double amount;
+	@JsonDeserialize(using=BigDecimalDeserializer.class)
+	private BigDecimal amount;
 	private String currency;
+	@JsonDeserialize(using=DateDeserializer.class)
 	private Date effectiveDate;
 
+	@JsonFormat(shape=Shape.OBJECT)
 	Category category;
 	
+	@JsonFormat(shape=Shape.OBJECT)
 	Nomenclature nomenclature;
 
 	private Date creationDate;
@@ -103,11 +120,11 @@ public class Operation {
 		this.description = description;
 	}
 
-	public Double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 
@@ -158,7 +175,7 @@ public class Operation {
 		return this;
 	}
 
-	public Operation amount(Double convert) {
+	public Operation amount(BigDecimal convert) {
 		this.amount = convert;
 		return this;
 	}

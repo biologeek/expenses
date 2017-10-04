@@ -12,7 +12,9 @@ public class ExceptionWrapper extends Exception {
 	public ExceptionWrapper(Exception e) {
 		this.exceptionClass = e.getClass().getName();
 		this.message = e.getMessage();
-		this.translationKey = e.getMessage().split(".").length > 1 ? e.getMessage() : null;
+		if (e.getMessage() != null) {
+			this.translationKey = e.getMessage().split(".").length > 1 ? e.getMessage() : null;
+		}
 	}
 
 	public ExceptionWrapper() {
