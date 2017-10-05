@@ -7,11 +7,6 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers.BigDecimalDeserializer;
-
-import io.biologeek.expenses.api.deserializer.OperationTypeDeserializer;
 
 @JsonAutoDetect
 public class Operation implements Serializable {
@@ -26,15 +21,13 @@ public class Operation implements Serializable {
 
 	private Long account;
 	private String description;
-	@JsonDeserialize(using=OperationTypeDeserializer.class)
+	@JsonFormat(shape=Shape.OBJECT)
 	private OperationType type;
-	@JsonDeserialize(using=BigDecimalDeserializer.class)
+	@JsonFormat(shape=Shape.SCALAR)
 	private BigDecimal amount;
 	private String currency;
-	@JsonDeserialize(using=DateDeserializer.class)
 	private Date effectiveDate;
 
-	@JsonFormat(shape=Shape.OBJECT)
 	Category category;
 	
 	@JsonFormat(shape=Shape.OBJECT)

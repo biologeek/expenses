@@ -1,11 +1,11 @@
 package io.biologeek.expenses.api.beans;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import io.biologeek.expenses.api.deserializer.OperationTypeDeserializer;
 
 @JsonFormat(shape = Shape.OBJECT)
 @JsonAutoDetect
@@ -56,5 +56,10 @@ public enum OperationType {
 
 	public void setName(String name) {
 		this.name = this.name();
+	}
+	
+	@JsonCreator
+	public static OperationType creator(Map<String, Object> params) {
+		return OperationType.valueOf((String) params.get("name"));		
 	}
 }
