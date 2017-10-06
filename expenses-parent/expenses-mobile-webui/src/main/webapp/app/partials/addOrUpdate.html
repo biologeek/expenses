@@ -26,8 +26,8 @@
 							<span class="highlight"></span> </input> <br /> 
 								<select
 									name="operationType"
-									ng-options="types.name | translate for types in addCtrl.categoryTypes"
-									ng-model="addCtrl.currentOperation.type"
+									ng-options="type | translate for type in addCtrl.categoryTypesNames"
+									ng-model="addCtrl.typeName"
 									ng-change="addCtrl.changeOperationTypeAndAmountSign()">
 									<option value="" disabled ng-selected="!addCtrl.currentOperation">{{"addorupdate.form.type" | translate}}</option>
 							</select>

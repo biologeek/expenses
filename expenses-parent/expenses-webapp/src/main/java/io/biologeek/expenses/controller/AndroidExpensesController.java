@@ -108,18 +108,15 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 	@RequestMapping(path = { "/operation/{id}" }, method = { RequestMethod.GET })
 	public ResponseEntity<? extends Operation> getOperation(@PathVariable("id") long operationId) {
 		io.biologeek.expenses.domain.beans.operations.Operation op = opService.getOperationByid(operationId);
-		return ResponseEntity.ok(OperationToApiConverter.convert(op, new Operation()));
+		return new ResponseEntity(OperationToApiConverter.convert(op, new Operation()), HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(path = { "/account/{user}" }, method = { RequestMethod.GET })
-	public ResponseEntity<List<io.biologeek.expenses.api.beans.Account>> getAccounts(@PathVariable("user") Long user) {
-		RegisteredUser regUser = registeredUserService.findUserById(user);
-		if (regUser != null) {
-			return ResponseEntity.ok(AccountToApiConverter.convert(accountService.getAccountsForUser(regUser)));
-		} else {
-			return (ResponseEntity<List<io.biologeek.expenses.api.beans.Account>>) ResponseEntity.notFound();
-		}
+	@RequestMapping(path = { "/account/{id}" }, method = { RequestMethod.GET })
+	public ResponseEntity<io.biologeek.expenses.api.beans.Account> getAccount(@PathVariable("id") Long id) {
+		Account acc = accountService.getAccount(id);
+		return (ResponseEntity<io.biologeek.expenses.api.beans.Account>) ResponseEntity.ok().body(AccountToApiConverter.convert(acc));
+		
 		
 	}
 }

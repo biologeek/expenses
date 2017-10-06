@@ -28,6 +28,7 @@
 				vm.categoryLevels = [];
 
 				vm.categoryTypes = [];
+				vm.categoryTypesNames = [];
 				
 				vm.datePopup = {};
 				vm.popupDate = new Date();
@@ -65,10 +66,14 @@
 				
 				vm.saveOrUpdateOperation = function(form){
 					// Check validity of form
-					if (getCategory() != null){
+					vm.currentOperation.account = parseInt($routeParams.accountId);
+					
+					var cat = getCategory();
+					if (cat != null){
 						vm.currentOperation.category = getCategory();
 						rebuildNomenclature(function(){
 							vm.currentOperation.effectiveDate = vm.extractDate();
+							vm.currentOperation.effectiveDate = vm.currentOperation.effectiveDate.getTime(); 
 							if ($routeParams.accountId && $routeParams.opId){
 								MobileService.update(vm.currentOperation, function(data) {
 									vm.currentOperation = data;
@@ -77,7 +82,8 @@
 								});
 							} else {
 								MobileService.create(vm.currentOperation, function(data) {
-									vm.currentOperation = data;
+									vm.currentOperation = data;									
+									$location.path('/account/'+$routeParams.accountId+'/operation/'+data.id);
 								}, function(response) {
 									vm.errors.push(response.data);
 								});
@@ -89,7 +95,9 @@
 				};
 				
 				vm.setTypeName = function(){
-					vm.typeName = vm.currentOperation.type.name;
+					vm.currentOperation.type = _.find(vm.categoryTypes, function(o){
+						return vm.typeName == o.name;
+					});
 				};
 				
 				
@@ -110,7 +118,7 @@
 				var getCategory = function (){
 					
 					return _.find(vm.categoryLevels, function(o){
-						return o.name == vm.nomenc.name;
+						return o.name == vm.nomenc;
 					});
 				};
 
@@ -124,12 +132,6 @@
 						// Feeds first category select
 						vm.nomenc = operation.category;
 						vm.typeName = vm.currentOperation.type.name;
-						CategoryService.listAll().then(function(categoryList){
-							vm.categoryLevels = categoryList.data;
-						}).then(function(error){
-							console.log(error);
-						});
-						
 						console.log(vm.currentOperation);
 						vm.datePopup = new Date(vm.currentOperation.effectiveDate);
 						vm.timePopup = new Date(vm.currentOperation.effectiveDate);
@@ -154,6 +156,7 @@
 				
 				OperationService.getTypes().then(function(response) {
 					vm.categoryTypes = response.data;
+					vm.categoryTypesNames = _.map(vm.categoryTypes, 'name');
 				}).catch(function(response) {
 					console.log(response.data);
 				});	
@@ -165,7 +168,7 @@
 				var rebuildNomenclature = function(callback){
 						var currentOperationNomenclature = [];
 						var nomenclatureStr = _.find(vm.categoryLevels, function(o){
-								return o.name == vm.nomenc.name;
+								return o.name == vm.nomenc;
 						}).nomenclature;
 						vm.currentOperation.nomenclature = [];
 						var nomencArray = _.split(nomenclatureStr, '-');
@@ -187,7 +190,12 @@
 				};
 				
 				
-				if ($routeParams.accountId && $routeParams.opId) {
+				CategoryService.listAll().then(function(categoryList){
+					vm.categoryLevels = categoryList.data;
+				}).then(function(error){
+					console.log(error);
+				});
+				if ($routeParams.accountId && $routeParams.opId && Number.isInteger($routeParams.opId)) {
 					vm.initUpdate();
 				} else {
 					vm.initCreate();

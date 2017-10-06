@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 
-import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.domain.beans.Interval;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
@@ -18,6 +17,7 @@ public class OperationExamples {
 
 	public static Operation anExpense(){
 		Operation ope1 = new UsualOperation();
+		ope1.setId(1L);
 		ope1.setAmount(-10D);
 		ope1.setOperationType(OperationType.EXPENSE);
 		ope1.setCategory(CategoryExamples.aHomeCategory());

@@ -18,22 +18,22 @@
 						});
 					},
 					isAuthenticated: function() {
-						if ($cookies.get("username") && $cookies.get("token")){
+						if ($cookies.get("user") && $cookies.get("token")){
 							return true;
 						}
 						return false;
 					},
 					setAuthenticated : function(isAuthenticated, username,
-							token, userId) {
+							token, userId, account) {
 						if (isAuthenticated) {
-							$cookies.put("username", username);
 							$cookies.put("token", token);
 							$cookies.put("user", userId);
 						}
 					},
 					logout: function(){
-						$cookies.remove("username");
 						$cookies.remove("token");
+						$cookies.remove("account");
+						$cookies.remove("user");
 					},
 					getAccounts: function(userId, callbackSuccess, callbackError){
 						$http.get('/expenses/user/'+userId+'/accounts').then(function(response) {

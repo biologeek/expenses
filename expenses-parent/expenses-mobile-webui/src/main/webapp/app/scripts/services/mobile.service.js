@@ -46,6 +46,9 @@ serviceModule.factory('MobileService', ['$http', '$cookies', function($http, $co
         		}, function(response) {
 					callbackError(response);
         		});            	
+            },
+            getAccount: function(id){
+            	return $http.get('/expenses/mobile/account/'+id);
             }
         };
     }]);

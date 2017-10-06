@@ -127,4 +127,76 @@ public class Category {
 		this.organizations = organizations;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((categoryPicture == null) ? 0 : categoryPicture.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + level;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((nomenclature == null) ? 0 : nomenclature.hashCode());
+		result = prime * result + ((operations == null) ? 0 : operations.hashCode());
+		result = prime * result + ((organizations == null) ? 0 : organizations.hashCode());
+		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		result = prime * result + ((subCategories == null) ? 0 : subCategories.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Category other = (Category) obj;
+		if (categoryPicture == null) {
+			if (other.categoryPicture != null)
+				return false;
+		} else if (!categoryPicture.equals(other.categoryPicture))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (level != other.level)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (nomenclature == null) {
+			if (other.nomenclature != null)
+				return false;
+		} else if (!nomenclature.equals(other.nomenclature))
+			return false;
+		if (operations == null) {
+			if (other.operations != null)
+				return false;
+		} else if (!operations.equals(other.operations))
+			return false;
+		if (organizations == null) {
+			if (other.organizations != null)
+				return false;
+		} else if (!organizations.equals(other.organizations))
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		if (subCategories == null) {
+			if (other.subCategories != null)
+				return false;
+		} else if (!subCategories.equals(other.subCategories))
+			return false;
+		return true;
+	}
+	
+	
+
 }

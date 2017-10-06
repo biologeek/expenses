@@ -27,6 +27,8 @@ public class Operation implements Serializable {
 	private BigDecimal amount;
 	private String currency;
 	private Date effectiveDate;
+	
+	private String operationTypeName;
 
 	Category category;
 	
@@ -36,6 +38,14 @@ public class Operation implements Serializable {
 	private Date creationDate;
 	private Date updateDate;
 	private Integer version;
+
+	public String getOperationTypeName() {
+		return operationTypeName;
+	}
+
+	public void setOperationTypeName(String operationTypeName) {
+		this.operationTypeName = operationTypeName;
+	}
 
 	public Nomenclature getNomenclature() {
 		return nomenclature;

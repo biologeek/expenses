@@ -71,13 +71,10 @@ public class UserController extends ExceptionWrappedRestController {
 	public ResponseEntity<? extends Object> listAccounts(@PathVariable("user") Long userId){
 		List<io.biologeek.expenses.domain.beans.Account> accounts = null;
 		if(userId != null && userId > 0) {
-			
 			RegisteredUser user = userService.findUserById(userId);
 			accounts = accountService.getAccountsForUser(user);
-		}
-		
+		}		
 		return ResponseEntity.ok(AccountToApiConverter.convert(accounts));
-
 	}
 
 	public RegisteredUserService getUserService() {
