@@ -1,0 +1,1 @@
+Main-Class: io.biologeek.expenses.config.Application

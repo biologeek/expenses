@@ -73,17 +73,19 @@
 						vm.currentOperation.category = getCategory();
 						rebuildNomenclature(function(){
 							vm.currentOperation.effectiveDate = vm.extractDate();
-							vm.currentOperation.effectiveDate = vm.currentOperation.effectiveDate.getTime(); 
-							if ($routeParams.accountId && $routeParams.opId){
+							vm.currentOperation.effectiveDate = vm.currentOperation.effectiveDate.getTime();
+							var isInt = parseInt($routeParams.opId); 
+							if ($routeParams.accountId && $routeParams.opId && Number.isInteger(isInt)){
 								MobileService.update(vm.currentOperation, function(data) {
 									vm.currentOperation = data;
+									$location.path('/account/'+$routeParams.accountId+'/operations/list/20');
 								}, function(response) {
 									vm.errors.push(response.data);
 								});
 							} else {
 								MobileService.create(vm.currentOperation, function(data) {
 									vm.currentOperation = data;									
-									$location.path('/account/'+$routeParams.accountId+'/operation/'+data.id);
+									$location.path('/account/'+$routeParams.accountId+'/operations/list/20');
 								}, function(response) {
 									vm.errors.push(response.data);
 								});
@@ -94,10 +96,19 @@
 					}					
 				};
 				
-				vm.setTypeName = function(){
+				vm.setTypeNameAndProperties = function(){
 					vm.currentOperation.type = _.find(vm.categoryTypes, function(o){
 						return vm.typeName == o.name;
 					});
+					
+					if (vm.currentOperation.type.regular){
+						vm.currentOperation.interval = {
+							interval : 1,
+							unit : 'MONTH',
+							first : new Date(),
+							last : new Date(),
+						};
+					}
 				};
 				
 				
@@ -112,7 +123,7 @@
 				};
 				
 				vm.changeOperationTypeAndAmountSign = function(){
-					vm.setTypeName();
+					vm.setTypeNameAndProperties();
 					vm.currentOperation.amount = Math.abs(vm.currentOperation.amount) * vm.currentOperation.type.sign;
 				};
 				var getCategory = function (){
@@ -130,7 +141,7 @@
 					MobileService.getOperationById($routeParams.opId, function(operation) {
 						vm.currentOperation = operation;
 						// Feeds first category select
-						vm.nomenc = operation.category;
+						vm.nomenc = operation.category.name;
 						vm.typeName = vm.currentOperation.type.name;
 						console.log(vm.currentOperation);
 						vm.datePopup = new Date(vm.currentOperation.effectiveDate);
@@ -195,7 +206,7 @@
 				}).then(function(error){
 					console.log(error);
 				});
-				if ($routeParams.accountId && $routeParams.opId && Number.isInteger($routeParams.opId)) {
+				if ($routeParams.accountId && $routeParams.opId && Number.isInteger(parseInt($routeParams.opId))) {
 					vm.initUpdate();
 				} else {
 					vm.initCreate();

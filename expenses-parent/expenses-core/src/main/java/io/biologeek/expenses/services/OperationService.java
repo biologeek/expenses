@@ -507,4 +507,8 @@ public class OperationService {
 		balance.setCategories(categoriesWithObjects);
 		return balance;
 	}
+
+	public void removeOperation(long account, long operation) {
+		operationsRepository.delete(operation);
+	}
 }

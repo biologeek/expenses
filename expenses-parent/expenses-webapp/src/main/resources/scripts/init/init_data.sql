@@ -44,13 +44,13 @@ INSERT INTO category VALUES (18, 'car-maintainance.png', 2, 'Entretien', '003-00
 
 INSERT INTO category VALUES (19, null, 0, 'Revenus, impôts et frais financiers', '004', null);
 INSERT INTO category VALUES (20, null, 1, 'Salaire', '004-001', 19);
-INSERT INTO category VALUES (21, null, 2, 'Base', '004-001-001', 20);
-INSERT INTO category VALUES (22, null, 2, 'Astreintes', '004-001-002', 20);
+INSERT INTO category VALUES (21, 'salary.png', 2, 'Base', '004-001-001', 20);
+INSERT INTO category VALUES (22, 'astreinte.png', 2, 'Astreintes', '004-001-002', 20);
 INSERT INTO category VALUES (23, null, 2, 'Avantages', '004-001-003', 20);
 INSERT INTO category VALUES (24, null, 1, 'Autres activités', '004-002', 20);
-INSERT INTO category VALUES (25, null, 1, 'Impôts', '004-003', 19);
+INSERT INTO category VALUES (25, 'tax.png', 1, 'Impôts', '004-003', 19);
 INSERT INTO category VALUES (26, null, 1, 'Frais bancaires et assurances', '004-004', 19);
-INSERT INTO category VALUES (27, null, 2, 'Banque', '004-004-001', 26);
-INSERT INTO category VALUES (28, null, 2, 'Assurances', '004-004-002', 26);
+INSERT INTO category VALUES (27, 'bank.png', 2, 'Banque', '004-004-001', 26);
+INSERT INTO category VALUES (28, 'insurance.png', 2, 'Assurances', '004-004-002', 26);
 
 

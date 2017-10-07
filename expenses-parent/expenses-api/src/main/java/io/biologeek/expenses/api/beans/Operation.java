@@ -6,9 +6,12 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @JsonAutoDetect
+@JsonSubTypes({@Type(value=RegularOperation.class), @Type(value=TemporaryOperation.class)})
 public class Operation implements Serializable {
 
 	/**

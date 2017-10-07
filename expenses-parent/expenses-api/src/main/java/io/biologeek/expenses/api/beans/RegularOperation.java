@@ -1,5 +1,8 @@
 package io.biologeek.expenses.api.beans;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect
 public class RegularOperation extends Operation {
 
 	

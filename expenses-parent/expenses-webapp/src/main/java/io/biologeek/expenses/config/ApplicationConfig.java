@@ -3,12 +3,19 @@ package io.biologeek.expenses.config;
 import java.util.Properties;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
 
+import org.apache.catalina.Context;
+import org.apache.catalina.loader.WebappLoader;
+import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -75,6 +82,27 @@ public class ApplicationConfig {
 		props.put("hibernate.show_sql", true);
 		props.put("hibernate.hbm2ddl.auto", "update");
 		return props;
+	}
+	
+	@Bean
+	public EmbeddedServletContainerFactory servletContainerFactory() {
+	    return new TomcatEmbeddedServletContainerFactory() {
+
+	        @Override
+	        protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(
+	                Tomcat tomcat) {
+	            try {
+	                Context context = tomcat.addWebapp("/expenses-mobile", "lib/expenses-mobile-webui-0.0.1-SNAPSHOT.war");
+	                WebappLoader loader =
+	                    new WebappLoader(Thread.currentThread().getContextClassLoader());
+	                context.setLoader(loader);
+	            } catch (ServletException ex) {
+	                throw new IllegalStateException("Failed to add webapp", ex);
+	            }
+	            return super.getTomcatEmbeddedServletContainer(tomcat);
+	        }
+
+	    };
 	}
 	
 	@Bean

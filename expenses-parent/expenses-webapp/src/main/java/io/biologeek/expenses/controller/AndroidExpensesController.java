@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.PaginatedOperationsList;
+import io.biologeek.expenses.api.beans.RegularOperation;
+import io.biologeek.expenses.api.beans.TemporaryOperation;
 import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.converter.AccountToApiConverter;
 import io.biologeek.expenses.converter.OperationToApiConverter;
@@ -79,7 +81,14 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 		}
 
 		try {
-			io.biologeek.expenses.domain.beans.operations.Operation op = OperationToModelConverter.convert(expense);
+			io.biologeek.expenses.domain.beans.operations.Operation op = null; 
+			if (expense.getType().isRegular())
+				OperationToModelConverter.convert((RegularOperation) expense);
+			else if (expense.getType().isTemporary()) {
+				OperationToModelConverter.convert((TemporaryOperation) expense);
+			} else {
+				OperationToModelConverter.convert(expense);
+			}
 			op.setAccount(account);
 			result = opService.addOperationToAccount(op);
 		} catch (Exception e) {
@@ -103,6 +112,18 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 			throw new ExceptionWrapper(e);
 		}
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.OK);
+	}
+
+	@RequestMapping(path = { "/account/{account}/operation/{operation}" }, method = { RequestMethod.DELETE })
+	public ResponseEntity<Void> deleteOperation(@PathVariable("account") long account, @PathVariable("operation") long operation) throws ExceptionWrapper {
+		io.biologeek.expenses.domain.beans.operations.Operation result = null;
+		
+		try {
+			opService.removeOperation(account, operation);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ExceptionWrapper(e);
+		}
 	}
 
 	@RequestMapping(path = { "/operation/{id}" }, method = { RequestMethod.GET })

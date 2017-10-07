@@ -44,9 +44,13 @@
 		
 		vm.remove = function(id){
 			if (id > 0){
-				MobileService.delete(id).then(function(resp){},function(response){
+				var currentOp = _.find(vm.currentOperationsList, function(o){
+					return o.id == id;
+				});
+				MobileService.deleteOp(currentOp).then(function(resp){},function(response){
 					console.log('Error '+response.status+' : '+response.data.key);
 				});
+				vm.getOperations();
 			}
 		};
 		
@@ -69,6 +73,10 @@
 	
 		vm.goToNewOperation = function(){
 			$location.path("/account/1/operation/new");
+		};
+	
+		vm.goToPrevious = function(){
+			$location.path('/accounts/'+$cookies.get('user'));
 		};
 	}]);
 	

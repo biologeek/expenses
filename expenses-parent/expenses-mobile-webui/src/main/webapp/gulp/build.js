@@ -30,7 +30,7 @@ gulp.task('partials', function () {
       spare: true,
       quotes: true
     }))
-    .pipe(gulp.dest(".tmp/partials"))
+    .pipe(gulp.dest("dist/partials"))
     .pipe($.size());
 });
 
@@ -62,12 +62,13 @@ gulp.task('clear', function (go) {
 
 gulp.task('images', function () {
   return gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin({
-      optimizationLevel: 3,
-      progressive: true,
-      interlaced: true
-    })))
     .pipe(gulp.dest('dist/images'))
+    .pipe($.size());
+});
+
+gulp.task('i18n', function () {
+  return gulp.src('app/i18n/**/*')
+    .pipe(gulp.dest('dist/i18n'))
     .pipe($.size());
 });
 
@@ -83,4 +84,4 @@ gulp.task('clean', function () {
   return gulp.src(['.tmp', 'dist'], { read: false }).pipe($.clean());
 });
 
-gulp.task('build', ['html', 'partials', 'images']);
+gulp.task('build', ['html', 'partials', 'images', 'i18n']);

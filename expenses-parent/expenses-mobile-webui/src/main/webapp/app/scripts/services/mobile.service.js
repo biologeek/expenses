@@ -23,8 +23,8 @@ serviceModule.factory('MobileService', ['$http', '$cookies', function($http, $co
 					callbackError(response);
         		});
             },
-            deleteOperation: function(id){
-            	return $http.delete('/expenses/mobile/account/'+operation.account+'/operation/'+id);
+            deleteOp: function(operation){
+            	return $http.delete('/expenses/mobile/account/'+operation.account+'/operation/'+operation.id);
             },
             list: function(limit, pager){
             	var pageParam = pager == null ? null : '/page/'+pager;
