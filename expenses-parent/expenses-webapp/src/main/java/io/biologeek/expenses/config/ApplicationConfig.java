@@ -83,27 +83,27 @@ public class ApplicationConfig {
 		props.put("hibernate.hbm2ddl.auto", "update");
 		return props;
 	}
-	
-	@Bean
-	public EmbeddedServletContainerFactory servletContainerFactory() {
-	    return new TomcatEmbeddedServletContainerFactory() {
-
-	        @Override
-	        protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(
-	                Tomcat tomcat) {
-	            try {
-	                Context context = tomcat.addWebapp("/expenses-mobile", "lib/expenses-mobile-webui-0.0.1-SNAPSHOT.war");
-	                WebappLoader loader =
-	                    new WebappLoader(Thread.currentThread().getContextClassLoader());
-	                context.setLoader(loader);
-	            } catch (ServletException ex) {
-	                throw new IllegalStateException("Failed to add webapp", ex);
-	            }
-	            return super.getTomcatEmbeddedServletContainer(tomcat);
-	        }
-
-	    };
-	}
+//	
+//	@Bean
+//	public EmbeddedServletContainerFactory servletContainerFactory() {
+//	    return new TomcatEmbeddedServletContainerFactory() {
+//
+//	        @Override
+//	        protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(
+//	                Tomcat tomcat) {
+//	            try {
+//	                Context context = tomcat.addWebapp("/expenses-mobile", "lib/expenses-mobile-webui-0.0.1-SNAPSHOT.war");
+//	                WebappLoader loader =
+//	                    new WebappLoader(Thread.currentThread().getContextClassLoader());
+//	                context.setLoader(loader);
+//	            } catch (ServletException ex) {
+//	                throw new IllegalStateException("Failed to add webapp", ex);
+//	            }
+//	            return super.getTomcatEmbeddedServletContainer(tomcat);
+//	        }
+//
+//	    };
+//	}
 	
 	@Bean
 	public EmbeddedServletContainerCustomizer customize(){

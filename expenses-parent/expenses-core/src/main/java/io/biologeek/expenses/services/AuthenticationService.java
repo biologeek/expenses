@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Base64.Decoder;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,8 @@ public class AuthenticationService {
 	private int tokenTTLType;
 	@Value("${authentication.token.ttl}")
 	private int tokenTTL;
+	
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 
 	public boolean checkToken(long userId, String token) {
@@ -63,9 +66,13 @@ public class AuthenticationService {
 			throw new MissingArgumentException("authentication.password.empty");
 
 		RegisteredUser user = userService.getByLogin(bean.getLogin());
+		
+		logger.fine("Got user from database : "+user);
 		if (user.getAuthentication().getLogin().equals(bean.getLogin())
 				&& encoder.matches(bean.getPassword(), user.getAuthentication().getPassword())) {
+
 			user.getAuthentication().setAuthToken(tokenGenerator.generate());
+			logger.fine("Logging in successful. Token : "+user.getAuthentication().getAuthToken());
 			user.getAuthentication().setTokenGenerationDate(new Date());
 			user.getAuthentication().setPassword(encoder.encode(bean.getPassword()));
 			userService.updateUser(user);

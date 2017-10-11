@@ -165,4 +165,10 @@ public class RegisteredUser extends Person implements UserDetails {
 	public void setAuthentication(AuthenticationInformation authentication) {
 		this.authentication = authentication;
 	}
+
+	@Override
+	public String toString() {
+		return "RegisteredUser [authentication=" + authentication + ", accounts=" + accounts + ", roles=" + roles
+				+ ", isActive=" + isActive + "]";
+	}
 }
