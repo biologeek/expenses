@@ -22,6 +22,8 @@ import io.biologeek.expenses.converter.OperationToApiConverter;
 import io.biologeek.expenses.converter.OperationToModelConverter;
 import io.biologeek.expenses.domain.beans.Account;
 import io.biologeek.expenses.domain.beans.RegisteredUser;
+import io.biologeek.expenses.exceptions.BusinessException;
+import io.biologeek.expenses.exceptions.ValidationException;
 import io.biologeek.expenses.services.AccountService;
 import io.biologeek.expenses.services.OperationService;
 import io.biologeek.expenses.services.RegisteredUserService;
@@ -73,27 +75,25 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 
 	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.POST })
 	public ResponseEntity<Operation> addOperation(@PathVariable("account") long accountId,
-			@RequestBody Operation expense) throws ExceptionWrapper {
+			@RequestBody Operation expense) throws ExceptionWrapper, ValidationException, BusinessException {
 		io.biologeek.expenses.domain.beans.operations.Operation result = null;
 		Account account = accountService.getAccount(accountId);
 		if (account == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		try {
-			io.biologeek.expenses.domain.beans.operations.Operation op = null; 
-			if (expense.getType().isRegular())
-				OperationToModelConverter.convert((RegularOperation) expense);
-			else if (expense.getType().isTemporary()) {
-				OperationToModelConverter.convert((TemporaryOperation) expense);
-			} else {
-				OperationToModelConverter.convert(expense);
-			}
-			op.setAccount(account);
-			result = opService.addOperationToAccount(op);
-		} catch (Exception e) {
-			throw new ExceptionWrapper(e);
+	
+		io.biologeek.expenses.domain.beans.operations.Operation op = null; 
+		if (expense.getType().isRegular())
+			op = OperationToModelConverter.convert((RegularOperation) expense);
+		else if (expense.getType().isTemporary()) {
+			op = OperationToModelConverter.convert((TemporaryOperation) expense);
+		} else {
+			op = OperationToModelConverter.convert(expense);
 		}
+		op.setAccount(account);
+		result = opService.addOperationToAccount(op);
+		
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.CREATED);
 	}
 

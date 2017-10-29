@@ -25,9 +25,9 @@
 					},
 					setAuthenticated : function(isAuthenticated, username,
 							token, userId, account) {
-							$cookies.put("token", token);
-							$cookies.put("user", userId);
-							$cookies.put("account", account);
+							$cookies.put("token", token, {path: "/"});
+							$cookies.put("user", userId, {path: "/"});
+							$cookies.put("account", account, {path: "/"});
 					},
 					logout: function(){
 						$cookies.remove("token");

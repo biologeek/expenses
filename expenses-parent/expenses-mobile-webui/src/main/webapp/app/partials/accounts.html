@@ -1,11 +1,17 @@
-<div ng-controller="AccountController as accCtrl">
-	<div id="header-title">
-	</div>
-
-	<div id="listContainer">
-		<select ng-model="accCtrl.accountName"
-			ng-options="account.name for account in accCtrl.availableAccounts"
-			ng-change="accCtrl.selectAccount()">
-		</select>
+<div ng-controller="AccountController as accCtrl"
+	class="controllerCntainer">
+	<div class="bio-container">
+		<div class="header-title"><span class="col-sm-2 col-xs-2" ng-click="addCtrl.goToPrevious()"><</span>
+		<span class="col-sm-10 col-xs-10">{{"accounts.list.title" | translate}}</span></div>
+			<div id="form-container" class="form-container">
+				<span class="col-sm-10 col-xs-10">{{"accounts.list.choose" | translate}}</span>
+				<form style="text-align: left;" name="form" ng-submit="addCtrl.saveOrUpdateOperation(form)">
+					<select ng-model="accCtrl.accountName"
+					ng-options="account.name for account in accCtrl.availableAccounts"
+					ng-change="accCtrl.selectAccount()">
+					</select>
+				</form>
+			</div>
+		</
 	</div>
 </div>

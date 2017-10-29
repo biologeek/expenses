@@ -8,6 +8,10 @@
 	"REGULAR_LOAN": "Pret regulier", 
 	"REGULAR_DEBT": "Dette reguliere",
 	"ALL": "Tout",
+	"accounts.list": {
+		"title": "Liste des comptes",
+		"choose": "Choisir"
+	},
 	"welcome" : {
 		"list" : {
 			"add" : "Ajouter une operations",

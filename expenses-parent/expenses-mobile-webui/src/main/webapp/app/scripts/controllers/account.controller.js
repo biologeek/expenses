@@ -43,7 +43,7 @@
 					_.each(vm.availableAccounts, function(o) {
 						if (o.name == vm.accountName.name) {
 							// FIXME Boooowwww baaaaad !!!
-							$cookies.put("account", o.id);
+							$cookies.put("account", o.id, {path: "/"});
 							$location.path("/account/"+o.id+"/operations/list/20");
 						}
 					});
