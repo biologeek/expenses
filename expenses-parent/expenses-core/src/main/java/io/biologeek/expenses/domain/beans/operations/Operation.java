@@ -136,7 +136,7 @@ public abstract class Operation implements Comparable<Operation> {
 	}
 
 	public Double getAmount() {
-		return amount * operationType.getSign();
+		return Math.abs(amount) * operationType.getSign();
 	}
 
 	public void setAmount(Double amount) {

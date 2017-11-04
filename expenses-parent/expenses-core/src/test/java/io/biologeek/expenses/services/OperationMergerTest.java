@@ -29,7 +29,7 @@ public class OperationMergerTest {
 		Operation merged = sut.merge(op, new UsualOperation().id(1L));
 		
 
-		Assert.assertEquals(10D, merged.getAmount(), 0.1);
+		Assert.assertEquals(-10D, merged.getAmount(), 0.1);
 		Assert.assertEquals(OperationType.EXPENSE, merged.getOperationType());
 		Assert.assertEquals(1, merged.getVersion());
 		Assert.assertTrue(DateUtils.areSameDate(DateUtils.benginningOfDay(2017, 05, 01), merged.getCreationDate()));

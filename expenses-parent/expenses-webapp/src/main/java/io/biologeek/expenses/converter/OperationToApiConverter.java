@@ -52,7 +52,7 @@ public class OperationToApiConverter {
 	public static Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
 
 		res.setAccount(toConvert.getAccount().getId());
-		res.setAmount(new BigDecimal(toConvert.getAmount()).multiply(new BigDecimal(toConvert.getOperationType().getSign())));
+		res.setAmount(new BigDecimal(toConvert.getAmount());
 		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
 		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
 		res.setCategory(CategoryToApiConverter.convertToCategory(toConvert.getCategory()));

@@ -10,7 +10,7 @@
 	"ALL": "Tout",
 	"accounts.list": {
 		"title": "Liste des comptes",
-		"choose": "Choisir"
+		"choose": "Choisir un compte"
 	},
 	"welcome" : {
 		"list" : {

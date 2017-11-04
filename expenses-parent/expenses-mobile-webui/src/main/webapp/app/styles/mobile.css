@@ -194,3 +194,8 @@ table {
 .form-element{
 	 margin: auto 10px;
 }
+
+.disconnect-button, .disconnect-button a, .disconnect-button a:active, .disconnect-button a:hover, .disconnect-button a:visited{
+	float: right !important;
+	color: white;
+}

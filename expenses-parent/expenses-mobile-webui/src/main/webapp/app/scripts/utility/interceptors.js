@@ -3,19 +3,19 @@
 	
 	var app = angular.module('myApp');
 	
-	app.factory('AuthenticationInterceptor', ['$q', '$cookies', function($q, $cookies){
+	app.factory('AuthenticationInterceptor', ['$q', '$cookies', '$location', function($q, $cookies, $location){
 		
 		return {
 			request: function(request){
 				return request;
 			}, 
 			responseError: function(response){
-				if (response.status === 401){
+				if (response.status == 401 || response.status == 403){
 					// Can't use UserService.setAuthenticated(false);
 					$cookies.remove('user');
 					$cookies.remove('username');
 					$cookies.remove('token');
-					$location.path('/login');
+					$location.path('/');
 				}
 				return response;
 			}
