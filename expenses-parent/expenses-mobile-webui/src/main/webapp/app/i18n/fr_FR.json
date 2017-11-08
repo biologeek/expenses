@@ -33,7 +33,11 @@
 			"type" : "Type",
 			"nomenclature" : "Nomenclature",
 			"currency": "monnaie",
-			"date.label": "Date"
+			"date.label": "Date",
+			"warning": {
+				"head": "Attention",
+				"text": "Operation non modifiable !"
+			}
 		}
 	},
 	"operationList": {

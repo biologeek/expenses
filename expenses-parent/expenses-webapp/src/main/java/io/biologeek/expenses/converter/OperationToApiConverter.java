@@ -65,7 +65,7 @@ public class OperationToApiConverter {
 		res.setVersion(toConvert.getVersion());
 		res.setCurrency(toConvert.getCurrency().getCurrencyCode());
 		res.setDescription(toConvert.getDescription());
-
+		res.setModifiable(toConvert.isModifiable());
 		return res;
 	}
 

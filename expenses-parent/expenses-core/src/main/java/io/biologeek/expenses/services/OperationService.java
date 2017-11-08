@@ -29,9 +29,11 @@ import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.domain.beans.operations.Regular;
+import io.biologeek.expenses.domain.beans.operations.RegularOperation;
 import io.biologeek.expenses.exceptions.BusinessException;
 import io.biologeek.expenses.exceptions.ValidationException;
 import io.biologeek.expenses.repositories.OperationsRepository;
+import io.biologeek.expenses.services.business.OperationBusinessServices;
 import io.biologeek.expenses.utils.DateTimeUnit;
 import io.biologeek.expenses.utils.DateUtils;
 import io.biologeek.expenses.validation.OperationValidator;
@@ -46,6 +48,9 @@ public class OperationService {
 	CurrencyDelegate currrencyDelegate;
 	@Autowired
 	CategoryService cateoryService;
+	
+	@Autowired
+	OperationBusinessServices<RegularOperation> regularOperationBizServices;
 
 	/**
 	 * Validates operations and stores in datasource

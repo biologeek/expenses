@@ -132,6 +132,15 @@
 						return o.name == vm.nomenc;
 					});
 				};
+				
+				//vm.changeFieldsToReadOnlyIfNecesary = function(isModifiable){
+				//	if (!isModifiable){
+				//		var elts = document.querySelector(".modifiable-element");
+				//		for (var i = 0 ; i < elts.length ; i++){
+				//			angular.element(elts[i]).attr("readonly", "readonly");
+				//		}
+				//	}
+				//};
 
 				/*
 				 * EXECUTED AT PAGE LOAD
@@ -148,6 +157,7 @@
 						vm.timePopup = new Date(vm.currentOperation.effectiveDate);
 						vm.popupDate = new Date(vm.currentOperation.effectiveDate);
 						vm.popupTime = new Date(vm.currentOperation.effectiveDate);
+						//vm.changeFieldsToReadOnlyIfNecesary(operation.modifiable);
 					}, function(error) {
 						// TODO
 					});

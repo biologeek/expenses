@@ -8,9 +8,22 @@ import io.biologeek.expenses.domain.beans.operations.Operation;
 
 public class OperationMerger implements Merger<Operation> {
 
+	/**
+	 * Merges new operation to JPA entity. If operation is not modifiable, it is simply not modified.
+	 * 
+	 * @param newOperation updated operation to merge to stored operation
+	 * @param storedOperation currently stored operation to be updated
+	 * @return newly updated operation
+	 */
 	public Operation merge(Operation newOperation, Operation storedOperation) {
 		if (storedOperation.getId() != null && storedOperation.getId() != 0 && !newOperation.getId().equals(storedOperation.getId()))
-			throw new ValidationException("opertion.update.not_same_id");
+			throw new ValidationException("operation.update.not_same_id");
+		
+		// Do not modify unmodifiable operation
+		if (!newOperation.isModifiable())
+			return storedOperation;
+		
+		
 		storedOperation.amount(newOperation.getAmount())//
 				.currency(newOperation.getCurrency())//
 				.emitter(newOperation.getEmitter())//

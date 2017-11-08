@@ -36,7 +36,7 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 	OperationService opService;
 	@Autowired
 	AccountService accountService;
-	
+
 	@Autowired
 	RegisteredUserService registeredUserService;
 
@@ -49,15 +49,15 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 			"/account/{account}/operations/page/{page}" }, method = { RequestMethod.GET })
 	public ResponseEntity<PaginatedOperationsList> getLastOperations(//
 			@PathVariable("account") long accountId, //
- 			@PathVariable(value = "page", required = false) Integer page, //
-			@RequestParam(value = "limit", required = false) Integer limit,//
-			@RequestParam(value = "orderBy", required = false) String orderBy,//
+			@PathVariable(value = "page", required = false) Integer page, //
+			@RequestParam(value = "limit", required = false) Integer limit, //
+			@RequestParam(value = "orderBy", required = false) String orderBy, //
 			@RequestParam(value = "reverse", required = false) boolean reverseOrder)//
 	{
-		
+
 		if (page == null)
 			page = 1;
-		
+
 		OperationList result = null;
 		if (limit == null || limit.equals(Integer.valueOf(0)))
 			limit = 20;
@@ -82,8 +82,7 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-	
-		io.biologeek.expenses.domain.beans.operations.Operation op = null; 
+		io.biologeek.expenses.domain.beans.operations.Operation op = null;
 		if (expense.getType().isRegular())
 			op = OperationToModelConverter.convert((RegularOperation) expense);
 		else if (expense.getType().isTemporary()) {
@@ -93,13 +92,16 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 		}
 		op.setAccount(account);
 		result = opService.addOperationToAccount(op);
-		
+
 		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.PUT })
-	public ResponseEntity<Operation> editExpense(@PathVariable("account") long accountId, @RequestBody Operation expense) throws ExceptionWrapper {
+	public ResponseEntity<Operation> editExpense(@PathVariable("account") long accountId,
+			@RequestBody Operation expense) throws ExceptionWrapper {
 		io.biologeek.expenses.domain.beans.operations.Operation result = null;
+		if (!expense.isModifiable())
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		Account account = accountService.getAccount(accountId);
 
 		if (account == null) {
@@ -115,9 +117,10 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 	}
 
 	@RequestMapping(path = { "/account/{account}/operation/{operation}" }, method = { RequestMethod.DELETE })
-	public ResponseEntity<Void> deleteOperation(@PathVariable("account") long account, @PathVariable("operation") long operation) throws ExceptionWrapper {
+	public ResponseEntity<Void> deleteOperation(@PathVariable("account") long account,
+			@PathVariable("operation") long operation) throws ExceptionWrapper {
 		io.biologeek.expenses.domain.beans.operations.Operation result = null;
-		
+
 		try {
 			opService.removeOperation(account, operation);
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -136,8 +139,8 @@ public class AndroidExpensesController extends ExceptionWrappedRestController {
 	@RequestMapping(path = { "/account/{id}" }, method = { RequestMethod.GET })
 	public ResponseEntity<io.biologeek.expenses.api.beans.Account> getAccount(@PathVariable("id") Long id) {
 		Account acc = accountService.getAccount(id);
-		return (ResponseEntity<io.biologeek.expenses.api.beans.Account>) ResponseEntity.ok().body(AccountToApiConverter.convert(acc));
-		
-		
+		return (ResponseEntity<io.biologeek.expenses.api.beans.Account>) ResponseEntity.ok()
+				.body(AccountToApiConverter.convert(acc));
+
 	}
 }

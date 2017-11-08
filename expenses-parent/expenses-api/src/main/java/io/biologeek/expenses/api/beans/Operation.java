@@ -3,13 +3,18 @@ package io.biologeek.expenses.api.beans;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
+/**
+ * @author 
+ *
+ */
 @JsonAutoDetect
 @JsonSubTypes({@Type(value=RegularOperation.class), @Type(value=TemporaryOperation.class)})
 public class Operation implements Serializable {
@@ -41,6 +46,13 @@ public class Operation implements Serializable {
 	private Date creationDate;
 	private Date updateDate;
 	private Integer version;
+	private boolean modifiable;
+	
+	private List<Operation> children;
+
+	public boolean isModifiable() {
+		return modifiable;
+	}
 
 	public String getOperationTypeName() {
 		return operationTypeName;
@@ -224,5 +236,18 @@ public class Operation implements Serializable {
 	public Operation description(String description2) {
 		this.description = description2;
 		return this;
+	}
+
+	public void setModifiable(boolean modifiable) {
+		this.modifiable = modifiable;
+		
+	}
+
+	public List<Operation> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Operation> children) {
+		this.children = children;
 	}
 }

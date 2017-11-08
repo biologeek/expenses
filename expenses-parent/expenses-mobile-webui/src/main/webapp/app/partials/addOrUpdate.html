@@ -4,6 +4,9 @@
 		<div class="header-title"><span class="col-sm-2 col-xs-2" ng-click="addCtrl.goToPrevious()"><</span><span class="col-sm-10 col-xs-10">{{"addorupdate.title" | translate}}</span></div>
 			<div id="form-container" class="form-container">
 			<form name="form" ng-submit="addCtrl.saveOrUpdateOperation(form)">
+				<div class="row alert alert-warning" ng-show="!addCtrl.currentOperation.modifiable" >
+					<strong>{{'addorupdate.form.warning.head' | translate}}</strong> {{'addorupdate.form.warning.text' | translate}}
+				</div>
 				<div class="row">
 					<uib-accordion close-others="true" class="form-element">
 						<div class="accordion-element panel-default" uib-accordion-group
@@ -11,21 +14,21 @@
 							is-open="addCtrl.isOpenAmountPanel">
 		
 							<span style="float: left; width: 50%"> 
-								<input type="text"
+								<input type="text" ng-readonly="!addCtrl.currentOperation.modifiable"
 									ng-model="addCtrl.currentOperation.amount"
 									placeholder="{{'addorupdate.form.amount' | translate}}" />
 							</span> 
 							<span style="float: left; width: 20%; margin-left: 10px;"> 
-								<select
+								<select ng-readonly="!addCtrl.currentOperation.modifiable"
 									ng-model="addCtrl.currentOperation.currency"
 									placeholder="{{'addorupdate.form.currency' | translate}}"><option value="EUR">€</option></select>
 							</span> <br /> 
-								<input type="text"
+								<input type="text" ng-readonly="!addCtrl.currentOperation.modifiable"
 									ng-model="addCtrl.currentOperation.description"
 									placeholder="{{'addorupdate.form.description' | translate}}">
 							<span class="highlight"></span> </input> <br /> 
 								<select
-									name="operationType"
+									name="operationType" ng-readonly="!addCtrl.currentOperation.modifiable"
 									ng-options="type | translate for type in addCtrl.categoryTypesNames"
 									ng-model="addCtrl.typeName"
 									ng-change="addCtrl.changeOperationTypeAndAmountSign()">
@@ -37,7 +40,7 @@
 							is-open="addCtrl.isOpenDatePanel">
 		
 							<p class="form-element input-group">
-								<input type="text" class="form-control" uib-datepicker-popup
+								<input type="text" class="modifiable-element form-control" uib-datepicker-popup
 									ng-model="addCtrl.popupDate" ng-change="addCtrl.extractDate()"
 									is-open="addCtrl.datePopup.opened"
 									datepicker-options="addCtrl.datePopupOptions" ng-required="true"
@@ -59,17 +62,27 @@
 								heading="{{'addorupdate.form.nomenclature' | translate}}"
 								is-open="addCtrl.isOpenNomencPanel">
 							<div class="nomenclature-container form-element">
-								<input  type="text" 
+								<input  type="text" ng-readonly="!addCtrl.currentOperation.modifiable"
 										ng-model="addCtrl.nomenc" 
-										ng-value="addCtrl.nomenc.name" 
+										ng-value="addCtrl.nomenc" 
 										style="width: 80%"
 										uib-typeahead="categoryLvl.name for categoryLvl in addCtrl.categoryLevels | filter:$viewValue | limitTo:8" 
 										class="form-control">
 							</div>
 						</div>
+						<div class="accordion-element panel-default" ng-show="opCtrl.currentOperation.children.length > 0" uib-accordion-group
+								heading="{{'addorupdate.form.linked_operations' | translate}}"
+								is-open="addCtrl.isOpenLinkedPanel">
+							<ul>
+								<li ng-repeat="op for op in addCtrl.currentOperation.children">
+									<a ng-href="#!/account/{{$routeParams.accountId}}/operation/{{op.id}}">{{op.id}} - {{op.description}}</a>
+								</li>
+							</ul>
+						</div>
+						
 					</uib-accordion>
 					<br />
-					<input class="form-element" type="submit" id="submit" style="width: 100px;"
+					<input class="form-element" type="submit" id="submit" ng-disabled="!addCtrl.currentOperation.modifiable" style="width: 100px;"
 						value="{{'addorupdate.form.submit' | translate}}"
 						ng-submit="addCtrl.saveOrUpdateOperation(form)" />
 				</div>

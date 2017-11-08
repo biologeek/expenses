@@ -2,8 +2,9 @@ package io.biologeek.expenses.domain.beans.operations;
 
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.TableGenerator;
+import javax.persistence.OneToMany;
 
 import io.biologeek.expenses.data.converters.CurrencyConverter;
 import io.biologeek.expenses.domain.beans.Account;
@@ -70,6 +71,27 @@ public abstract class Operation implements Comparable<Operation> {
 
 	@Convert(converter = CurrencyConverter.class)
 	protected Currency currency;
+
+	/**
+	 * If this operation is part of a multipart operation,
+	 * parentAccountableOperation if the one one that will be modifiable
+	 */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="operation_parent")
+	protected Operation parentAccountableOperation;
+	
+	@OneToMany(mappedBy="parentAccountableOperation", cascade=CascadeType.ALL)
+	protected List<Operation> childrenOperations;
+	
+	protected OperationStatus status;
+	
+	public OperationStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OperationStatus status) {
+		this.status = status;
+	}
 
 	public Currency getCurrency() {
 		return currency;
@@ -239,5 +261,30 @@ public abstract class Operation implements Comparable<Operation> {
 		this.version = version;
 		return this;
 	}
+
+	public Operation getParentAccountableOperation() {
+		return parentAccountableOperation;
+	}
+
+	public void setParentAccountableOperation(Operation parentAccountableOperation) {
+		this.parentAccountableOperation = parentAccountableOperation;
+	}
+
+	public boolean isModifiable() {
+		return parentAccountableOperation == null;
+	}
+
+	public List<? extends Operation> getChildrenOperations() {
+		return childrenOperations;
+	}
+
+	public void setChildrenOperations(List<Operation> childrenOperations) {
+		this.childrenOperations = childrenOperations;
+	}
 	
+	
+	public Operation status(OperationStatus status) {
+		this.status = status;
+		return this;
+	}
 }
