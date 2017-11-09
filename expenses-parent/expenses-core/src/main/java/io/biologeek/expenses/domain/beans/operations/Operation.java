@@ -78,9 +78,9 @@ public abstract class Operation implements Comparable<Operation> {
 	 */
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="operation_parent")
-	protected Operation parentAccountableOperation;
+	protected Operation parentOperation;
 	
-	@OneToMany(mappedBy="parentAccountableOperation", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="parentOperation", cascade=CascadeType.ALL)
 	protected List<Operation> childrenOperations;
 	
 	protected OperationStatus status;
@@ -262,19 +262,39 @@ public abstract class Operation implements Comparable<Operation> {
 		return this;
 	}
 
-	public Operation getParentAccountableOperation() {
-		return parentAccountableOperation;
+	public Operation getParentOperation() {
+		return parentOperation;
 	}
 
-	public void setParentAccountableOperation(Operation parentAccountableOperation) {
-		this.parentAccountableOperation = parentAccountableOperation;
+	public void setParentOperation(Operation parentAccountableOperation) {
+		this.parentOperation = parentAccountableOperation;
 	}
 
+	/**
+	 * Operation is NOT modifiable either if it is regular and has children operations defined
+	 * or if it is not regular (usual or temporary operation) but has a parent
+	 * @return 
+	 */
 	public boolean isModifiable() {
-		return parentAccountableOperation == null;
+		return (parentOperation == null && !(this instanceof Regular))// 
+				|| this instanceof Regular ;
 	}
-
-	public List<? extends Operation> getChildrenOperations() {
+	/**
+	 * Acountable operations : 
+	 * * {@link UsualOperation} that has no parent nor children
+	 * * Children operations of {@link RegularOperation}
+	 * * Children operations of {@link TemporaryOperation}
+	 * 
+	 * @return true if operation should be counted in the budget,
+	 * 	else false
+	 */
+	public boolean isAccountable(){
+		return (getParentOperation() instanceof Regular) 
+				|| (getParentOperation() instanceof Temporary)
+				|| (this instanceof UsualOperation && this.getParentOperation() == null //
+						&& (getChildrenOperations() == null && getChildrenOperations().isEmpty()));
+	}
+	public List<Operation> getChildrenOperations() {
 		return childrenOperations;
 	}
 

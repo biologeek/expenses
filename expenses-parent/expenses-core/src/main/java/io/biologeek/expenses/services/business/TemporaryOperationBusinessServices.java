@@ -14,7 +14,7 @@ import io.biologeek.expenses.domain.beans.operations.UsualOperation;
 public class TemporaryOperationBusinessServices extends OperationBusinessServices<TemporaryOperation> {
 
 	@Override
-	Set<UsualOperation> processOperationAndGenerateConcrete(TemporaryOperation operationToProcess) {
+	public Set<UsualOperation> processOperationAndGenerateConcrete(TemporaryOperation operationToProcess) {
 		// TODO Auto-generated method stub
 		return null;
 	}

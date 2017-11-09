@@ -16,7 +16,7 @@ import io.biologeek.expenses.domain.beans.operations.UsualOperation;
 public class MultiTenantOperationBusinessService extends OperationBusinessServices<MultiTenantOperation> {
 
 	@Override
-	Set<UsualOperation> processOperationAndGenerateConcrete(MultiTenantOperation operationToProcess) {
+	public Set<UsualOperation> processOperationAndGenerateConcrete(MultiTenantOperation operationToProcess) {
 		// TODO Auto-generated method stub
 		return null;
 	}
