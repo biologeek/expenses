@@ -2,7 +2,16 @@ package io.biologeek.expenses.domain.beans.operations;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
+/**
+ * Concrete operation that represents most types of operations.
+ * It is modifiable provided it is not linked to other operation (which is generally true)
+ * and is counted regularly in any balance.
+ * <br><br>
+ * It can be created from any type of {@link Operation} and takes all common attributes of operations
+ * .
+ * @author xavier
+ *
+ */
 @Entity
 @DiscriminatorValue("U")
 public class UsualOperation extends Operation{
