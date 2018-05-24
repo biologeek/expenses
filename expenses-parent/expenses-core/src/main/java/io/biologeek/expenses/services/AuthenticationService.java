@@ -1,8 +1,6 @@
 package io.biologeek.expenses.services;
 
-import java.util.Base64;
 import java.util.Calendar;
-import java.util.Base64.Decoder;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -16,7 +14,6 @@ import io.biologeek.expenses.domain.beans.security.AuthenticationInformation;
 import io.biologeek.expenses.exceptions.AuthenticationException;
 import io.biologeek.expenses.exceptions.MissingArgumentException;
 import io.biologeek.expenses.exceptions.ValidationException;
-import io.biologeek.expenses.utils.Constants;
 import io.biologeek.expenses.utils.RandomGenerator;
 
 @Service
@@ -68,7 +65,7 @@ public class AuthenticationService {
 		RegisteredUser user = userService.getByLogin(bean.getLogin());
 		
 		logger.fine("Got user from database : "+user);
-		if (user.getAuthentication().getLogin().equals(bean.getLogin())
+		if (user != null && user.getAuthentication().getLogin().equals(bean.getLogin())
 				&& encoder.matches(bean.getPassword(), user.getAuthentication().getPassword())) {
 
 			user.getAuthentication().setAuthToken(tokenGenerator.generate());

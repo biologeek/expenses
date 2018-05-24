@@ -3,6 +3,7 @@ package io.biologeek.expenses.beans;
 import io.biologeek.expenses.domain.beans.operations.Operation;
 import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.domain.beans.operations.RegularOperation;
+import io.biologeek.expenses.domain.beans.operations.TemporaryOperation;
 import io.biologeek.expenses.domain.beans.operations.UsualOperation;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class OperationTest {
 	@Test
 	public void shouldNotBeModifiable_givenTemporaryWithParent(){
 		
-		Operation op = new RegularOperation();
+		Operation op = new TemporaryOperation();
 		op.setParentOperation(new UsualOperation());
 		op.setOperationType(OperationType.EXPENSE);
 		

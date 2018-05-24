@@ -59,10 +59,12 @@ public class RegisteredUserService {
 			savedUser.getAuthentication().setAuthToken(user.getAuthentication().getAuthToken());
 		}
 		savedUser.setActive(user.isActive());
-		if (user.getAge() > 0 && user.getAge() < 200)
-			savedUser.setAge(user.getAge());
-		else
-			throw new ValidationException("error.age.invalid");
+		if (user.getAge() != null) {
+			if (user.getAge() > 0 && user.getAge() < 200)
+				savedUser.setAge(user.getAge());
+			else
+				throw new ValidationException("error.age.invalid");
+		}
 		savedUser.setEmail(validateAndReturnEmail(user.getEmail()));
 		savedUser.setFirstName(user.getFirstName());
 		savedUser.setLastName(user.getLastName());
@@ -79,12 +81,8 @@ public class RegisteredUserService {
 			if (matcher.matches())
 				return email;
 			throw new ValidationException("error.email.incorrect");
-		} 
+		}
 		return null;
-	}
-
-	private String saltPassword(String password, Object passwordSalt) {
-		return password + passwordSalt;
 	}
 
 	public RegisteredUser findUserById(Long id) {
