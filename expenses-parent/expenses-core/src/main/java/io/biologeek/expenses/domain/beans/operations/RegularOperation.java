@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import io.biologeek.expenses.domain.beans.Interval;
@@ -22,8 +25,11 @@ import io.biologeek.expenses.validation.OperationValidator;
  * internally following business rules
  * 
  */
+@Entity
+@DiscriminatorValue("R")
 public class RegularOperation extends Operation implements Regular, Cloneable {
 
+	@Column
 	private Interval interval;
 	@Transient
 	private SortedSet<UsualOperation> concreteOperations;

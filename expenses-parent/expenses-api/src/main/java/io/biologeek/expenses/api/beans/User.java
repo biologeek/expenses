@@ -3,10 +3,11 @@ package io.biologeek.expenses.api.beans;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonAutoDetect
+@JsonTypeName(value="user")
 public class User extends Entity {
-	private Long id;
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -16,6 +17,9 @@ public class User extends Entity {
 	private List<Account> accounts;
 	private String sessionToken;
 
+	public User() {
+		this.type ="user";
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -92,6 +96,7 @@ public class User extends Entity {
 		this.firstName = firstName2;
 		return this;
 	}
+
 	public User lastName(String firstName2) {
 		this.lastName = firstName2;
 		return this;
@@ -131,6 +136,10 @@ public class User extends Entity {
 		this.setUsername(username2);
 		return this;
 	}
-	
-	
+
+	public User agentId(Long agentId2) {
+		this.agentId = agentId2;
+		return this;
+	}
+
 }

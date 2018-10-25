@@ -9,7 +9,7 @@
 
 	<artifactId>expenses-webapp</artifactId>
 	<name>Biologeek webapp</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<properties>
 	</properties>
 	<dependencies>
@@ -166,21 +166,6 @@
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<mainClass>${start-class}</mainClass>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
 						</goals>
 					</execution>
 				</executions>

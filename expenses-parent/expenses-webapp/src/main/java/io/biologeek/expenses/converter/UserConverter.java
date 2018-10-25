@@ -15,13 +15,15 @@ public class UserConverter {
 	/**
 	 * Converts domain OperationAgent
 	 * 
+	 * @param long1
+	 * 
 	 * @param result
 	 * @return
 	 */
-	public static CorpUser convertToCorp(Organization entity) {
+	public static CorpUser convertToCorp(Organization entity, Long long1) {
 		return new CorpUser()//
 				.name(entity.getName())//
-				.mainContact(UserConverter.convert(entity.getMainContact()))//
+				.mainContact(UserConverter.convert(entity.getMainContact(), null))//
 				.id(entity.getId())//
 				.isTrade(entity.isTrade());
 	}
@@ -31,20 +33,56 @@ public class UserConverter {
 				.accounts(AccountToApiConverter.convert(result.getAccounts()))//
 				.age(result.getAge())//
 				.firstName(result.getFirstName())//
-				.username(result.getUsername())
-				.id(result.getId())//
+				.username(result.getUsername()).id(result.getId())//
 				.lastName(result.getLastName())//
 				.mailAddress(result.getEmail())//
 				.phoneNumber(result.getPhoneNumber())//
 				.authToken(result.getAuthentication().getAuthToken());
 	}
 
-	public static User convert(Person result) {
+	/**
+	 * API => Model
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public static OperationAgent toOperationAgent(Entity ent) {
+		OperationAgent agent = new OperationAgent()//
+				.agentId(ent.getAgentId());
+		
+		if (ent instanceof User)
+			agent.setAgentEntity(toPerson((User) ent));
+		else if (ent instanceof CorpUser)
+			agent.setAgentEntity(toOrganization((CorpUser) ent));
+		return agent;
+	}
+
+	private static Organization toOrganization(CorpUser ent) {
+		Organization or = new Organization();
+		or.setId(ent.getId());
+		or.setMainContact(toPerson(ent.getMainContact()));
+		return null;
+	}
+
+	private static Person toPerson(User ent) {
+		Person person = new Person();
+		person.setId(ent.getId());
+		person.setAge(ent.getAge());
+		person.setFirstName(ent.getFirstName());
+		person.setLastName(ent.getLastName());
+		person.setMailAddress(ent.getMailAddress());
+		person.setPhoneNumber(ent.getPhoneNumber());
+		return person;
+	}
+
+	public static User convert(Person result, Long agentId) {
+		if (result == null)
+			return null;
 		return new User()//
 				.age(result.getAge())//
 				.firstName(result.getFirstName())//
 				.id(result.getId())//
-				.lastName(result.getLastName())//
+				.agentId(agentId).lastName(result.getLastName())//
 				.phoneNumber(result.getPhoneNumber());//
 	}
 
@@ -67,9 +105,9 @@ public class UserConverter {
 	public static <T extends Entity> T convert(OperationAgent agent) {
 		if (agent != null) {
 			if (agent.getAgentEntity() instanceof Person)
-				return (T) convert((Person) agent.getAgentEntity());
+				return (T) convert((Person) agent.getAgentEntity(), agent.getId());
 			else if (agent.getAgentEntity() instanceof Organization)
-				return (T) convertToCorp((Organization) agent.getAgentEntity());
+				return (T) convertToCorp((Organization) agent.getAgentEntity(), agent.getId());
 		}
 		return null;
 	}

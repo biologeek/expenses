@@ -19,7 +19,7 @@ import io.biologeek.expenses.domain.beans.operations.OperationType;
 
 @Repository
 public interface OperationsRepository extends JpaRepository<Operation, Long>{
-	@Query("from Operation where account_id = :accountId order by creationDate desc")
+	@Query("select op from Operation op where op.account.id = :accountId order by op.creationDate desc")
 	public List<Operation> getOperationsForAccountWithLimit(@Param("accountId") Long accountId, Pageable pager);
 
 	@Query("from Operation where account_id = :accountId and effectiveDate >= :begin and effectiveDate <= :end order by effectiveDate asc")

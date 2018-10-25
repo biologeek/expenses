@@ -81,9 +81,9 @@ public class OperationController extends ExceptionWrappedRestController {
 		}
 
 		io.biologeek.expenses.domain.beans.operations.Operation op = null;
-		if (expense.getType().isRegular())
+		if (expense.getType() != null && expense.getType().isRegular())
 			op = OperationToModelConverter.convert((RegularOperation) expense);
-		else if (expense.getType().isTemporary()) {
+		else if (expense.getType() != null && expense.getType().isTemporary()) {
 			op = OperationToModelConverter.convert((TemporaryOperation) expense);
 		} else {
 			op = OperationToModelConverter.convert(expense);

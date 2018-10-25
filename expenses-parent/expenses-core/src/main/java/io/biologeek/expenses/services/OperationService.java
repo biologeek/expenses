@@ -72,6 +72,13 @@ public class OperationService {
 
 	}
 
+	/**
+	 * Updates an operation based on its ID. Operation is validated before merging and updating
+	 * @param operation
+	 * @return
+	 * @throws BusinessException
+	 * @throws ValidationException
+	 */
 	public Operation updateOperation(Operation operation) throws BusinessException, ValidationException {
 		OperationValidator.validateOperation(operation);
 

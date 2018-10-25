@@ -54,7 +54,7 @@ public class CategoryService {
 		return categoryRepository.listTopLevelCategories();
 	}
 
-	public List<Category> getCategoryByLevels(int nomenclature) {
+	public List<Category> getCategoriesByLevel(int nomenclature) {
 		return categoryRepository.getCategoriesByLevel(nomenclature);
 	}
 

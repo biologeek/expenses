@@ -1,6 +1,7 @@
 package io.biologeek.expenses.api.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Corporate entity
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  *
  */
 @JsonAutoDetect
+@JsonTypeName("corp")
 public class CorpUser extends Entity {
 	private Category sector;
 	private boolean isTrade;
@@ -16,7 +18,9 @@ public class CorpUser extends Entity {
 	 * Physical entity to contact in the organization
 	 */
 	private User mainContact;
-	
+	public CorpUser() {
+		this.type="corp";
+	}
 	public Category getSector() {
 		return sector;
 	}

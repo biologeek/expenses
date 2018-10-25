@@ -32,6 +32,7 @@ public class CategoryToApiConverter {
 			result.setLevel(category.getLevel());
 			result.setParent(CategoryToApiConverter.convertToCategory(category.getParent()));
 			result.setNomenclature(category.getNomenclature());
+			result.setPictureId(category.getCategoryPictureId());
 			return result;
 		}
 		return null;

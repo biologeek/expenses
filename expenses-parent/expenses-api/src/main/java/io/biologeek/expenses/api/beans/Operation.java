@@ -9,14 +9,18 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 /**
- * @author 
+ * @author
  *
  */
 @JsonAutoDetect
-@JsonSubTypes({@Type(value=RegularOperation.class), @Type(value=TemporaryOperation.class)})
+@JsonSubTypes({ @Type(value = RegularOperation.class), @Type(value = TemporaryOperation.class) })
+@JsonTypeInfo(use=Id.NAME, include=As.PROPERTY, property="type")
 public class Operation implements Serializable {
 
 	/**
@@ -24,30 +28,29 @@ public class Operation implements Serializable {
 	 */
 	private static final long serialVersionUID = 7925429032845927724L;
 	private Long id;
-	User beneficiary;
-	User emitter;
+	private Entity beneficiary;
+	private Entity emitter;
 
 	private Long account;
 	private String description;
-	@JsonFormat(shape=Shape.OBJECT)
+	@JsonFormat(shape = Shape.OBJECT)
 	private OperationType type;
-	@JsonFormat(shape=Shape.SCALAR)
+	@JsonFormat(shape = Shape.SCALAR)
 	private BigDecimal amount;
 	private String currency;
 	private Date effectiveDate;
-	
 	private String operationTypeName;
 
-	Category category;
-	
-	@JsonFormat(shape=Shape.OBJECT)
+	private Category category;
+
+	@JsonFormat(shape = Shape.OBJECT)
 	Nomenclature nomenclature;
 
 	private Date creationDate;
 	private Date updateDate;
 	private Integer version;
 	private boolean modifiable;
-	
+
 	private List<Operation> children;
 
 	public boolean isModifiable() {
@@ -86,14 +89,6 @@ public class Operation implements Serializable {
 		this.currency = currency;
 	}
 
-	public User getBeneficiary() {
-		return beneficiary;
-	}
-
-	public void setBeneficiary(User beneficiary) {
-		this.beneficiary = beneficiary;
-	}
-
 	public OperationType getType() {
 		return type;
 	}
@@ -102,11 +97,19 @@ public class Operation implements Serializable {
 		this.type = type;
 	}
 
-	public User getOperationAgent() {
+	public Entity getBeneficiary() {
+		return beneficiary;
+	}
+
+	public void setBeneficiary(Entity beneficiary) {
+		this.beneficiary = beneficiary;
+	}
+
+	public Entity getEmitter() {
 		return emitter;
 	}
 
-	public void setEmitter(User emitter) {
+	public void setEmitter(Entity emitter) {
 		this.emitter = emitter;
 	}
 
@@ -124,10 +127,6 @@ public class Operation implements Serializable {
 
 	public void setEffectiveDate(Date effectiveDate) {
 		this.effectiveDate = effectiveDate;
-	}
-
-	public User getEmitter() {
-		return emitter;
 	}
 
 	public String getDescription() {
@@ -240,7 +239,7 @@ public class Operation implements Serializable {
 
 	public void setModifiable(boolean modifiable) {
 		this.modifiable = modifiable;
-		
+
 	}
 
 	public List<Operation> getChildren() {

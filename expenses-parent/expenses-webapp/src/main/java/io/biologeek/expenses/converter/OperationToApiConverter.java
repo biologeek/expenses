@@ -15,8 +15,8 @@ import io.biologeek.expenses.api.beans.charts.XYChartData;
 import io.biologeek.expenses.api.beans.charts.XYChartData.XYChartPoint;
 import io.biologeek.expenses.beans.OperationList;
 import io.biologeek.expenses.domain.beans.Category;
-import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.BalanceUnit;
+import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 
 public class OperationToApiConverter {

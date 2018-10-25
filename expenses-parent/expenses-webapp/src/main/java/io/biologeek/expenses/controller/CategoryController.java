@@ -24,6 +24,11 @@ public class CategoryController extends ExceptionWrappedRestController {
 	@Autowired
 	private CategoryService categoryService;
 
+	/**
+	 * Fids all sons of a category using its nomenclature (e.g : 001 or 002-001, ...)
+	 * @param nomenclature 
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/{nomenc}")
 	public ResponseEntity<List<Category>> getCategoriesByNomenclature(@PathVariable("nomenc") String nomenclature) {
 		
@@ -37,10 +42,15 @@ public class CategoryController extends ExceptionWrappedRestController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/level/{nomenc}")
+	/**
+	 * Finds all categories at a level (0, 1, 2, 3)
+	 * @param nomenclature
+	 * @return
+	 */
 	public ResponseEntity<List<Category>> getCategoriesByLevels(@PathVariable("nomenc") String nomenclature) {
 		return new ResponseEntity<>(
 				CategoryToApiConverter.convert(
-						categoryService.getCategoryByLevels(Integer.valueOf(nomenclature))
+						categoryService.getCategoriesByLevel(Integer.valueOf(nomenclature))
 						),
 				HttpStatus.OK);
 	}

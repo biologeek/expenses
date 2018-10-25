@@ -1,5 +1,8 @@
 package io.biologeek.expenses.domain.beans.operations;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import io.biologeek.expenses.exceptions.BusinessException;
 
 /**
@@ -21,6 +24,9 @@ import io.biologeek.expenses.exceptions.BusinessException;
  * @author xavier
  *
  */
+
+@Entity
+@DiscriminatorValue("T")
 public class TemporaryOperation extends Operation implements Temporary {
 	/**
 	 * Method that will allow to solve the temporary operation. For example

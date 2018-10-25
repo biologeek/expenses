@@ -21,13 +21,15 @@ public class OperationToModelConverter {
 		account.setId(expense.getAccount());
 		result.setId(expense.getId());
 		result.setAccount(account);
-		result.setAmount(expense.getAmount().doubleValue());
-		result.setCategory(CategoryConverter.convert(expense.getCategory()));
+		result.setAmount(expense.getAmount() == null ? 0 : expense.getAmount().doubleValue());
+		result.setCategory(CategoryToModelConverter.convert(expense.getCategory()));
 		result.setCreationDate(expense.getCreationDate());
 		result.setUpdateDate(expense.getUpdateDate());
 		result.setCurrency(new CurrencyConverter().convertToEntityAttribute(expense.getCurrency()));
 		result.setDescription(expense.getDescription());
 		result.setEffectiveDate(expense.getEffectiveDate());
+		result.setBeneficiary(UserConverter.toOperationAgent(expense.getBeneficiary()));
+		result.setEmitter(UserConverter.toOperationAgent(expense.getEmitter()));
 		if (expense.getType() != null)
 			result.setOperationType(OperationType.valueOf(expense.getType().name()));
 		return result;

@@ -51,9 +51,14 @@ public class Category {
 	private List<Organization> organizations;
 	
 	/**
-	 * Picture used to illustrate category
+	 * Picture file name used to illustrate category
 	 */
 	private String categoryPicture;
+	
+	/**
+	 * Android picture ID
+	 */
+	private int categoryPictureId;
 
 	public Long getId() {
 		return id;
@@ -77,6 +82,14 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getCategoryPictureId() {
+		return categoryPictureId;
+	}
+
+	public void setCategoryPictureId(int categoryPictureId) {
+		this.categoryPictureId = categoryPictureId;
 	}
 
 	public int getLevel() {
@@ -128,10 +141,19 @@ public class Category {
 	}
 
 	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", level=" + level + ", nomenclature=" + nomenclature
+				+ ", parent=" + parent + ", subCategories=" + subCategories + ", operations=" + operations
+				+ ", organizations=" + organizations + ", categoryPicture=" + categoryPicture + ", categoryPictureId="
+				+ categoryPictureId + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((categoryPicture == null) ? 0 : categoryPicture.hashCode());
+		result = prime * result + categoryPictureId;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + level;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -156,6 +178,8 @@ public class Category {
 			if (other.categoryPicture != null)
 				return false;
 		} else if (!categoryPicture.equals(other.categoryPicture))
+			return false;
+		if (categoryPictureId != other.categoryPictureId)
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -196,7 +220,5 @@ public class Category {
 			return false;
 		return true;
 	}
-	
-	
 
 }

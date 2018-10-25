@@ -15,6 +15,7 @@ public class Category {
 	private String name;
 
 	private String picture;
+	private int pictureId;
 
 	private int level;
 	
@@ -28,6 +29,14 @@ public class Category {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getPictureId() {
+		return pictureId;
+	}
+
+	public void setPictureId(int pictureId) {
+		this.pictureId = pictureId;
 	}
 
 	public String getName() {

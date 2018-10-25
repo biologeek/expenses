@@ -51,14 +51,12 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 				return t.getName().equals("token");
 			}
 		});
-		
-		if (request.getHeader("Authorization") != null || hasAuthorization) {
-			authenticateWithToken(response, chain, request);
-		} else if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/login")) {
+		if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/login")) {
 			// Should not filter login endpoint
 			chain.doFilter(arg0, response);
-		} else if (request.getRequestURL().toString().contains("expenses-mobile")) {
-			chain.doFilter(arg0, response);
+		}
+		if (request.getHeader("Authorization") != null || hasAuthorization) {
+			authenticateWithToken(response, chain, request);
 		} else {
 			response.getOutputStream().write("{\"key\" : \"connection.authentication.required\"}".getBytes());
 			response.setContentType("application/json");
