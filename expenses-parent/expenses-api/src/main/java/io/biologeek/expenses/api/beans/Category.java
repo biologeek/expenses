@@ -15,9 +15,9 @@ public class Category {
 	private String name;
 
 	private String picture;
-	private int pictureId;
+	private Integer pictureId;
 
-	private int level;
+	private Integer level;
 	
 	private String nomenclature;
 	@JsonFormat(shape=Shape.OBJECT)
@@ -31,11 +31,11 @@ public class Category {
 		this.id = id;
 	}
 
-	public int getPictureId() {
+	public Integer getPictureId() {
 		return pictureId;
 	}
 
-	public void setPictureId(int pictureId) {
+	public void setPictureId(Integer pictureId) {
 		this.pictureId = pictureId;
 	}
 
@@ -55,11 +55,11 @@ public class Category {
 		this.picture = picture;
 	}
 
-	public int getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 

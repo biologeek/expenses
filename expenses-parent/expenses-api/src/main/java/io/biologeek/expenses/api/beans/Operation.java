@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -20,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
  */
 @JsonAutoDetect
 @JsonSubTypes({ @Type(value = RegularOperation.class), @Type(value = TemporaryOperation.class) })
-@JsonTypeInfo(use=Id.NAME, include=As.PROPERTY, property="type")
+@JsonTypeInfo(use=Id.NAME, include=As.PROPERTY, property="discriminator")
+@JsonTypeName("O")
 public class Operation implements Serializable {
 
 	/**
@@ -30,7 +32,7 @@ public class Operation implements Serializable {
 	private Long id;
 	private Entity beneficiary;
 	private Entity emitter;
-
+	private String discriminator;
 	private Long account;
 	private String description;
 	@JsonFormat(shape = Shape.OBJECT)
@@ -63,6 +65,14 @@ public class Operation implements Serializable {
 
 	public void setOperationTypeName(String operationTypeName) {
 		this.operationTypeName = operationTypeName;
+	}
+
+	public String getDiscriminator() {
+		return discriminator;
+	}
+
+	public void setDiscriminator(String discriminator) {
+		this.discriminator = discriminator;
 	}
 
 	public Nomenclature getNomenclature() {

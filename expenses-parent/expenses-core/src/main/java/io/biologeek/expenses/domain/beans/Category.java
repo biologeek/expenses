@@ -58,7 +58,7 @@ public class Category {
 	/**
 	 * Android picture ID
 	 */
-	private int categoryPictureId;
+	private Integer categoryPictureId;
 
 	public Long getId() {
 		return id;
@@ -84,11 +84,11 @@ public class Category {
 		this.name = name;
 	}
 
-	public int getCategoryPictureId() {
+	public Integer getCategoryPictureId() {
 		return categoryPictureId;
 	}
 
-	public void setCategoryPictureId(int categoryPictureId) {
+	public void setCategoryPictureId(Integer categoryPictureId) {
 		this.categoryPictureId = categoryPictureId;
 	}
 

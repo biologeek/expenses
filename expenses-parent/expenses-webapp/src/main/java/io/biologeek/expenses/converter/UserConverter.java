@@ -47,6 +47,9 @@ public class UserConverter {
 	 * @return
 	 */
 	public static OperationAgent toOperationAgent(Entity ent) {
+		if (ent == null)
+			return null;
+		
 		OperationAgent agent = new OperationAgent()//
 				.agentId(ent.getAgentId());
 		
