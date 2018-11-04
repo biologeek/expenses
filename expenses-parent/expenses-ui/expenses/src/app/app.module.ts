@@ -26,6 +26,8 @@ export const appRoutes: Route[] = [
     path: '', component: ConnectionComponent
   }, {
     path: 'new', component: OperationEditorComponent
+  }, {
+    path: 'list', component: OperationListComponent
   }
 ];
 

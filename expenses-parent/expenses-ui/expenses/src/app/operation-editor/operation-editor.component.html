@@ -1,50 +1,72 @@
-<form #operation="ngForm">
-  <mat-grid-list cols="4" rowHeight="4:4">
-    <mat-grid-tile colspan="3">
+<mat-card>
+  <mat-card-header>{{operation.id ? 'Edit' : 'New' }} operation</mat-card-header>
+  <mat-card-content>
+    <form #operation="ngForm">
+      <mat-grid-list cols="4" rowHeight="60px">
+        <mat-grid-tile colspan="3">
+          <mat-form-field>
+            <input matInput name="amount" placeholder="Amount" [(ngModel)]="operation.amount">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field class="w-50p">
+            <mat-select placeholder="Currency">
+              <mat-option *ngFor="let cur of currencies" [value]="cur">
+                {{cur.code}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <mat-form-field class="w-100p">
+            <mat-select placeholder="Category">
+              <mat-option *ngFor="let category of categories" [value]="category">
+                {{category.nomenclature}} - {{category.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <mat-form-field class="w-100p">
+            <mat-select placeholder="Emitter" [(ngModel)]="operation.emitter" name="emitter">
+              <mat-option *ngFor="let em of entities" [value]="em">
+                {{em.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <mat-form-field class="w-100p">
+            <mat-select placeholder="Receiver" [(ngModel)]="operation.receiver" name="receiver">
+              <mat-option *ngFor="let em of entities" [value]="em">
+                {{em.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
 
-      <mat-form-field>
-        <input matInput name="amount" placeholder="Amount" [(ngModel)]="operation.amount">
-      </mat-form-field>
-    </mat-grid-tile>
+        <mat-radio-group>
+          <mat-grid-tile colspan="2">
+            <mat-radio-button value="">Normal</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="2">
+            <mat-radio-button value="R">Regular</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="2">
+            <mat-radio-button value="T">Temporary</mat-radio-button>
+          </mat-grid-tile>
 
-    <mat-grid-tile>
-      <mat-form-field class="w-50p">
-        <mat-select placeholder="Currency">
-          <mat-option *ngFor="let cur of currencies" [value]="cur">
-            {{cur.code}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="4">
-      <mat-form-field class="w-100p">
-        <mat-select placeholder="Category">
-          <mat-option *ngFor="let category of categories" [value]="category">
-            {{category.nomenclature}} - {{category.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile colspan="4">
-
-      <mat-form-field class="w-100p">
-        <mat-select placeholder="Emitter">
-          <mat-option *ngFor="let em of entities" [value]="em">
-            {{em.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="4">
-
-      <mat-form-field class="w-100p">
-        <mat-select placeholder="Receiver">
-          <mat-option *ngFor="let em of entities" [value]="em">
-            {{em.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
-  </mat-grid-list>
-</form>
+          <mat-grid-tile colspan="2"></mat-grid-tile>
+        </mat-radio-group>
+        <mat-grid-tile colspan="4">
+          <input [matDatepicker]="myDatepicker" placeholder="Date" [(ngModel)]="operation.effectiveDate" name="effectiveDate">
+          <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <button mat-raised-button color="primary">Save</button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </mat-card-content>
+</mat-card>

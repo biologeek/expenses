@@ -1,3 +1,29 @@
-<p>
-  operation-list works!
-</p>
+<mat-card>
+  <mat-card-header>Your operations</mat-card-header>
+  <mat-card-content>
+    <mat-grid-list cols="4" rowHeight="50px" gutterSize="0">  
+      <div *ngFor="let operation of operations">
+        <mat-grid-tile colspan="1" rowspan="2">
+          <img class="small-img" [src]="'assets/pictures/'+operation.category.picture">
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-chip-list>
+            <mat-chip color="primary" class="important"> {{ operation.amount}} {{operation.currency}}</mat-chip>
+          </mat-chip-list>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="1" rowspan="1">
+          <i class="material-icons">
+            edit
+          </i>
+          <i class="material-icons">
+            delete
+          </i></mat-grid-tile>
+        <mat-grid-tile colspan="3" rowspan="1" class="light-grey">
+          {{operation.category.nomenclature}} - {{operation.category.name}}
+        </mat-grid-tile>
+      </div>
+    </mat-grid-list>
+
+  </mat-card-content>
+</mat-card>

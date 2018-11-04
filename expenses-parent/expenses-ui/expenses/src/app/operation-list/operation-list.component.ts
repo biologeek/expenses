@@ -7,6 +7,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OperationListComponent implements OnInit {
 
+
+
+  operations = [
+    {
+      amount: 12.34,
+      currency: '€',
+      category: {
+        name: 'Ménage',
+        picture: 'a.png',
+        nomenclature: '001-003'
+      }
+    },
+    {
+      amount: 12.34,
+      currency: '€',
+      category: {
+        name: 'Ménage',
+        picture: 'a.png',
+        nomenclature: '001-003'
+      }
+    },
+    {
+      amount: 12.34,
+      currency: '€',
+      category: {
+        name: 'Ménage',
+        picture: 'a.png',
+        nomenclature: '001-003'
+      }
+    }
+  ];
   constructor() { }
 
   ngOnInit() {
