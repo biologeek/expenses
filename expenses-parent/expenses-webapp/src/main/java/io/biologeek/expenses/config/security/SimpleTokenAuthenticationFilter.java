@@ -39,29 +39,36 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 	AuthenticationService authentService;
 
 	@Override
-	public void doFilter(ServletRequest arg0, ServletResponse response, FilterChain chain)
+	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) arg0;
-		
+
+		HttpServletResponse response = (HttpServletResponse) arg1;
 		List<Cookie> cookies = request.getCookies() == null ? new ArrayList<>() : Arrays.asList(request.getCookies());
-		
+
 		boolean hasAuthorization = cookies.stream().anyMatch(new Predicate<Cookie>() {
 			@Override
-			public boolean test(Cookie t) {				
+			public boolean test(Cookie t) {
 				return t.getName().equals("token");
 			}
 		});
-		if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/login")) {
+		if ("OPTIONS".equals(request.getMethod())) {
+
+			response.addHeader("Access-Control-Allow-Origin", "*");
+			response.setStatus(HttpServletResponse.SC_ACCEPTED);
+			return;
+		} else if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/login")) {
 			// Should not filter login endpoint
 			chain.doFilter(arg0, response);
-		}
-		if (request.getHeader("Authorization") != null || hasAuthorization) {
-			authenticateWithToken(response, chain, request);
 		} else {
-			response.getOutputStream().write("{\"key\" : \"connection.authentication.required\"}".getBytes());
-			response.setContentType("application/json");
-			HttpServletResponse hsr = (HttpServletResponse) response;
-			hsr.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			if (request.getHeader("Authorization") != null || hasAuthorization) {
+				authenticateWithToken(response, chain, request);
+			} else {
+				response.getOutputStream().write("{\"key\" : \"connection.authentication.required\"}".getBytes());
+				response.setContentType("application/json");
+				HttpServletResponse hsr = (HttpServletResponse) response;
+				hsr.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
 		}
 	}
 
@@ -80,10 +87,9 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 	private void authenticateWithToken(ServletResponse response, FilterChain chain, HttpServletRequest request)
 			throws IOException, ServletException {
 		String userID = extractUserId(request);
-		
-		
+
 		String token = extractToken(request);
-		
+
 		if (token != null && userID != null) {
 			if (authentService.checkToken(Long.valueOf(userID), token)) {
 				// User is authenticated and token is valid
@@ -113,7 +119,7 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 
 	private String extractUserId(HttpServletRequest request) {
 		String userID = request.getHeader("user");
-		
+
 		if (userID == null && request.getCookies() != null && request.getCookies().length > 0) {
 			userID = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
 				@Override

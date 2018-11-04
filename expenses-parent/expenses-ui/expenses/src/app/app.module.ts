@@ -28,6 +28,8 @@ export const appRoutes: Route[] = [
     path: 'new', component: OperationEditorComponent
   }, {
     path: 'list', component: OperationListComponent
+  }, {
+    path: 'account', component: AccountChoiceComponent
   }
 ];
 

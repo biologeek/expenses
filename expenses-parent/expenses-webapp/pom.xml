@@ -36,6 +36,13 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 			<version>${spring.boot.version}</version>
 		</dependency>
+		
+		
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring.boot.version}</version>
+        </dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
@@ -57,6 +64,13 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
+			<version>${org.springframework-security.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
 			<version>${org.springframework-security.version}</version>
 		</dependency>
 		<dependency>
@@ -119,13 +133,9 @@
 				<version>2.4</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
-			<!--		<webResources>
-						<resource>
-							 this is relative to the pom.xml directory
-							<directory>../expenses-mobile-webui/src/main/webapp/dist</directory>
-							<targetPath>src/main/webapp/expenses-mobile</targetPath>
-						</resource>
-					</webResources> -->
+					<!-- <webResources> <resource> this is relative to the pom.xml directory 
+						<directory>../expenses-mobile-webui/src/main/webapp/dist</directory> <targetPath>src/main/webapp/expenses-mobile</targetPath> 
+						</resource> </webResources> -->
 				</configuration>
 			</plugin>
 			<plugin>

@@ -1,6 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
+
+mat-card-content {
+    padding-top: 10px;    
+}
+
+.navbar {
+    background-color: #3f51b5;
+    border-radius: 5px;
+    color: white;
+    height: 80px;
+    margin-bottom: 20px
+}
+
+.navbar a{
+text-decoration: none;
+}
+    .navbar a:link{
+    color: white;
+}
+.navbar a:visited{
+        color: white;
+}
+.navbar a:active {
+    color: white;
+}
+.navbar a:active {
+    color: white;
+}
+
 .bg-grey-light {
     background-color: #d8d8d8;
 }
@@ -15,6 +44,9 @@
 .w-50p {
     width: 50%;
 }
+.w-70p {
+    width: 70%;
+}
 .w-100p {
     width: 90%;
 }
@@ -27,6 +59,9 @@
 .h-centered {
     position: absolute;
     margin: 0 auto;
+}
+.icon-s {
+    font-size: 3rem !important;
 }
 
 .icon-md {

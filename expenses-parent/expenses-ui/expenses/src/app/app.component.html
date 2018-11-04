@@ -1,2 +1,21 @@
-<router-outlet></router-outlet>
+<div class="navbar">
+    <mat-grid-list cols="4">
 
+        <mat-grid-tile colspan="1">
+
+            <a href="javascript:history.go(-1)" class="material-icons icon-s" matTooltip="Go back">
+                    navigate_before
+            </a>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="1"></mat-grid-tile>
+
+        <mat-grid-tile colspan="1"></mat-grid-tile>
+        <mat-grid-tile colspan="1">
+            <a class="material-icons icon-s" matTooltip="Exit app">
+                exit_to_app
+            </a>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+<router-outlet></router-outlet>

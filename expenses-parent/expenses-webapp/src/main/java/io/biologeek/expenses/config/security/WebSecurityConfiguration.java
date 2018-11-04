@@ -5,96 +5,71 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import io.biologeek.expenses.domain.beans.security.OwnPasswordEncoder;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 //@ComponentScan("io.biologeek.expenses.config.security")
-public class WebSecurityConfiguration { // extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	public static final int SHA_ENCODING_STRENGTH = 256;
 
 	@Autowired
 	DataSource ds;
-	/*
+	
 	@Autowired
 	UserDetailsService userDetailsService;
 
 	@Autowired
 	AuthenticationProvider authenticationProvider;
 
-	@Autowired
-	private PersistentTokenRepository tokenRepository;
-	
-	// public void configureGlobal(AuthenticationManagerBuilder builder) throws
-	// Exception {
-	// builder.jdbcAuthentication().dataSource(ds)//
-	// .passwordEncoder(new ShaPasswordEncoder(SHA_ENCODING_STRENGTH))//
-	// .usersByUsernameQuery("select login,password from user where login =
-	// ?")//
-	// .authoritiesByUsernameQuery("select username, role from user where login
-	// = ?");
-	// }
+	    @Override
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.
+                jdbcAuthentication()
+                .usersByUsernameQuery(usersQuery)
+                .authoritiesByUsernameQuery(rolesQuery)
+                .dataSource(dataSource)
+                .passwordEncoder(bCryptPasswordEncoder);
+}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	    @Override
+	    protected void configure(HttpSecurity http) throws Exception {
 
-		// http.exceptionHandling().authenticationEntryPoint(http401());
-		http.csrf().disable().authorizeRequests()//
-				.anyRequest().permitAll();
-		// .anyRequest().authenticated()//
-		// .regexMatchers("/login", "/error", "/logout").permitAll()//
-		// .and().formLogin().loginPage("/login").loginProcessingUrl("/login-process")//
-		// .usernameParameter("username").passwordParameter("passord")//
-		// .and().rememberMe().rememberMeParameter("remember-me")//
-		// .tokenRepository(tokenRepository).tokenValiditySeconds(86400)//
-		// .and().logout().permitAll()//
-		// .and().httpBasic();
+	        http.
+	                authorizeRequests()
+	                .antMatchers("/").permitAll()
+	                .antMatchers("/login").permitAll()
+	                .antMatchers("/registration").permitAll()
+	                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+	                .authenticated().and().csrf().disable().formLogin()
+	                .loginPage("/login").failureUrl("/login?error=true")
+	                .defaultSuccessUrl("/admin/home")
+	                .usernameParameter("email")
+	                .passwordParameter("password")
+	                .and().logout()
+	                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+	                .logoutSuccessUrl("/").and().exceptionHandling()
+	                .accessDeniedPage("/access-denied");
+	    }
+
+	    @Override
+	    public void configure(WebSecurity web) throws Exception {
+	        web
+	                .ignoring()
+	                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
 	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-		auth.jdbcAuthentication().dataSource(ds)//
-				.passwordEncoder(new ShaPasswordEncoder(SHA_ENCODING_STRENGTH))//
-				.usersByUsernameQuery("select login,password from public.user where login = ?")//
-				.authoritiesByUsernameQuery("select username, role from public.user where login = ?")//
-		;
-		//// .inMemoryAuthentication().withUser("xcaron").password("32653265").roles("USER");
-		// auth.authenticationProvider(authenticationProvider);
-		// auth.userDetailsService(userDetailsService);
-	}
-
-	private AuthenticationEntryPoint http401() {
-
-		AuthenticationEntryPoint authenticationEntryPoint = new AuthenticationEntryPoint() {
-
-			@Override
-			public void commence(HttpServletRequest request, HttpServletResponse response,
-					AuthenticationException authException) throws IOException, ServletException {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Wrong username, password or authorization");
-			}
-
-		};
-		return authenticationEntryPoint;
-	}
-
-	@Bean
-	public PersistentTokenRepository getPersistentTokenRepository() {
-		JdbcTokenRepositoryImpl result = new JdbcTokenRepositoryImpl();
-		result.setDataSource(ds);
-		return result;
-	}
-
-	@Bean
-	public PersistentTokenBasedRememberMeServices getPersistentTokenBasedRememberMeServices() {
-		PersistentTokenBasedRememberMeServices tokenBasedservice = new PersistentTokenBasedRememberMeServices(
-				"remember-me", userDetailsService, tokenRepository);
-		return tokenBasedservice;
-	}
-*/
 	/**
 	 * SHA-256 encryption for passwords
 	 * 
