@@ -1,0 +1,22 @@
+<mat-card class="w-50p h-centered">
+  <mat-card-title>Connection</mat-card-title>
+  <mat-card-content>
+    <form class='middle-size-form'>
+      <mat-grid-list cols="1" rowHeight="20:1">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput name="username" placeholder='Username' [(ngModel)]='connectionInfo.username'>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder='Password' name="password" type='password' [(ngModel)]='connectionInfo.password'>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)='connect()'>Connect</button>
+  </mat-card-actions>
+</mat-card>

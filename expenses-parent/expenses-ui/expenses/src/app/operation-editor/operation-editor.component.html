@@ -1,0 +1,50 @@
+<form #operation="ngForm">
+  <mat-grid-list cols="4" rowHeight="4:4">
+    <mat-grid-tile colspan="3">
+
+      <mat-form-field>
+        <input matInput name="amount" placeholder="Amount" [(ngModel)]="operation.amount">
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-form-field class="w-50p">
+        <mat-select placeholder="Currency">
+          <mat-option *ngFor="let cur of currencies" [value]="cur">
+            {{cur.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+      <mat-form-field class="w-100p">
+        <mat-select placeholder="Category">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{category.nomenclature}} - {{category.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="4">
+
+      <mat-form-field class="w-100p">
+        <mat-select placeholder="Emitter">
+          <mat-option *ngFor="let em of entities" [value]="em">
+            {{em.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+
+      <mat-form-field class="w-100p">
+        <mat-select placeholder="Receiver">
+          <mat-option *ngFor="let em of entities" [value]="em">
+            {{em.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>
