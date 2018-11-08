@@ -30,7 +30,7 @@ import io.biologeek.expenses.services.AccountService;
 import io.biologeek.expenses.services.OperationService;
 
 @RestController
-@RequestMapping("/api/operation")
+@RequestMapping("/operation")
 public class OperationController extends ExceptionWrappedRestController {
 
 	@Autowired

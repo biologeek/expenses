@@ -29,7 +29,7 @@ import io.biologeek.expenses.services.OperationService;
 import io.biologeek.expenses.utils.DateTimeUnit;
 
 @Controller
-@RequestMapping("/api/charts")
+@RequestMapping("/charts")
 public class ChartsController extends ExceptionWrappedRestController {
 
 	@Autowired

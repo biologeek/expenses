@@ -14,7 +14,7 @@ import io.biologeek.expenses.services.OperationService;
 import io.biologeek.expenses.services.RegisteredUserService;
 
 @Controller
-@RequestMapping("/api/mobile")
+@RequestMapping("/mobile")
 public class AndroidExpensesController extends ExceptionWrappedRestController {
 
 	@Autowired

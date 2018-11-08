@@ -17,7 +17,7 @@ public class AccountService {
 
 	public Account getAccount(long id) {
 		if (id > 0)
-			return accountRepository.getOne(id);
+			return accountRepository.findOne(id);
 		else
 			return null;
 	}
@@ -27,7 +27,7 @@ public class AccountService {
 	}
 
 
-	public List<Account> getAccountsForUser(User user) {
+	public List<Account> getAccountsForUser(RegisteredUser user) {
 		return accountRepository.findByOwner(user);
 	}
 

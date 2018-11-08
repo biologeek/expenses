@@ -59,7 +59,7 @@ public class CategoryService {
 	}
 
 	public List<Category> getCategoriesByIds(Set<Long> set) {
-		return categoryRepository.findAllById(set);
+		return categoryRepository.findAll(set);
 	}
 
 	public List<Category> getAllCategories() {

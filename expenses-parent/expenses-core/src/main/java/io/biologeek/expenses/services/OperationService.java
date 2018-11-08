@@ -521,6 +521,6 @@ public class OperationService {
 	}
 
 	public void removeOperation(long account, long operation) {
-		operationsRepository.deleteById(operation);
+		operationsRepository.delete(operation);
 	}
 }

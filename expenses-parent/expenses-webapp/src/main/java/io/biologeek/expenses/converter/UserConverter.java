@@ -7,8 +7,8 @@ import io.biologeek.expenses.api.beans.User;
 import io.biologeek.expenses.domain.beans.OperationAgent;
 import io.biologeek.expenses.domain.beans.Organization;
 import io.biologeek.expenses.domain.beans.Person;
-import io.biologeek.expenses.domain.security.beans.RegisteredUser;
-import io.biologeek.expenses.domain.security.beans.security.AuthenticationInformation;
+import io.biologeek.expenses.domain.beans.RegisteredUser;
+import io.biologeek.expenses.domain.beans.security.AuthenticationInformation;
 
 public class UserConverter {
 
@@ -113,16 +113,5 @@ public class UserConverter {
 				return (T) convertToCorp((Organization) agent.getAgentEntity(), agent.getId());
 		}
 		return null;
-	}
-
-	public static RegisteredUser convert(User user) {
-		
-		return new RegisteredUser()//
-				.login(user.getUsername())//
-				.password(user.getPassword())
-				.age(user.getAge())//
-				.phoneNumber(user.getPhoneNumber())//
-				.email(user.getMailAddress())//
-				;
 	}
 }
