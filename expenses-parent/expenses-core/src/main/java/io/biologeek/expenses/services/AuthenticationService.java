@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import io.biologeek.expenses.domain.beans.RegisteredUser;
 import io.biologeek.expenses.domain.beans.security.AuthenticationInformation;
@@ -34,16 +35,23 @@ public class AuthenticationService {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 
-	public boolean checkToken(long userId, String token) {
-		if (userId > 0 && token != null && !token.isEmpty()) {
-			RegisteredUser userFound = userService.findUserById(userId);
-			if (userFound == null)
-				return false;
-			if (token.equals(userFound.getAuthentication().getAuthToken())) {
+	public boolean checkToken(String token) {
+		String[] strArr = decodeBase64Token(token).split(":");
+		if (strArr.length == 2) {
+			RegisteredUser user = this.userService.getByLogin(strArr[0]);
+			
+			if (encoder.matches(strArr[1], user.getAuthentication().getPassword())) {
 				return true;
+			} else {
+				return false;
 			}
 		}
+		
 		return false;
+	}
+
+	private String decodeBase64Token(String src) {		
+		return new String(Base64Utils.decodeFromString(src));
 	}
 
 	/**

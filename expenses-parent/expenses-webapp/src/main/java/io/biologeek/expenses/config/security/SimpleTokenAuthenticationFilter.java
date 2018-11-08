@@ -57,7 +57,7 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 			return;
-		} else if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/login")) {
+		} else if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/register")) {
 			// Should not filter login endpoint
 			chain.doFilter(arg0, response);
 		} else {
@@ -86,12 +86,10 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 	 */
 	private void authenticateWithToken(ServletResponse response, FilterChain chain, HttpServletRequest request)
 			throws IOException, ServletException {
-		String userID = extractUserId(request);
 
-		String token = extractToken(request);
-
-		if (token != null && userID != null) {
-			if (authentService.checkToken(Long.valueOf(userID), token)) {
+		String token = request.getHeader("Authorization");
+		if (token != null) {
+			if (authentService.checkToken(token)) {
 				// User is authenticated and token is valid
 				chain.doFilter(request, response);
 			} else {
@@ -104,32 +102,6 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 		}
 	}
 
-	private String extractToken(HttpServletRequest request) {
-		String token = request.getHeader("Authorization");
-		if (token == null) {
-			token = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
-				@Override
-				public boolean test(Cookie t) {
-					return t.getName().equals("token");
-				}
-			}).findFirst().orElse(new Cookie("token", null)).getValue();
-		}
-		return token;
-	}
-
-	private String extractUserId(HttpServletRequest request) {
-		String userID = request.getHeader("user");
-
-		if (userID == null && request.getCookies() != null && request.getCookies().length > 0) {
-			userID = Arrays.asList(request.getCookies()).stream().filter(new Predicate<Cookie>() {
-				@Override
-				public boolean test(Cookie t) {
-					return t.getName().equals("user");
-				}
-			}).findFirst().orElse(new Cookie("user", null)).getValue();
-		}
-		return userID;
-	}
 
 	@Override
 	public void destroy() {
