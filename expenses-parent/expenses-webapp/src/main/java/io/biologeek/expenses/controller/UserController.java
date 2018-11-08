@@ -23,7 +23,7 @@ import io.biologeek.expenses.api.beans.AuthenticationActionBean;
 import io.biologeek.expenses.api.beans.User;
 import io.biologeek.expenses.converter.AccountToApiConverter;
 import io.biologeek.expenses.converter.UserConverter;
-import io.biologeek.expenses.domain.beans.RegisteredUser;
+import io.biologeek.expenses.domain.security.beans.RegisteredUser;
 import io.biologeek.expenses.exceptions.AuthenticationException;
 import io.biologeek.expenses.exceptions.MissingArgumentException;
 import io.biologeek.expenses.exceptions.ValidationException;
@@ -32,7 +32,7 @@ import io.biologeek.expenses.services.AuthenticationService;
 import io.biologeek.expenses.services.RegisteredUserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController extends ExceptionWrappedRestController {
 
 	@Autowired
@@ -77,6 +77,15 @@ public class UserController extends ExceptionWrappedRestController {
 		}
 		return null;
 
+	}
+	
+	
+	@PostMapping(path="/register")
+	public ResponseEntity<User> registerUser(@RequestBody User user){
+		if (user != null) {
+			return new ResponseEntity<>(UserConverter.convert(this.userService.saveUser(UserConverter.convert(user))), HttpStatus.ACCEPTED);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	

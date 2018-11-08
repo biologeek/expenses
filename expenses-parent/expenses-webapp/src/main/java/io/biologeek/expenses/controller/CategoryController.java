@@ -1,8 +1,6 @@
 package io.biologeek.expenses.controller;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.api.beans.Category;
 import io.biologeek.expenses.converter.CategoryToApiConverter;
-import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.services.CategoryService;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/category")
 public class CategoryController extends ExceptionWrappedRestController {
 
 	@Autowired

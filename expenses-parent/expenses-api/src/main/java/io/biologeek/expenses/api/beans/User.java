@@ -16,6 +16,7 @@ public class User extends Entity {
 	private String phoneNumber;
 	private List<Account> accounts;
 	private String sessionToken;
+	private String password;
 
 	public User() {
 		this.type ="user";
@@ -140,6 +141,12 @@ public class User extends Entity {
 	public User agentId(Long agentId2) {
 		this.agentId = agentId2;
 		return this;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
