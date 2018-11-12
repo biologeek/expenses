@@ -3,20 +3,13 @@ package io.biologeek.expenses.config;
 import java.util.Properties;
 
 import javax.servlet.Filter;
-import javax.servlet.ServletException;
 import javax.sql.DataSource;
 
-import org.apache.catalina.Context;
-import org.apache.catalina.loader.WebappLoader;
-import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +21,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import io.biologeek.expenses.config.security.SimpleTokenAuthenticationFilter;
 
@@ -50,10 +44,26 @@ public class ApplicationConfig {
 
 	@Value("${jdbc.connection.password}")
 	String connectionPassword;
-	
+/*
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/").allowedMethods("POST", "PUT", "OPTIONS", "DELETE")//
+				.allowedOrigins("*");
+			}
+		};
 
+	}
+*/
 	
-	
+	@Bean(name = DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
+	public DispatcherServlet dispatcherServlet() {
+	    DispatcherServlet dispatcherServlet = new DispatcherServlet();
+	    dispatcherServlet.setDispatchOptionsRequest(true);
+	    return dispatcherServlet;
+	}
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer properties() {
 		return new PropertySourcesPlaceholderConfigurer();
@@ -86,39 +96,38 @@ public class ApplicationConfig {
 		props.put("hibernate.hbm2ddl.auto", "update");
 		return props;
 	}
-	
 
-	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-//	
-//	@Bean
-//	public EmbeddedServletContainerFactory servletContainerFactory() {
-//	    return new TomcatEmbeddedServletContainerFactory() {
-//
-//	        @Override
-//	        protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(
-//	                Tomcat tomcat) {
-//	            try {
-//	                Context context = tomcat.addWebapp("/expenses-mobile", "lib/expenses-mobile-webui-0.0.1-SNAPSHOT.war");
-//	                WebappLoader loader =
-//	                    new WebappLoader(Thread.currentThread().getContextClassLoader());
-//	                context.setLoader(loader);
-//	            } catch (ServletException ex) {
-//	                throw new IllegalStateException("Failed to add webapp", ex);
-//	            }
-//	            return super.getTomcatEmbeddedServletContainer(tomcat);
-//	        }
-//
-//	    };
-//	}
-	
+	//
+	// @Bean
+	// public EmbeddedServletContainerFactory servletContainerFactory() {
+	// return new TomcatEmbeddedServletContainerFactory() {
+	//
+	// @Override
+	// protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(
+	// Tomcat tomcat) {
+	// try {
+	// Context context = tomcat.addWebapp("/expenses-mobile",
+	// "lib/expenses-mobile-webui-0.0.1-SNAPSHOT.war");
+	// WebappLoader loader =
+	// new WebappLoader(Thread.currentThread().getContextClassLoader());
+	// context.setLoader(loader);
+	// } catch (ServletException ex) {
+	// throw new IllegalStateException("Failed to add webapp", ex);
+	// }
+	// return super.getTomcatEmbeddedServletContainer(tomcat);
+	// }
+	//
+	// };
+	// }
+
 	@Bean
-	public EmbeddedServletContainerCustomizer customize(){
+	public EmbeddedServletContainerCustomizer customize() {
 		return new EmbeddedServletContainerCustomizer() {
-			
+
 			@Override
 			public void customize(ConfigurableEmbeddedServletContainer container) {
 				container.setPort(8090);
@@ -127,15 +136,14 @@ public class ApplicationConfig {
 		};
 	}
 
-
 	@Bean
 	public FilterRegistrationBean loginFilterRegistration() {
-	    FilterRegistrationBean registration = new FilterRegistrationBean();
-	    registration.setFilter(loginFilter());
-	    registration.addUrlPatterns("/expenses/*");
-	    registration.setName("loginFilter");
-	    registration.setOrder(1);
-	    return registration;
+		FilterRegistrationBean registration = new FilterRegistrationBean();
+		registration.setFilter(loginFilter());
+		registration.addUrlPatterns("/expenses/*");
+		registration.setName("loginFilter");
+		registration.setOrder(1);
+		return registration;
 	}
 
 	@Bean

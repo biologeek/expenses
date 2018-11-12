@@ -14,8 +14,9 @@ import { AccountChoiceComponent } from './account-choice/account-choice.componen
 import { UserService } from './services/user.service';
 import { RouterModule, Route } from '@angular/router';
 import { HttpError401Interceptor } from './services/http-error401-interceptor.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material.module';
+import { AuthorizationInterceptorService } from './services/authorization-interceptor.service';
 
 
 
@@ -50,7 +51,16 @@ export const appRoutes: Route[] = [
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [CookieService, UserService, HttpError401Interceptor],
+  providers: [CookieService, UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpError401Interceptor,
+      multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthorizationInterceptorService,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

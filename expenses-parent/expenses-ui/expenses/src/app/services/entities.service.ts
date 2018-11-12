@@ -13,6 +13,6 @@ export class EntitiesService {
   constructor(private http: HttpClient, private cookie: CookieService) { }
 
   getAllEntities(): Observable<Entities> {
-    return <Observable<Entities>> this.http.get(`${environment.api_url}/account/${this.cookie.get('account')}/entities`);
+    return <Observable<Entities>> this.http.get(`${environment.api_url}/entities/user/${this.cookie.get('user')}`);
   }
 }

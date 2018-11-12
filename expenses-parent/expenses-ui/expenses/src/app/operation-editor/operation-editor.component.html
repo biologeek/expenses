@@ -19,8 +19,35 @@
         </mat-grid-tile>
         <mat-grid-tile colspan="4">
           <mat-form-field class="w-100p">
-            <mat-select placeholder="Category">
-              <mat-option *ngFor="let category of categories" [value]="category">
+            <mat-select placeholder="Category" name="firstLevelCategories" [(ngModel)]="chosenCategories[0]" (selectionChange)="onSelectCategory(0)">
+              <mat-option *ngFor="let category of availableCategories[0]" [value]="category">
+                {{category.nomenclature}} - {{category.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4" *ngIf="chosenCategories[0].id">
+          <mat-form-field class="w-100p">
+            <mat-select placeholder="Category" name="secondLevelCategories" [(ngModel)]="chosenCategories[1]" (selectionChange)="onSelectCategory(1)">
+              <mat-option *ngFor="let category of availableCategories[1]" [value]="category">
+                {{category.nomenclature}} - {{category.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4" *ngIf="chosenCategories[1].id">
+          <mat-form-field class="w-100p">
+            <mat-select placeholder="Category" name="thirdLevelCategories" [(ngModel)]="chosenCategories[2]" (selectionChange)="onSelectCategory(2)">
+              <mat-option *ngFor="let category of availableCategories[2]" [value]="category">
+                {{category.nomenclature}} - {{category.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4" *ngIf="chosenCategories[2].id">
+          <mat-form-field class="w-100p">
+            <mat-select placeholder="Category" name="fourthLevelCategories" [(ngModel)]="operation.category">
+              <mat-option *ngFor="let category of availableCategories[3]" [value]="category">
                 {{category.nomenclature}} - {{category.name}}
               </mat-option>
             </mat-select>
@@ -30,7 +57,7 @@
           <mat-form-field class="w-100p">
             <mat-select placeholder="Emitter" [(ngModel)]="operation.emitter" name="emitter">
               <mat-option *ngFor="let em of entities" [value]="em">
-                {{em.name}}
+                {{em.type=='user'? em.firstName+' '+em.lastName : em.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -39,7 +66,7 @@
           <mat-form-field class="w-100p">
             <mat-select placeholder="Receiver" [(ngModel)]="operation.receiver" name="receiver">
               <mat-option *ngFor="let em of entities" [value]="em">
-                {{em.name}}
+                {{em.type=='user'? em.firstName+' '+em.lastName : em.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>

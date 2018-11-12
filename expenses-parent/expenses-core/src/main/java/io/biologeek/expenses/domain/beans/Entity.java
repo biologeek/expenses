@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -25,9 +27,20 @@ public abstract class Entity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String name;
+	@ManyToOne
+	@JoinColumn(name="owner_id")
+	private RegisteredUser owner;
 
 	@OneToMany(mappedBy = "agentEntity")
 	private List<OperationAgent> agents;
+
+	public RegisteredUser getOwner() {
+		return owner;
+	}
+
+	public void setOwner(RegisteredUser owner) {
+		this.owner = owner;
+	}
 
 	public List<OperationAgent> getAgents() {
 		return agents;

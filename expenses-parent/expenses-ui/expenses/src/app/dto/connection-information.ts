@@ -1,4 +1,4 @@
 export class ConnectionInformation {
-    username: string;
+    login: string;
     password: string;
 }

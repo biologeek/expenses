@@ -1,5 +1,10 @@
 package io.biologeek.expenses.converter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
 import io.biologeek.expenses.api.beans.AuthenticationActionBean;
 import io.biologeek.expenses.api.beans.CorpUser;
 import io.biologeek.expenses.api.beans.Entity;
@@ -10,6 +15,7 @@ import io.biologeek.expenses.domain.beans.Person;
 import io.biologeek.expenses.domain.beans.RegisteredUser;
 import io.biologeek.expenses.domain.beans.security.AuthenticationInformation;
 
+@Component
 public class UserConverter {
 
 	/**
@@ -20,15 +26,15 @@ public class UserConverter {
 	 * @param result
 	 * @return
 	 */
-	public static CorpUser convertToCorp(Organization entity, Long long1) {
+	public CorpUser convertToCorp(Organization entity, Long long1) {
 		return new CorpUser()//
 				.name(entity.getName())//
-				.mainContact(UserConverter.convert(entity.getMainContact(), null))//
+				.mainContact(this.convert(entity.getMainContact(), null))//
 				.id(entity.getId())//
 				.isTrade(entity.isTrade());
 	}
 
-	public static User convert(RegisteredUser result) {
+	public User convert(RegisteredUser result) {
 		return new User()//
 				.accounts(AccountToApiConverter.convert(result.getAccounts()))//
 				.age(result.getAge())//
@@ -46,13 +52,13 @@ public class UserConverter {
 	 * @param user
 	 * @return
 	 */
-	public static OperationAgent toOperationAgent(Entity ent) {
+	public OperationAgent toOperationAgent(Entity ent) {
 		if (ent == null)
 			return null;
-		
+
 		OperationAgent agent = new OperationAgent()//
 				.agentId(ent.getAgentId());
-		
+
 		if (ent instanceof User)
 			agent.setAgentEntity(toPerson((User) ent));
 		else if (ent instanceof CorpUser)
@@ -60,14 +66,14 @@ public class UserConverter {
 		return agent;
 	}
 
-	private static Organization toOrganization(CorpUser ent) {
+	private Organization toOrganization(CorpUser ent) {
 		Organization or = new Organization();
 		or.setId(ent.getId());
 		or.setMainContact(toPerson(ent.getMainContact()));
 		return null;
 	}
 
-	private static Person toPerson(User ent) {
+	private Person toPerson(User ent) {
 		Person person = new Person();
 		person.setId(ent.getId());
 		person.setAge(ent.getAge());
@@ -78,7 +84,7 @@ public class UserConverter {
 		return person;
 	}
 
-	public static User convert(Person result, Long agentId) {
+	public User convert(Person result, Long agentId) {
 		if (result == null)
 			return null;
 		return new User()//
@@ -89,7 +95,7 @@ public class UserConverter {
 				.phoneNumber(result.getPhoneNumber());//
 	}
 
-	public static AuthenticationInformation toModel(AuthenticationActionBean bean) {
+	public AuthenticationInformation toModel(AuthenticationActionBean bean) {
 		AuthenticationInformation info = new AuthenticationInformation();
 		info.setAuthToken(bean.getToken());
 		info.setLogin(bean.getLogin());
@@ -97,7 +103,7 @@ public class UserConverter {
 		return info;
 	}
 
-	public static AuthenticationActionBean toApi(AuthenticationInformation bean) {
+	public AuthenticationActionBean toApi(AuthenticationInformation bean) {
 		AuthenticationActionBean info = new AuthenticationActionBean();
 		info.setToken(bean.getAuthToken());
 		info.setLogin(bean.getLogin());
@@ -105,7 +111,8 @@ public class UserConverter {
 		return info;
 	}
 
-	public static <T extends Entity> T convert(OperationAgent agent) {
+	@SuppressWarnings("unchecked")
+	public <T extends Entity> T convert(OperationAgent agent) {
 		if (agent != null) {
 			if (agent.getAgentEntity() instanceof Person)
 				return (T) convert((Person) agent.getAgentEntity(), agent.getId());
@@ -113,5 +120,19 @@ public class UserConverter {
 				return (T) convertToCorp((Organization) agent.getAgentEntity(), agent.getId());
 		}
 		return null;
+	}
+
+	public List<Entity> convert(List<io.biologeek.expenses.domain.beans.Entity> ents) {
+		return ents.stream().map(this::convert).collect(Collectors.toList());
+	}
+
+	public Entity convert(io.biologeek.expenses.domain.beans.Entity ent) {
+		if (ent instanceof Person) {
+			return this.convert((Person) ent, null);
+		} else if (ent instanceof Organization) {
+			return this.convertToCorp((Organization) ent, null);
+		} else
+			return new Entity() {
+			};
 	}
 }

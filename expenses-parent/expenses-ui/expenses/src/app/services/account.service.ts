@@ -14,6 +14,6 @@ export class AccountService {
 
 
   listAccounts(user?: number): Observable<Accounts> {
-    return <Observable<Accounts>> this.http.get(`${environment.api_url}/${this.cookie.get('user')}/accounts`);
+    return <Observable<Accounts>> this.http.get(`${environment.api_url}/user/${this.cookie.get('user')}/accounts`);
   }
 }

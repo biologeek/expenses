@@ -7,11 +7,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +40,8 @@ public class UserController extends ExceptionWrappedRestController {
 	@Autowired
 	private AuthenticationService authentService;
 	@Autowired
+	private UserConverter userConverter;
+	@Autowired
 	private AccountService accountService;
 	private Logger logger = Logger.getLogger(UserController.class.getName());
 
@@ -49,20 +51,28 @@ public class UserController extends ExceptionWrappedRestController {
 		if (id > 0) {
 			result = userService.findUserById(id);
 		}
-		return UserConverter.convert(result);
+		return userConverter.convert(result);
+	}
+
+	@PostMapping(path = "/register")
+	public ResponseEntity<? extends Object> registerUser() {
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/login")
-	public ResponseEntity<? extends Object> loginUser(@RequestBody AuthenticationActionBean bean, HttpServletResponse resp) {
+	@CrossOrigin(origins = { "*" })
+	public ResponseEntity<? extends Object> loginUser(@RequestBody AuthenticationActionBean bean,
+			HttpServletResponse resp) {
 		RegisteredUser user = null;
-		
+
 		logger.info("Logging in user " + bean.getLogin());
 		try {
-			if ((user = authentService.authenticateWithLoginParameters(UserConverter.toModel(bean))) != null) {
+			if ((user = authentService.authenticateWithLoginParameters(userConverter.toModel(bean))) != null) {
+				resp.addHeader("Authorization", "Basic " + base64EncodeLoginInfo(bean));
 				resp.addCookie(new Cookie("token", user.getAuthentication().getAuthToken()));
 				resp.addCookie(new Cookie("user", String.valueOf(user.getId())));
-				ResponseEntity<User> response = new ResponseEntity<>(UserConverter.convert(user), HttpStatus.OK);
-				
+				ResponseEntity<User> response = new ResponseEntity<>(userConverter.convert(user), HttpStatus.OK);
+
 				return response;
 			}
 		} catch (AuthenticationException e) {
@@ -71,22 +81,28 @@ public class UserController extends ExceptionWrappedRestController {
 			 * from 401 error code that will be used when a user tries to access a resource
 			 * that he's not allowed to.
 			 */
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).contentType(MediaType.APPLICATION_JSON).body(wrapException(e));
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).contentType(MediaType.APPLICATION_JSON)
+					.body(wrapException(e));
 		} catch (MissingArgumentException | ValidationException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(wrapException(e));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON)
+					.body(wrapException(e));
 		}
 		return null;
 
 	}
-	
-	
+
+	private String base64EncodeLoginInfo(AuthenticationActionBean bean) {
+		String toEncode = bean.getLogin() + ":" + bean.getPassword();
+		return Base64Utils.encodeToString(toEncode.getBytes());
+	}
+
 	@GetMapping(path = "/{user}/accounts")
-	public ResponseEntity<? extends Object> listAccounts(@PathVariable("user") Long userId){
+	public ResponseEntity<? extends Object> listAccounts(@PathVariable("user") Long userId) {
 		List<io.biologeek.expenses.domain.beans.Account> accounts = null;
-		if(userId != null && userId > 0) {
+		if (userId != null && userId > 0) {
 			RegisteredUser user = userService.findUserById(userId);
 			accounts = accountService.getAccountsForUser(user);
-		}		
+		}
 		return ResponseEntity.ok(AccountToApiConverter.convert(accounts));
 	}
 

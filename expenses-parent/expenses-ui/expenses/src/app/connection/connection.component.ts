@@ -23,8 +23,8 @@ export class ConnectionComponent implements OnInit {
       this.cookies.set('user', '' + data.id);
       this.cookies.set('token', '' + data.sessionToken);
 
-      this.router.navigate(['/dashboard']);
-    }).unsubscribe();
+      this.router.navigate(['/account']);
+    });
   }
 
 }

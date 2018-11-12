@@ -53,12 +53,9 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 			}
 		});
 		if ("OPTIONS".equals(request.getMethod())) {
-
-			response.addHeader("Access-Control-Allow-Origin", "*");
-			response.setStatus(HttpServletResponse.SC_ACCEPTED);
-			return;
-		} else if (request.getMethod().equals("POST") && request.getRequestURL().toString().endsWith("/register")) {
-			// Should not filter login endpoint
+			chain.doFilter(arg0, response);
+		} else if (request.getMethod().equals("POST") && (request.getRequestURL().toString().endsWith("/user/register") || request.getRequestURL().toString().endsWith("/user/login"))) {
+			// Should not filter registration endpoint
 			chain.doFilter(arg0, response);
 		} else {
 			if (request.getHeader("Authorization") != null || hasAuthorization) {
@@ -89,7 +86,8 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 
 		String token = request.getHeader("Authorization");
 		if (token != null) {
-			if (authentService.checkToken(token)) {
+			String cleanToken = token.split(" ")[1]; 
+			if (authentService.checkToken(cleanToken)) {
 				// User is authenticated and token is valid
 				chain.doFilter(request, response);
 			} else {
