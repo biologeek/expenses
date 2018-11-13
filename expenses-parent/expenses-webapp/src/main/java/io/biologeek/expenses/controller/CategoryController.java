@@ -1,8 +1,6 @@
 package io.biologeek.expenses.controller;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.api.beans.Category;
 import io.biologeek.expenses.converter.CategoryToApiConverter;
-import io.biologeek.expenses.domain.beans.operations.OperationType;
 import io.biologeek.expenses.services.CategoryService;
 
 @RestController
@@ -47,10 +44,10 @@ public class CategoryController extends ExceptionWrappedRestController {
 	 * @param nomenclature
 	 * @return
 	 */
-	public ResponseEntity<List<Category>> getCategoriesByLevels(@PathVariable("nomenc") String nomenclature) {
+	public ResponseEntity<List<Category>> getCategoriesByLevels(@PathVariable("nomenc") Integer nomenclature) {
 		return new ResponseEntity<>(
 				CategoryToApiConverter.convert(
-						categoryService.getCategoriesByLevel(Integer.valueOf(nomenclature))
+						categoryService.getCategoriesByLevel(nomenclature)
 						),
 				HttpStatus.OK);
 	}

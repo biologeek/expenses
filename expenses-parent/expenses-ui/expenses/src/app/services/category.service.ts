@@ -11,7 +11,10 @@ export class CategoryService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCategories(level: number, parent?: number): Observable<Categories> {
-    return <Observable<Categories>> this.http.get(`${environment.api_url}/category/level/${level}${parent ? '/parent/' + parent : ''}`);
+  getAllCategoriesByNomenclature(nomenc: string): Observable<Categories> {
+    return <Observable<Categories>> this.http.get(`${environment.api_url}/category/${nomenc}`);
+  }
+  getAllCategoriesByLevel(level: number): Observable<Categories> {
+    return <Observable<Categories>> this.http.get(`${environment.api_url}/category/level/${level}`);
   }
 }

@@ -14,6 +14,7 @@ export class OperationService {
 
 
   saveOperation(operation: Operation): Observable<Operation> {
-    return <Observable<Operation>>this.http.post(`${environment.api_url}/account/${this.cookie.get('account')}/operation`, operation);
+    return <Observable<Operation>>this.http
+    .post(`${environment.api_url}/operation/account/${this.cookie.get('account')}/operation`, operation);
   }
 }

@@ -44,6 +44,12 @@ text-decoration: none;
 .w-50p {
     width: 50%;
 }
+.w-20p {
+    width: 20%;
+}
+.w-30p {
+    width: 30%;
+}
 .w-70p {
     width: 70%;
 }

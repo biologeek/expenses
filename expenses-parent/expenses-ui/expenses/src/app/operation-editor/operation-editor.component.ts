@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Entities } from '../dto/entity';
 import { FormControl } from '@angular/forms';
-import { Operation } from '../dto/operation';
+import { Operation, Interval, Refund } from '../dto/operation';
 import { OperationService } from '../services/operation.service';
 import { CategoryService } from '../services/category.service';
 import { EntitiesService } from '../services/entities.service';
 import { Category, Categories } from '../dto/category';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-operation-editor',
@@ -20,6 +21,7 @@ export class OperationEditorComponent implements OnInit {
   chosenCategories: Categories = new Categories();
   emitterCtrl: FormControl;
   receiverCtrl: FormControl;
+  refund: Refund = new Refund();
 
   constructor(private operationService: OperationService,
     private categoryService: CategoryService,
@@ -35,22 +37,35 @@ export class OperationEditorComponent implements OnInit {
       this.entities = ents;
     });
 
-    this.categoryService.getAllCategories(0).subscribe(cats => {
+    this.categoryService.getAllCategoriesByLevel(0).subscribe(cats => {
       this.availableCategories[0] = cats;
     });
 
   }
 
   onSelectCategory(level) {
-    this.categoryService.getAllCategories(level, this.chosenCategories[level].id).subscribe(cats => {
+    this.categoryService.getAllCategoriesByNomenclature(this.chosenCategories[level].nomenclature).subscribe(cats => {
       this.availableCategories[level + 1] = cats;
     });
   }
 
   saveOperation() {
+    let lastCategory: Category = null;
+    for (const cat of this.chosenCategories) {
+      if (cat.id) {
+        lastCategory = cat;
+      }
+    }
+    this.operation.category = lastCategory;
+    this.operationService.saveOperation(this.operation).subscribe(data => {
+      console.log('Saved');
+    });
 
-    this.operationService.saveOperation(this.operation);
+  }
 
+  saveRefund() {
+    this.operation.reimbursments.push(this.refund);
+    this.refund = new Refund();
   }
 
 }

@@ -37,6 +37,8 @@ public class OperationController extends ExceptionWrappedRestController {
 	private OperationService operationService;
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private OperationToModelConverter operationToModelConverter;
 
 	@RequestMapping(method = RequestMethod.GET, path = "/types")
 	public ResponseEntity<List<OperationType>> getTypes() {
@@ -82,11 +84,11 @@ public class OperationController extends ExceptionWrappedRestController {
 
 		io.biologeek.expenses.domain.beans.operations.Operation op = null;
 		if (expense.getType() != null && expense.getType().isRegular())
-			op = OperationToModelConverter.convert((RegularOperation) expense);
+			op = operationToModelConverter.convert((RegularOperation) expense);
 		else if (expense.getType() != null && expense.getType().isTemporary()) {
-			op = OperationToModelConverter.convert((TemporaryOperation) expense);
+			op = operationToModelConverter.convert((TemporaryOperation) expense);
 		} else {
-			op = OperationToModelConverter.convert(expense);
+			op = operationToModelConverter.convert(expense);
 		}
 		op.setAccount(account);
 		result = operationService.addOperationToAccount(op);
@@ -107,7 +109,7 @@ public class OperationController extends ExceptionWrappedRestController {
 		}
 
 		try {
-			result = operationService.updateOperation(account, OperationToModelConverter.convert(expense));
+			result = operationService.updateOperation(account, operationToModelConverter.convert(expense));
 		} catch (Exception e) {
 			throw new ExceptionWrapper(e);
 		}
@@ -138,7 +140,7 @@ public class OperationController extends ExceptionWrappedRestController {
 			throws ValidationException, BusinessException {
 		return new ResponseEntity<>(
 				OperationToApiConverter
-						.convert(operationService.addOperationToAccount(OperationToModelConverter.convert(body))),
+						.convert(operationService.addOperationToAccount(operationToModelConverter.convert(body))),
 				HttpStatus.OK);
 	}
 
