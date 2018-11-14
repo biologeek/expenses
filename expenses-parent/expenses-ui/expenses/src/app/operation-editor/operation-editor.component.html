@@ -10,13 +10,23 @@
         </mat-grid-tile>
         <mat-grid-tile>
           <mat-form-field class="w-50p">
-            <mat-select placeholder="Currency" name="currency">
-              <mat-option *ngFor="let cur of currencies" [value]="cur">
-                {{cur.code}}
+            <mat-select placeholder="Currency" name="currency" [(ngModel)]="operation.currency">
+              <mat-option *ngFor="let cur of currencies" [value]="cur.code">
+                {{cur.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field class="w-50p">
+              <mat-select placeholder="Type" name="type" [(ngModel)]="operation.type">
+                <mat-option *ngFor="let cur of operationTypes" [value]="cur">
+                  {{cur.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
 
         <mat-grid-tile colspan="4">
             <input [matDatepicker]="myDatepicker" placeholder="Operation date" [(ngModel)]="operation.effectiveDate" name="effectiveDate">

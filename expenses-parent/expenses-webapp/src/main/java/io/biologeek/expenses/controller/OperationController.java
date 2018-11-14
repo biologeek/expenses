@@ -39,6 +39,8 @@ public class OperationController extends ExceptionWrappedRestController {
 	private AccountService accountService;
 	@Autowired
 	private OperationToModelConverter operationToModelConverter;
+	@Autowired
+	OperationToApiConverter operationToApiConverter;
 
 	@RequestMapping(method = RequestMethod.GET, path = "/types")
 	public ResponseEntity<List<OperationType>> getTypes() {
@@ -70,7 +72,7 @@ public class OperationController extends ExceptionWrappedRestController {
 		if (result.getOperations().isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.OK);
+		return new ResponseEntity<>(operationToApiConverter.convert(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.POST })
@@ -93,7 +95,7 @@ public class OperationController extends ExceptionWrappedRestController {
 		op.setAccount(account);
 		result = operationService.addOperationToAccount(op);
 
-		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.CREATED);
+		return new ResponseEntity<>(operationToApiConverter.convert(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(path = { "/account/{account}/operation" }, method = { RequestMethod.PUT })
@@ -113,7 +115,7 @@ public class OperationController extends ExceptionWrappedRestController {
 		} catch (Exception e) {
 			throw new ExceptionWrapper(e);
 		}
-		return new ResponseEntity<>(OperationToApiConverter.convert(result), HttpStatus.OK);
+		return new ResponseEntity<>(operationToApiConverter.convert(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(path = { "/account/{account}/operation/{operation}" }, method = { RequestMethod.DELETE })
@@ -132,14 +134,18 @@ public class OperationController extends ExceptionWrappedRestController {
 	@RequestMapping(path = { "/operation/{id}" }, method = { RequestMethod.GET })
 	public ResponseEntity<? extends Operation> getOperation(@PathVariable("id") long operationId) {
 		io.biologeek.expenses.domain.beans.operations.Operation op = operationService.getOperationByid(operationId);
-		return new ResponseEntity(OperationToApiConverter.convert(op, new Operation()), HttpStatus.OK);
+		return new ResponseEntity(operationToApiConverter.convert(op, new Operation()), HttpStatus.OK);
+	}
+	@RequestMapping(path = { "/operation/types" }, method = { RequestMethod.GET })
+	public ResponseEntity<OperationType[]> getOperationTypes() {
+		return new ResponseEntity<>(OperationType.values(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/")
 	public ResponseEntity<Operation> addOperation(@RequestBody Operation body)
 			throws ValidationException, BusinessException {
 		return new ResponseEntity<>(
-				OperationToApiConverter
+				operationToApiConverter
 						.convert(operationService.addOperationToAccount(operationToModelConverter.convert(body))),
 				HttpStatus.OK);
 	}

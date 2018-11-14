@@ -34,6 +34,8 @@ public class ChartsController extends ExceptionWrappedRestController {
 
 	@Autowired
 	OperationService operationService;
+	@Autowired
+	private OperationToApiConverter operationToApiConverter;
 	
 
 	@RequestMapping("/daily/account/{account}/interval/{interval}")
@@ -58,7 +60,7 @@ public class ChartsController extends ExceptionWrappedRestController {
 				.map(t->io.biologeek.expenses.domain.beans.operations.OperationType.valueOf(t.name()))//
 				.collect(Collectors.toList());
 		List<FullPeriodicBalance> result = operationService.getPeriodicBalanceForPeriodWithoutCategoriesNorSeparatingTypes(account, interval, begin, end, operationTypes);
-		return new ResponseEntity<>(OperationToApiConverter.convertToChartJS(result,//
+		return new ResponseEntity<>(operationToApiConverter.convertToChartJS(result,//
 				"charts.daily.title", "charts.x.label", "chart.y.label"), HttpStatus.OK);
 	}
 	
@@ -107,7 +109,7 @@ public class ChartsController extends ExceptionWrappedRestController {
 				.map(t->io.biologeek.expenses.domain.beans.operations.OperationType.valueOf(t.name()))//
 				.collect(Collectors.toList());
 		
-		return new ResponseEntity<>(OperationToApiConverter.convertToPieChartData(operationService.getCategoryBalanceForAccount(account, begin, end, operationTypes),//
+		return new ResponseEntity<>(operationToApiConverter.convertToPieChartData(operationService.getCategoryBalanceForAccount(account, begin, end, operationTypes),//
 				"charts.daily.title", "charts.x.label", "chart.y.label"), HttpStatus.OK);
 	}
 }

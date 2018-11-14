@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import io.biologeek.expenses.api.beans.Operation;
 import io.biologeek.expenses.api.beans.OperationType;
 import io.biologeek.expenses.api.beans.PaginatedOperationsList;
@@ -19,21 +22,26 @@ import io.biologeek.expenses.domain.beans.balances.BalanceUnit;
 import io.biologeek.expenses.domain.beans.balances.CategoryBalance;
 import io.biologeek.expenses.domain.beans.balances.FullPeriodicBalance;
 
+@Component
 public class OperationToApiConverter {
-	public static List<Operation> convert(List<io.biologeek.expenses.domain.beans.operations.Operation> toConvert) {
+
+	@Autowired
+	private UserConverter userConverter;
+
+	public List<Operation> convert(List<io.biologeek.expenses.domain.beans.operations.Operation> toConvert) {
 		List<Operation> result = new ArrayList<>();
 		for (io.biologeek.expenses.domain.beans.operations.Operation op : toConvert) {
-			Operation ope = OperationToApiConverter.convert(op);
+			Operation ope = this.convert(op);
 			result.add(ope);
 		}
 		return result;
 	}
 
-	public static PaginatedOperationsList convert(OperationList toConvert) {
+	public PaginatedOperationsList convert(OperationList toConvert) {
 		PaginatedOperationsList result = new PaginatedOperationsList();
 		List<Operation> partial = new ArrayList<>();
 		for (io.biologeek.expenses.domain.beans.operations.Operation op : toConvert.getOperations()) {
-			Operation ope = OperationToApiConverter.convert(op);
+			Operation ope = this.convert(op);
 			partial.add(ope);
 		}
 		result.setOperations(partial);
@@ -44,17 +52,17 @@ public class OperationToApiConverter {
 		return result;
 	}
 
-	public static io.biologeek.expenses.api.beans.Operation convert(
+	public io.biologeek.expenses.api.beans.Operation convert(
 			io.biologeek.expenses.domain.beans.operations.Operation toConvert) {
 		return convert(toConvert, new Operation());
 	}
 
-	public static Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
+	public Operation convert(io.biologeek.expenses.domain.beans.operations.Operation toConvert, Operation res) {
 
 		res.setAccount(toConvert.getAccount().getId());
 		res.setAmount(new BigDecimal(toConvert.getAmount()));
-		res.setBeneficiary(UserConverter.convert(toConvert.getBeneficiary()));
-		res.setEmitter(UserConverter.convert(toConvert.getEmitter()));
+		res.setBeneficiary(userConverter.convert(toConvert.getBeneficiary()));
+		res.setEmitter(userConverter.convert(toConvert.getEmitter()));
 		res.setCategory(CategoryToApiConverter.convertToCategory(toConvert.getCategory()));
 		res.setNomenclature(CategoryToApiConverter.convert(toConvert.getCategory()));
 		res.setCreationDate(toConvert.getCreationDate());
@@ -69,8 +77,8 @@ public class OperationToApiConverter {
 		return res;
 	}
 
-	public static List<XYChartData> convertToXYChartData(List<FullPeriodicBalance> operations, String title,
-			String xLabel, String yLabel) {
+	public List<XYChartData> convertToXYChartData(List<FullPeriodicBalance> operations, String title, String xLabel,
+			String yLabel) {
 		List<XYChartData> result = new ArrayList<>();
 
 		for (FullPeriodicBalance e : operations) {
@@ -79,13 +87,13 @@ public class OperationToApiConverter {
 		return result;
 	}
 
-	public static XYChartData convertToXYChartData(FullPeriodicBalance operations, String title, String xLabel,
+	public XYChartData convertToXYChartData(FullPeriodicBalance operations, String title, String xLabel,
 			String yLabel) {
 		XYChartData chart = ((XYChartData) new XYChartData()//
 				.title(title)//
 				.xLabel(xLabel)//
 				.yLabel(yLabel))//
-						.data(operations.getDailyBalances().stream().map(OperationToApiConverter::convertToXYChartPoint)
+						.data(operations.getDailyBalances().stream().map(this::convertToXYChartPoint)
 								.collect(Collectors.toList()));
 		return chart;
 	}
@@ -97,7 +105,7 @@ public class OperationToApiConverter {
 	 *            the balance of the day with date and value set
 	 * @return a point with x an y positions
 	 */
-	public static XYChartPoint convertToXYChartPoint(BalanceUnit operation) {
+	public XYChartPoint convertToXYChartPoint(BalanceUnit operation) {
 		XYChartPoint point = new XYChartData.XYChartPoint();
 		point.setLabel(null);
 		point.setX(operation.getBalanceDate().getTime());
@@ -114,8 +122,8 @@ public class OperationToApiConverter {
 	 * @param yLabel
 	 * @return
 	 */
-	public static PieChartData convertToPieChartData(CategoryBalance categoryBalanceForAccount, String title,
-			String xLabel, String yLabel) {
+	public PieChartData convertToPieChartData(CategoryBalance categoryBalanceForAccount, String title, String xLabel,
+			String yLabel) {
 
 		PieChartData data = new PieChartData();
 
@@ -128,7 +136,7 @@ public class OperationToApiConverter {
 		return data;
 	}
 
-	public static ChartJSChartData convertToChartJS(FullPeriodicBalance balance, String title, String xLabel, String yLabel) {
+	public ChartJSChartData convertToChartJS(FullPeriodicBalance balance, String title, String xLabel, String yLabel) {
 		ChartJSChartData result = new ChartJSChartData();
 
 		result.getData().put(title, new ArrayList<>());
@@ -143,7 +151,7 @@ public class OperationToApiConverter {
 		return result;
 	}
 
-	public static List<ChartJSChartData> convertToChartJS(List<FullPeriodicBalance> balance, String title, String xLabel,
+	public List<ChartJSChartData> convertToChartJS(List<FullPeriodicBalance> balance, String title, String xLabel,
 			String yLabel) {
 		List<ChartJSChartData> res = new ArrayList<>();
 		for (FullPeriodicBalance bl : balance) {

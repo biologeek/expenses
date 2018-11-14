@@ -37,9 +37,9 @@ public abstract class Operation implements Comparable<Operation> {
 	@Id
 	@GeneratedValue
 	protected Long id;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	protected OperationAgent beneficiary;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	protected OperationAgent emitter;
 
 	@ManyToOne(fetch = FetchType.EAGER)

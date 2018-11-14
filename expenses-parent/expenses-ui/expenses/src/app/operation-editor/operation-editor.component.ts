@@ -7,6 +7,9 @@ import { CategoryService } from '../services/category.service';
 import { EntitiesService } from '../services/entities.service';
 import { Category, Categories } from '../dto/category';
 import { Observable, of } from 'rxjs';
+import { CurrencyService } from '../services/currency.service';
+import { Currency } from '../dto/currency';
+import { OperationType } from '../dto/operation-type';
 
 @Component({
   selector: 'app-operation-editor',
@@ -16,6 +19,8 @@ import { Observable, of } from 'rxjs';
 export class OperationEditorComponent implements OnInit {
 
   entities: Entities;
+  currencies: Array<Currency>;
+  operationTypes: Array<OperationType>;
   operation: Operation = new Operation();
   availableCategories: Categories[] = new Array();
   chosenCategories: Categories = new Categories();
@@ -25,22 +30,29 @@ export class OperationEditorComponent implements OnInit {
 
   constructor(private operationService: OperationService,
     private categoryService: CategoryService,
+    private currencyService: CurrencyService,
     private entitiesService: EntitiesService) { }
 
   ngOnInit() {
 
-    for (let i = 0; i < 3 ; i++) {
+    for (let i = 0; i < 3; i++) {
       this.chosenCategories.push(new Category());
       this.availableCategories.push(new Categories());
     }
     this.entitiesService.getAllEntities().subscribe(ents => {
       this.entities = ents;
     });
+    this.operationService.getAllTypes().subscribe(ents => {
+      this.operationTypes = ents;
+    });
 
     this.categoryService.getAllCategoriesByLevel(0).subscribe(cats => {
       this.availableCategories[0] = cats;
     });
 
+    this.currencyService.getCurrencies().subscribe(data => {
+      this.currencies = data;
+    });
   }
 
   onSelectCategory(level) {
