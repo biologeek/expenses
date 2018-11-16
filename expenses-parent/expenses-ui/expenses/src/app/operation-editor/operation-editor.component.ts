@@ -10,6 +10,9 @@ import { Observable, of } from 'rxjs';
 import { CurrencyService } from '../services/currency.service';
 import { Currency } from '../dto/currency';
 import { OperationType } from '../dto/operation-type';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-operation-editor',
@@ -31,7 +34,9 @@ export class OperationEditorComponent implements OnInit {
   constructor(private operationService: OperationService,
     private categoryService: CategoryService,
     private currencyService: CurrencyService,
-    private entitiesService: EntitiesService) { }
+    private entitiesService: EntitiesService,
+    private router: Router,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
@@ -70,9 +75,28 @@ export class OperationEditorComponent implements OnInit {
     }
     this.operation.category = lastCategory;
     this.operationService.saveOperation(this.operation).subscribe(data => {
-      console.log('Saved');
+
+      this.snackBar.open('Saved !', 'Close', {
+        duration: 1000
+      }).afterDismissed().subscribe(() => {
+        this.router.navigate(['/dashboard']);
+      });
+    }, (error: HttpErrorResponse) => {
+      this.snackBar.open('Error, retry in a few moments !', 'Close', {
+        duration: 3000
+      });
     });
 
+  }
+
+  onTypeChange() {
+    if (this.operation.type.regular) {
+      this.operation.discriminator = 'R';
+    } else if (this.operation.type.temporary) {
+      this.operation.discriminator = 'T';
+    } else {
+      this.operation.discriminator = 'O';
+    }
   }
 
   saveRefund() {

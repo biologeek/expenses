@@ -1,6 +1,7 @@
 import { Nomenclature } from './nomenclature';
 import { Category } from './category';
 import { TimeInterval } from 'rxjs';
+import { OperationType } from './operation-type';
 
 export class Operation {
 
@@ -18,7 +19,7 @@ export class Operation {
     discriminator: string;
     account: number;
     description: string;
-    type: string;
+    type: OperationType;
     amount: number;
     currency: string;
     effectiveDate: Date;
