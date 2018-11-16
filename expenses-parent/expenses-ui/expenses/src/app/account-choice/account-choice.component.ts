@@ -12,20 +12,14 @@ import { AccountService } from '../services/account.service';
 export class AccountChoiceComponent implements OnInit {
 
 
-  accounts = [
-    {
-      id: 1,
-      name: 'Account 1'
-    }
-  ];
+  accounts = [];
 
   constructor(private cookies: CookieService, private router: Router, private accountService: AccountService) { }
 
   ngOnInit() {
-
     this.accountService.listAccounts().subscribe(acc => {
       this.accounts = acc;
-    })
+    });
   }
 
 

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { OperationService } from '../services/operation.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Operations } from '../dto/operation';
 
 @Component({
   selector: 'app-operation-list',
@@ -6,41 +9,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./operation-list.component.css']
 })
 export class OperationListComponent implements OnInit {
+  operations: Operations;
 
-
-
-  operations = [
-    {
-      amount: 12.34,
-      currency: '€',
-      category: {
-        name: 'Ménage',
-        picture: 'a.png',
-        nomenclature: '001-003'
-      }
-    },
-    {
-      amount: 12.34,
-      currency: '€',
-      category: {
-        name: 'Ménage',
-        picture: 'a.png',
-        nomenclature: '001-003'
-      }
-    },
-    {
-      amount: 12.34,
-      currency: '€',
-      category: {
-        name: 'Ménage',
-        picture: 'a.png',
-        nomenclature: '001-003'
-      }
-    }
-  ];
-  constructor() { }
+  constructor(private operationService: OperationService, private cookies: CookieService) { }
 
   ngOnInit() {
+
+    this.operationService.getOperations().subscribe(op => {
+      this.operations = op.operations;
+    });
   }
 
 }

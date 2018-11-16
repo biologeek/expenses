@@ -19,10 +19,10 @@ export class ConnectionComponent implements OnInit {
   }
 
   connect() {
+    this.cookies.set('Authorization', 'Basic ' + btoa(`${this.connectionInfo.login}:${this.connectionInfo.password}`));
     this.userService.connectUserWithCredentials(this.connectionInfo).subscribe(data => {
-      this.cookies.set('user', '' + data.id);
-      this.cookies.set('token', '' + data.sessionToken);
-
+      this.cookies.set('user', '' + data.body.id);
+      this.cookies.set('token', '' + data.body.sessionToken);
       this.router.navigate(['/account']);
     });
   }

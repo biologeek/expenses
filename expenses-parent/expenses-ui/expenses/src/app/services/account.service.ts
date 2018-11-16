@@ -13,7 +13,7 @@ export class AccountService {
   constructor(private cookie: CookieService, private http: HttpClient) { }
 
 
-  listAccounts(user?: number): Observable<Accounts> {
+  listAccounts(): Observable<Accounts> {
     return <Observable<Accounts>> this.http.get(`${environment.api_url}/user/${this.cookie.get('user')}/accounts`);
   }
 }

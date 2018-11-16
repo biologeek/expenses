@@ -52,9 +52,15 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 				return t.getName().equals("token");
 			}
 		});
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		response.addHeader("Access-Control-Allow-Headers", "Origin,X-Requested-With,x-access-token,Content-Type,Authorization,Accept");
+		response.addHeader("Access-Control-Expose-Headers", "Origin,X-Requested-With,x-access-token,Content-Type,Authorization,Accept");
+		response.addHeader("Access-Control-Max-Age", "3600");
 		if ("OPTIONS".equals(request.getMethod())) {
 			chain.doFilter(arg0, response);
-		} else if (request.getMethod().equals("POST") && (request.getRequestURL().toString().endsWith("/user/register") || request.getRequestURL().toString().endsWith("/user/login"))) {
+		} else if (request.getMethod().equals("POST") && (request.getRequestURL().toString().endsWith("/user/register")
+				|| request.getRequestURL().toString().endsWith("/user/login"))) {
 			// Should not filter registration endpoint
 			chain.doFilter(arg0, response);
 		} else {
@@ -86,12 +92,17 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 
 		String token = request.getHeader("Authorization");
 		if (token != null) {
-			String cleanToken = token.split(" ")[1]; 
-			if (authentService.checkToken(cleanToken)) {
-				// User is authenticated and token is valid
-				chain.doFilter(request, response);
-			} else {
-				// Else HTTP 401 error
+			try {
+				String cleanToken = token.split(" ")[1];
+				if (authentService.checkToken(cleanToken)) {
+					// User is authenticated and token is valid
+					chain.doFilter(request, response);
+				} else {
+					// Else HTTP 401 error
+					((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,
+							"error.token.invalid");
+				}
+			} catch (Exception e) {
 				((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.token.invalid");
 			}
 		} else {
@@ -99,7 +110,6 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 			((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.token.invalid");
 		}
 	}
-
 
 	@Override
 	public void destroy() {

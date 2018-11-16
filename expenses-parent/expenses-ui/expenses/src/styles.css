@@ -38,6 +38,14 @@ text-decoration: none;
     color: #aaaaaa;
 }
 
+.mat-green {
+    background-color: #c9f4c8 !important;
+}
+
+.mat-red {
+    background-color: #f4c8c8!important;
+}
+
 .important{
     font-size: 1.4rem;
 }

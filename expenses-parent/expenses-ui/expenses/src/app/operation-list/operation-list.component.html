@@ -8,7 +8,7 @@
         </mat-grid-tile>
         <mat-grid-tile colspan="2" rowspan="1">
           <mat-chip-list>
-            <mat-chip color="primary" class="important"> {{ operation.amount}} {{operation.currency}}</mat-chip>
+            <mat-chip class="important" [ngClass]="{'mat-green': operation.amount > 0,'mat-red': operation.amount < 0} "> {{ operation.amount}} {{operation.currency}}</mat-chip>
           </mat-chip-list>
         </mat-grid-tile>
 

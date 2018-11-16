@@ -13,11 +13,8 @@ export class UserService {
 
   constructor(private http: HttpClient, private interceptor: AuthorizationInterceptorService, private cookies: CookieService) {}
 
-  public connectUserWithCredentials(credentials: ConnectionInformation): Observable<UserImage> {
-    return this.http.post(`${environment.api_url}/user/login`, credentials, { observe: 'response'})
-    .pipe(tap((resp: HttpResponse<UserImage>) => {
-      this.cookies.set('Authorization', resp.headers.get('Authorization'));
-    })).pipe(map(resp => resp.body));
+  public connectUserWithCredentials(credentials: ConnectionInformation): Observable<HttpResponse<UserImage>> {
+    return <Observable<HttpResponse<UserImage>>>this.http.post(`${environment.api_url}/user/login`, credentials, { observe: 'response'});
   }
 
 }

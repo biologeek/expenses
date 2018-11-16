@@ -1,5 +1,7 @@
 package io.biologeek.expenses.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -62,13 +64,14 @@ public class UserController extends ExceptionWrappedRestController {
 	@PostMapping(path = "/login")
 	@CrossOrigin(origins = { "*" })
 	public ResponseEntity<? extends Object> loginUser(@RequestBody AuthenticationActionBean bean,
-			HttpServletResponse resp) {
+			HttpServletResponse resp) throws UnsupportedEncodingException {
 		RegisteredUser user = null;
 
 		logger.info("Logging in user " + bean.getLogin());
 		try {
 			if ((user = authentService.authenticateWithLoginParameters(userConverter.toModel(bean))) != null) {
 				resp.addHeader("Authorization", "Basic " + base64EncodeLoginInfo(bean));
+				resp.addCookie(new Cookie("Authorization", URLEncoder.encode("Basic " + base64EncodeLoginInfo(bean), "UTF-8")));
 				resp.addCookie(new Cookie("token", user.getAuthentication().getAuthToken()));
 				resp.addCookie(new Cookie("user", String.valueOf(user.getId())));
 				ResponseEntity<User> response = new ResponseEntity<>(userConverter.convert(user), HttpStatus.OK);
