@@ -114,13 +114,13 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
-				<configuration>
+				<configuration><!-- 
 					<overlays>
 						<overlay>
 							<groupId>io.biologeek</groupId>
 							<artifactId>expenses-ui</artifactId>
 						</overlay>
-					</overlays>
+					</overlays> -->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<!-- <webResources> <resource> this is relative to the pom.xml directory 
 						<directory>../expenses-mobile-webui/src/main/webapp/dist</directory> <targetPath>src/main/webapp/expenses-mobile</targetPath> 
