@@ -15,7 +15,6 @@ public class EntityService {
 	private EntityRepository repo;
 
 	public List<Entity> getAllEntitiesForUser(Long userId) {
-		
 		return this.repo.findAllByOwnerId(userId);
 	}
 

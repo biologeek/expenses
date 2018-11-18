@@ -128,9 +128,9 @@ public class UserConverter {
 
 	public Entity convert(io.biologeek.expenses.domain.beans.Entity ent) {
 		if (ent instanceof Person) {
-			return this.convert((Person) ent, null);
+			return this.convert((Person) ent, ent.getOwner().getId());
 		} else if (ent instanceof Organization) {
-			return this.convertToCorp((Organization) ent, null);
+			return this.convertToCorp((Organization) ent, ent.getOwner().getId());
 		} else
 			return new Entity() {
 			};
