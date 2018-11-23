@@ -19,20 +19,20 @@
         </mat-grid-tile>
 
         <mat-grid-tile colspan="4">
-            <mat-form-field class="w-50p">
-              <mat-select placeholder="Type" name="type" [(ngModel)]="operation.type" (selectionChange)="onTypeChange()">
-                <mat-option *ngFor="let cur of operationTypes" [value]="cur">
-                  {{cur.name | titlecase}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </mat-grid-tile>
+          <mat-form-field class="w-50p">
+            <mat-select placeholder="Type" name="type" [(ngModel)]="operation.type" (selectionChange)="onTypeChange()">
+              <mat-option *ngFor="let cur of operationTypes" [value]="cur">
+                {{cur.name | titlecase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
 
         <mat-grid-tile colspan="4">
-            <input [matDatepicker]="myDatepicker" placeholder="Operation date" [(ngModel)]="operation.effectiveDate" name="effectiveDate">
-            <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
-            <mat-datepicker #myDatepicker></mat-datepicker>
-          </mat-grid-tile>
+          <input [matDatepicker]="myDatepicker" placeholder="Operation date" [(ngModel)]="operation.effectiveDate" name="effectiveDate">
+          <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-grid-tile>
         <mat-grid-tile colspan="3">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Category" name="firstLevelCategories" [(ngModel)]="chosenCategories[0]"
@@ -44,9 +44,9 @@
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile colspan="1">
-            <i class="material-icons" (click)="openCategoryDialog()">
-              add_box
-              </i>
+          <i class="material-icons" (click)="openCategoryDialog()">
+            add_box
+          </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="chosenCategories[0].id">
           <mat-form-field class="w-100p">
@@ -59,9 +59,9 @@
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile colspan="1" *ngIf="chosenCategories[0].id">
-            <i class="material-icons" (click)="openCategoryDialog(chosenCategories[0])">
-              add_box
-              </i>
+          <i class="material-icons" (click)="openCategoryDialog(chosenCategories[0])">
+            add_box
+          </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="chosenCategories[1].id">
           <mat-form-field class="w-100p">
@@ -74,9 +74,9 @@
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile colspan="1" *ngIf="chosenCategories[1].id">
-            <i class="material-icons" (click)="openCategoryDialog(chosenCategories[1])">
-              add_box
-              </i>
+          <i class="material-icons" (click)="openCategoryDialog(chosenCategories[1])">
+            add_box
+          </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="chosenCategories[2].id">
           <mat-form-field class="w-100p">
@@ -88,11 +88,11 @@
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile colspan="1" *ngIf="chosenCategories[2].id">
-            <i class="material-icons" (click)="openCategoryDialog(chosenCategories[2])">
-              add_box
-              </i>
+          <i class="material-icons" (click)="openCategoryDialog(chosenCategories[2])">
+            add_box
+          </i>
         </mat-grid-tile>
-        <mat-grid-tile colspan="4">
+        <mat-grid-tile colspan="3">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Emitter" [(ngModel)]="operation.emitter" name="emitter">
               <mat-option *ngFor="let em of entities" [value]="em">
@@ -101,7 +101,13 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile colspan="4">
+
+        <mat-grid-tile colspan="1">
+          <i class="material-icons" (click)="openCategoryDialog(chosenCategories[0])">
+            add_box
+          </i>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="3" *ngIf="!newReceiver">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Receiver" [(ngModel)]="operation.receiver" name="receiver">
               <mat-option *ngFor="let em of entities" [value]="em">
@@ -110,7 +116,14 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
-
+        <mat-grid-tile colspan="1" *ngIf="!newReceiver">
+          <i class="material-icons" (click)="newReceiver = true">
+            add_box
+          </i>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+          <app-entity-editor [simple]="true" (exitSuccess)="registerEntity($event, 'receiver')" *ngIf="newReceiver"></app-entity-editor>
+        </mat-grid-tile>
         <div *ngIf="operation.discriminator == 'R'">
           <mat-grid-tile colspan="4">
             <h4>Regular operation</h4>
@@ -170,17 +183,17 @@
             </mat-grid-tile>
           </div>
           <mat-grid-tile colspan="2">
-              <input class="w-50p" [matDatepicker]="reimbursmentDate" placeholder="Start date" [(ngModel)]="refund.reimbursmentDate"
-                name="firstDate">
-              <mat-datepicker-toggle [for]="reimbursmentDate"></mat-datepicker-toggle>
-              <mat-datepicker #reimbursmentDate></mat-datepicker>
-            </mat-grid-tile>
-            <mat-grid-tile colspan="1">
-              <input class="w-50p" placeholder="Amount" [(ngModel)]="refund.reimbursedAmount" name="reimbursedAmount">
-            </mat-grid-tile>
-            <mat-grid-tile colspan="1">
-              <i class="material-icons" (click)="saveRefund()"> save </i>
-            </mat-grid-tile>
+            <input class="w-50p" [matDatepicker]="reimbursmentDate" placeholder="Start date" [(ngModel)]="refund.reimbursmentDate"
+              name="firstDate">
+            <mat-datepicker-toggle [for]="reimbursmentDate"></mat-datepicker-toggle>
+            <mat-datepicker #reimbursmentDate></mat-datepicker>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="1">
+            <input class="w-50p" placeholder="Amount" [(ngModel)]="refund.reimbursedAmount" name="reimbursedAmount">
+          </mat-grid-tile>
+          <mat-grid-tile colspan="1">
+            <i class="material-icons" (click)="saveRefund()"> save </i>
+          </mat-grid-tile>
         </div>
 
         <mat-grid-tile colspan="2">

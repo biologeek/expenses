@@ -17,6 +17,7 @@ import { HttpError401Interceptor } from './services/http-error401-interceptor.se
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { AuthorizationInterceptorService } from './services/authorization-interceptor.service';
+import { EntityEditorComponent } from './entity-editor/entity-editor.component';
 
 
 
@@ -41,7 +42,8 @@ export const appRoutes: Route[] = [
     DashboardComponent,
     OperationEditorComponent,
     OperationListComponent,
-    AccountChoiceComponent
+    AccountChoiceComponent,
+    EntityEditorComponent
   ],
   imports: [
     BrowserModule, FormsModule,

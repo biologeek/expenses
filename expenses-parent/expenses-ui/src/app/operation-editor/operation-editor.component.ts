@@ -95,6 +95,10 @@ export class OperationEditorComponent implements OnInit {
 
   }
 
+  registerEntity(event, type) {
+    this.operation[type] = event.target.value;
+  }
+
   onTypeChange() {
     console.log('AAAA');
     if (this.operation.type.regular) {

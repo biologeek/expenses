@@ -60,4 +60,9 @@ public class OperationAgent {
 		return this;
 	}
 
+	public OperationAgent id(Long id2) {
+		this.id = id2;
+		return this;
+	}
+
 }

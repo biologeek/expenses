@@ -63,7 +63,7 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 				|| request.getRequestURL().toString().endsWith("/user/login"))) {
 			// Should not filter registration endpoint
 			chain.doFilter(arg0, response);
-		} else {
+		} else if (request.getRequestURL().toString().contains("/api/")) {
 			if (request.getHeader("Authorization") != null || hasAuthorization) {
 				authenticateWithToken(response, chain, request);
 			} else {
@@ -72,6 +72,8 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 				HttpServletResponse hsr = (HttpServletResponse) response;
 				hsr.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
+		} else {
+			chain.doFilter(arg0, response);
 		}
 	}
 

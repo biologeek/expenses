@@ -7,16 +7,43 @@ INSERT INTO person VALUES (6, 'Anna', 27, 'Anna', 'Fichet', null, null);
 INSERT INTO person VALUES (6, 'Proprio Lille', NULL, 'Ben Youssef', 'Echikr', null, null);
 
 
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (2, 'Match', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (4, 'Auchan', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (5, 'Carrefour', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (6, 'Biocoop', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (7, 'Autre magasin bio', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (8, 'Mie Caline', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (3, 'BBG', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (9, 'Crédit Mutuel', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (10, 'MACIF', true, null, 14);
-INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (11, 'Spartak Lillois', false, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (7, 'Match', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (8, 'Auchan', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (9, 'Carrefour', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (10, 'Biocoop', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (11, 'Autre magasin bio', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (12, 'Mie Caline', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (13, 'BBG', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (14, 'Crédit Mutuel', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (15, 'APRR', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (17, 'Total', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (18, 'Géant Casino', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (19, 'Bio C Bon', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (20, 'La vie saine', true, null, 14);
+INSERT INTO organization (id, name, isTrade, org_sector, owner_id) VALUES (16, 'Spartak Lillois', false, null, 14);
+
+
+insert into operationagent values (1, 1);
+insert into operationagent values (2, 2);
+insert into operationagent values (3, 3);
+insert into operationagent values (4, 4);
+insert into operationagent values (5, 5);
+insert into operationagent values (6, 6);
+insert into operationagent values (7, 7);
+insert into operationagent values (8, 8);
+insert into operationagent values (9, 9);
+insert into operationagent values (	10	,	10	);
+insert into operationagent values (	11	,	11	);
+insert into operationagent values (	12	,	12	);
+insert into operationagent values (	13	,	13	);
+insert into operationagent values (	14	,	14	);
+insert into operationagent values (	15	,	15	);
+insert into operationagent values (	16	,	16	);
+insert into operationagent values (	17	,	17	);
+insert into operationagent values (	18	,	18	);
+insert into operationagent values (	19	,	19	);
+insert into operationagent values (	20	,	20	);
+
 
 INSERT INTO category VALUES (1, null, 0, 'Alimentation', '001', null);
 INSERT INTO category VALUES (2, 'organic-food.png', 1, 'Alimentation Biologique', '001-001', 1);

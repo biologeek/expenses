@@ -15,7 +15,7 @@ import io.biologeek.expenses.api.beans.CurrencyDTO;
 import io.biologeek.expenses.converter.CurrencyDTOConverter;
 
 @RestController
-@RequestMapping("/currencies")
+@RequestMapping("/api/currencies")
 public class CurrencyController {
 
 	@Autowired

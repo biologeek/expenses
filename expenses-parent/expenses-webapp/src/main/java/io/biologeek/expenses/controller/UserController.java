@@ -34,7 +34,7 @@ import io.biologeek.expenses.services.AuthenticationService;
 import io.biologeek.expenses.services.RegisteredUserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController extends ExceptionWrappedRestController {
 
 	@Autowired

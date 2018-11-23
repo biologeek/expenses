@@ -15,7 +15,7 @@ import io.biologeek.expenses.converter.CategoryToApiConverter;
 import io.biologeek.expenses.services.CategoryService;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/category")
 public class CategoryController extends ExceptionWrappedRestController {
 
 	@Autowired

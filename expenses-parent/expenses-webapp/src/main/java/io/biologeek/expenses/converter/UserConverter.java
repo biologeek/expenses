@@ -57,6 +57,7 @@ public class UserConverter {
 			return null;
 
 		OperationAgent agent = new OperationAgent()//
+				.id(ent.getId())
 				.agentId(ent.getAgentId());
 
 		if (ent instanceof User)

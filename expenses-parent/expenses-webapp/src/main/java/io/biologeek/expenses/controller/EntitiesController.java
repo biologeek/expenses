@@ -15,7 +15,7 @@ import io.biologeek.expenses.converter.UserConverter;
 import io.biologeek.expenses.services.EntityService;
 
 @RestController
-@RequestMapping("/entities")
+@RequestMapping("/api/entities")
 public class EntitiesController {
 
 	@Autowired
