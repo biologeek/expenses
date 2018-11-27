@@ -1,21 +1,19 @@
 <div *ngIf="simple">
   <mat-grid-list cols="4">
-    <mat-grid-tile colspan="1">
-      <input matInput name="name" placeholder="Name" [(ngModel)]="entity.name">
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1">
-      <mat-radio-button [(ngModel)]="user">Physical person</mat-radio-button>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1">
-      <mat-radio-button [(ngModel)]="corp">Corporate person</mat-radio-button>
-    </mat-grid-tile>
+  <mat-grid-tile colspan="3">
+    <input matInput name="name" placeholder="Name" class="w-50p" [(ngModel)]="entity.type">
+    <mat-radio-group  name="type" [(ngModel)]="entity.type">
+      <mat-radio-button [value]="user">Human</mat-radio-button> &nbsp; &nbsp;
+      <mat-radio-button [value]="corp">Corporation</mat-radio-button>
+    </mat-radio-group>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1">
 
-    <mat-grid-tile colspan="1">
-      <i class="material-icons" (click)="onSave()">
-        save
-      </i></mat-grid-tile>
-  </mat-grid-list>
-
+    <i class="material-icons" (click)="onSave()">
+      save
+    </i>
+  </mat-grid-tile>
+</mat-grid-list>
 </div>
 <div *ngIf="!simple">
 </div>

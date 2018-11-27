@@ -32,6 +32,10 @@ export class OperationEditorComponent implements OnInit {
   receiverCtrl: FormControl;
   refund: Refund = new Refund();
 
+  newReceiver = false;
+  newEmitter = false;
+
+
   constructor(private operationService: OperationService,
     private categoryService: CategoryService,
     private currencyService: CurrencyService,
@@ -97,6 +101,8 @@ export class OperationEditorComponent implements OnInit {
 
   registerEntity(event, type) {
     this.operation[type] = event.target.value;
+    this.entities.push(event.target.value);
+    type === 'receiver' ? this.newReceiver = false : this.newEmitter = false;
   }
 
   onTypeChange() {

@@ -28,13 +28,14 @@ export class EntityEditorComponent implements OnInit {
   simple: boolean;
 
   @Output()
-  exitSuccess: EventEmitter<Entity>;
+  exitSuccess: EventEmitter<Entity> = new EventEmitter();
 
   constructor(
     private entitiesService: EntitiesService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    this.entity = new Entity();
   }
 
 
@@ -43,7 +44,6 @@ export class EntityEditorComponent implements OnInit {
       this.snackBar.open(`${ent.name} saved !`, 'Close', {
         duration: 1000
       });
-      this.exitSuccess = new EventEmitter();
       this.exitSuccess.emit(ent);
     }, err => {
       this.snackBar.open(`Error, please retry in a few minutes`, 'Close', {

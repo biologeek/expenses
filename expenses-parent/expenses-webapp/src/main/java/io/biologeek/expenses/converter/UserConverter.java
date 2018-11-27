@@ -85,6 +85,15 @@ public class UserConverter {
 		return person;
 	}
 
+	
+	public io.biologeek.expenses.domain.beans.Entity toModel(Entity ent) {
+		if (ent instanceof User) {
+			return this.toPerson((User) ent);
+		} else if (ent instanceof CorpUser) {
+			return this.toOrganization((CorpUser) ent);
+		}
+		throw new IllegalArgumentException();
+	}
 	public User convert(Person result, Long agentId) {
 		if (result == null)
 			return null;

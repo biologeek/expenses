@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,5 +33,12 @@ public class EntitiesController {
 		} else {
 			return new ResponseEntity<List<Entity>>(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@PostMapping("/user/{userId}")
+	public ResponseEntity<Entity> saveEntity(@PathVariable("userId") Long userId, @RequestBody Entity entity) {
+		return new ResponseEntity<>(
+				this.entitiesConverter.convert(this.entitiesService.save(this.entitiesConverter.toModel(entity))),
+				HttpStatus.CREATED);
 	}
 }

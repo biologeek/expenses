@@ -122,7 +122,7 @@
           </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="4">
-          <app-entity-editor [simple]="true" (exitSuccess)="registerEntity($event, 'receiver')" *ngIf="newReceiver"></app-entity-editor>
+          <app-entity-editor class="w-100p" [simple]="true" (exitSuccess)="registerEntity($event, 'receiver')" *ngIf="newReceiver"></app-entity-editor>
         </mat-grid-tile>
         <div *ngIf="operation.discriminator == 'R'">
           <mat-grid-tile colspan="4">
