@@ -25,7 +25,7 @@ import javax.persistence.OneToMany;
 public abstract class Entity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	private String name;
 	@ManyToOne
 	@JoinColumn(name="owner_id")
@@ -50,11 +50,11 @@ public abstract class Entity {
 		this.agents = agents;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

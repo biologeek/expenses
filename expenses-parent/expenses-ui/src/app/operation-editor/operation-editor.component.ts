@@ -96,12 +96,11 @@ export class OperationEditorComponent implements OnInit {
         duration: 3000
       });
     });
-
   }
 
   registerEntity(event, type) {
-    this.operation[type] = event.target.value;
-    this.entities.push(event.target.value);
+    this.operation[type] = event;
+    this.entities.push(event);
     type === 'receiver' ? this.newReceiver = false : this.newEmitter = false;
   }
 
@@ -133,8 +132,9 @@ export class OperationEditorComponent implements OnInit {
     this.refund = new Refund();
   }
 
-  openCategoryDialog(category?: Category) {
-
+  openCategoryDialog(level: number) {
+    const parentCategory = this.chosenCategories.filter(x => x).slice(-1)[0];
+    thi
   }
 
 }

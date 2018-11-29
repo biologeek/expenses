@@ -18,6 +18,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { AuthorizationInterceptorService } from './services/authorization-interceptor.service';
 import { EntityEditorComponent } from './entity-editor/entity-editor.component';
+import { CategoryEditorComponent } from './category-editor/category-editor.component';
 
 
 
@@ -43,6 +44,7 @@ export const appRoutes: Route[] = [
     OperationEditorComponent,
     OperationListComponent,
     AccountChoiceComponent,
+    CategoryEditorComponent,
     EntityEditorComponent
   ],
   imports: [

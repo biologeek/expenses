@@ -1,13 +1,24 @@
 package io.biologeek.expenses.services;
 
+import org.springframework.stereotype.Service;
+
 import io.biologeek.expenses.domain.beans.Entity;
 import io.biologeek.expenses.domain.beans.Organization;
 import io.biologeek.expenses.domain.beans.Person;
 
+@Service
 public class EntityMerger implements Merger<Entity> {
 
 	@Override
 	public Entity merge(Entity stored, Entity toMerge) {
+		if (stored == null) {
+			if (stored instanceof Organization) {
+				stored = new Organization();
+			} else if (stored instanceof Person) {
+				stored = new Person();
+			}
+		}
+			
 		if (stored.getId() == toMerge.getId()) {
 			throw new IllegalArgumentException("entity.id.different");
 		}

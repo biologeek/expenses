@@ -92,26 +92,36 @@
             add_box
           </i>
         </mat-grid-tile>
-        <mat-grid-tile colspan="3">
+
+
+
+
+        <mat-grid-tile colspan="3" *ngIf="!newEmitter">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Emitter" [(ngModel)]="operation.emitter" name="emitter">
               <mat-option *ngFor="let em of entities" [value]="em">
-                {{em.type=='user'? em.firstName+' '+em.lastName : em.name}}
-              </mat-option>
+                  {{em.name}}
+                </mat-option>
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
 
-        <mat-grid-tile colspan="1">
-          <i class="material-icons" (click)="openCategoryDialog(chosenCategories[0])">
+        <mat-grid-tile colspan="1" *ngIf="!newEmitter">
+          <i class="material-icons" (click)="newEmitter = true">
             add_box
           </i>
         </mat-grid-tile>
-        <mat-grid-tile colspan="3" *ngIf="!newReceiver">
+        <mat-grid-tile colspan="4" *ngIf="newEmitter">
+          <app-entity-editor class="w-100p" [simple]="true" (exitSuccess)="registerEntity($event, 'emitter')" *ngIf="newEmitter"></app-entity-editor>
+        </mat-grid-tile>
+
+
+        
+        <mat-grid-tile colspan="3"*ngIf="!newReceiver">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Receiver" [(ngModel)]="operation.receiver" name="receiver">
               <mat-option *ngFor="let em of entities" [value]="em">
-                {{em.type=='user'? em.firstName+' '+em.lastName : em.name}}
+                {{em.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -121,8 +131,8 @@
             add_box
           </i>
         </mat-grid-tile>
-        <mat-grid-tile colspan="4">
-          <app-entity-editor class="w-100p" [simple]="true" (exitSuccess)="registerEntity($event, 'receiver')" *ngIf="newReceiver"></app-entity-editor>
+        <mat-grid-tile colspan="4" *ngIf="newReceiver">
+          <app-entity-editor class="w-100p" [simple]="true" (exitSuccess)="registerEntity($event, 'receiver')"></app-entity-editor>
         </mat-grid-tile>
         <div *ngIf="operation.discriminator == 'R'">
           <mat-grid-tile colspan="4">

@@ -57,8 +57,7 @@ public class UserConverter {
 			return null;
 
 		OperationAgent agent = new OperationAgent()//
-				.id(ent.getId())
-				.agentId(ent.getAgentId());
+				.id(ent.getId()).agentId(ent.getAgentId());
 
 		if (ent instanceof User)
 			agent.setAgentEntity(toPerson((User) ent));
@@ -70,8 +69,9 @@ public class UserConverter {
 	private Organization toOrganization(CorpUser ent) {
 		Organization or = new Organization();
 		or.setId(ent.getId());
-		or.setMainContact(toPerson(ent.getMainContact()));
-		return null;
+		if (ent.getMainContact() != null)
+			or.setMainContact(toPerson(ent.getMainContact()));
+		return or;
 	}
 
 	private Person toPerson(User ent) {
@@ -85,15 +85,20 @@ public class UserConverter {
 		return person;
 	}
 
-	
 	public io.biologeek.expenses.domain.beans.Entity toModel(Entity ent) {
+		io.biologeek.expenses.domain.beans.Entity model = null;
 		if (ent instanceof User) {
-			return this.toPerson((User) ent);
+			model = this.toPerson((User) ent);
 		} else if (ent instanceof CorpUser) {
-			return this.toOrganization((CorpUser) ent);
+			model = this.toOrganization((CorpUser) ent);
+		} else {
+			throw new IllegalArgumentException();
 		}
-		throw new IllegalArgumentException();
+
+		model.setName(ent.getName());
+		return model;
 	}
+
 	public User convert(Person result, Long agentId) {
 		if (result == null)
 			return null;
@@ -137,12 +142,15 @@ public class UserConverter {
 	}
 
 	public Entity convert(io.biologeek.expenses.domain.beans.Entity ent) {
+		Entity api = null;
 		if (ent instanceof Person) {
-			return this.convert((Person) ent, ent.getOwner().getId());
+			api = this.convert((Person) ent, ent.getOwner().getId());
 		} else if (ent instanceof Organization) {
-			return this.convertToCorp((Organization) ent, ent.getOwner().getId());
+			api = this.convertToCorp((Organization) ent, ent.getOwner().getId());
 		} else
-			return new Entity() {
-			};
+			throw new IllegalArgumentException();
+		api.setName(ent.getName());
+
+		return api;
 	}
 }

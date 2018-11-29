@@ -1,10 +1,10 @@
 <div *ngIf="simple">
   <mat-grid-list cols="4">
   <mat-grid-tile colspan="3">
-    <input matInput name="name" placeholder="Name" class="w-50p" [(ngModel)]="entity.type">
+    <input matInput name="name" placeholder="Name" class="w-50p" [(ngModel)]="entity.name">
     <mat-radio-group  name="type" [(ngModel)]="entity.type">
-      <mat-radio-button [value]="user">Human</mat-radio-button> &nbsp; &nbsp;
-      <mat-radio-button [value]="corp">Corporation</mat-radio-button>
+      <mat-radio-button [value]="'user'">Human</mat-radio-button> &nbsp; &nbsp;
+      <mat-radio-button [value]="'corp'">Corporation</mat-radio-button>
     </mat-radio-group>
   </mat-grid-tile>
   <mat-grid-tile colspan="1">

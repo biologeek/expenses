@@ -18,17 +18,27 @@ public class EntityService {
 
 	@Autowired
 	private Merger<Entity> entityMerger;
-	
+
+	@Autowired
+	private RegisteredUserService userService;
+
 	public List<Entity> getAllEntitiesForUser(Long userId) {
 		return this.repo.findAllByOwnerId(userId);
 	}
 
-	public Entity save(Entity entity) {
-		
+	public Entity update(Entity entity) {
+
 		Entity savedEntity = this.repo.findOne(entity.getId());
-		
+
 		savedEntity = this.entityMerger.merge(savedEntity, entity);
 		return this.repo.save(savedEntity);
+	}
+
+	public Entity save(Long userId, Entity entity) {
+		
+		RegisteredUser user = this.userService.findUserById(userId);
+		entity.setOwner(user);
+		return this.repo.save(entity);
 	}
 
 }

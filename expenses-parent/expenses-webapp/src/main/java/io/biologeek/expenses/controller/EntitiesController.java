@@ -38,7 +38,7 @@ public class EntitiesController {
 	@PostMapping("/user/{userId}")
 	public ResponseEntity<Entity> saveEntity(@PathVariable("userId") Long userId, @RequestBody Entity entity) {
 		return new ResponseEntity<>(
-				this.entitiesConverter.convert(this.entitiesService.save(this.entitiesConverter.toModel(entity))),
+				this.entitiesConverter.convert(this.entitiesService.save(userId, this.entitiesConverter.toModel(entity))),
 				HttpStatus.CREATED);
 	}
 }
