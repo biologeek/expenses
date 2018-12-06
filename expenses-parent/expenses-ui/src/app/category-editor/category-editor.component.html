@@ -1,3 +1,15 @@
-<p>
-  category-editor works!
-</p>
+<div *ngIf="simple">
+    <mat-grid-list cols="4">
+    <mat-grid-tile colspan="3">
+      <input matInput name="name" placeholder="Name" class="w-50p" [(ngModel)]="category.name">
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1">
+  
+      <i class="material-icons" (click)="onSave()">
+        save
+      </i>
+    </mat-grid-tile>
+  </mat-grid-list>
+  </div>
+  <div *ngIf="!simple">
+  </div>

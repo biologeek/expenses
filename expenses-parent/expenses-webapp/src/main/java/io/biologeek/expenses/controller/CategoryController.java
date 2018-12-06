@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.biologeek.expenses.api.beans.Category;
 import io.biologeek.expenses.converter.CategoryToApiConverter;
+import io.biologeek.expenses.converter.CategoryToModelConverter;
+import io.biologeek.expenses.exceptions.BusinessException;
 import io.biologeek.expenses.services.CategoryService;
 
 @RestController
@@ -63,4 +67,15 @@ public class CategoryController extends ExceptionWrappedRestController {
 		return new ResponseEntity<>(CategoryToApiConverter.convert(categoryService.getAllCategories()),
 				HttpStatus.OK);
 	}	
+	
+	@PostMapping("")
+	public ResponseEntity<Category> saveCategory(@RequestBody Category category) {
+		io.biologeek.expenses.domain.beans.Category result;
+		try {
+			result = this.categoryService.saveCategory(CategoryToModelConverter.convert(category));
+		} catch (BusinessException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(CategoryToApiConverter.convertToCategory(result), HttpStatus.CREATED);
+	}
 }

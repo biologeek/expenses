@@ -33,7 +33,7 @@
           <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
           <mat-datepicker #myDatepicker></mat-datepicker>
         </mat-grid-tile>
-        <mat-grid-tile colspan="3">
+        <mat-grid-tile colspan="3" *ngIf="!newCategory[0]">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Category" name="firstLevelCategories" [(ngModel)]="chosenCategories[0]"
               (selectionChange)="onSelectCategory(0)">
@@ -43,12 +43,15 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile colspan="1">
+        <mat-grid-tile colspan="1" *ngIf="!newCategory[0]">
           <i class="material-icons" (click)="openCategoryDialog()">
             add_box
           </i>
         </mat-grid-tile>
-        <mat-grid-tile colspan="3" *ngIf="chosenCategories[0].id">
+        <mat-grid-tile colspan="4" *ngIf="newCategory[0]">
+          <app-category-editor class="w-100p" [simple]="true" [parent]=""></app-category-editor>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="3" *ngIf="chosenCategories[0].id && !newCategory[1]">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Category" name="secondLevelCategories" [(ngModel)]="chosenCategories[1]"
               (selectionChange)="onSelectCategory(1)">
@@ -58,12 +61,15 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile colspan="1" *ngIf="chosenCategories[0].id">
+        <mat-grid-tile colspan="1" *ngIf="chosenCategories[0].id && !newCategory[1]">
           <i class="material-icons" (click)="openCategoryDialog(chosenCategories[0])">
             add_box
           </i>
         </mat-grid-tile>
-        <mat-grid-tile colspan="3" *ngIf="chosenCategories[1].id">
+        <mat-grid-tile colspan="4" *ngIf="newCategory[1]">
+          <app-category-editor class="w-100p" [simple]="true" [parent]="chosenCategories[0]"></app-category-editor>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="3" *ngIf="chosenCategories[1].id && !newCategory[2]">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Category" name="thirdLevelCategories" [(ngModel)]="chosenCategories[2]"
               (selectionChange)="onSelectCategory(2)">
@@ -73,12 +79,15 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile colspan="1" *ngIf="chosenCategories[1].id">
+        <mat-grid-tile colspan="1" *ngIf="chosenCategories[1].id && !newCategory[2]">
           <i class="material-icons" (click)="openCategoryDialog(chosenCategories[1])">
             add_box
           </i>
         </mat-grid-tile>
-        <mat-grid-tile colspan="3" *ngIf="chosenCategories[2].id">
+        <mat-grid-tile colspan="4" *ngIf="newCategory[2]">
+          <app-category-editor class="w-100p" [simple]="true" [parent]="chosenCategories[1]"></app-category-editor>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="3" *ngIf="chosenCategories[2].id && !newCategory[3]">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Category" name="fourthLevelCategories" [(ngModel)]="chosenCategories[3]">
               <mat-option *ngFor="let category of availableCategories[3]" [value]="category">
@@ -87,15 +96,14 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile colspan="1" *ngIf="chosenCategories[2].id">
+        <mat-grid-tile colspan="1" *ngIf="chosenCategories[2].id && !newCategory[3]">
           <i class="material-icons" (click)="openCategoryDialog(chosenCategories[2])">
             add_box
           </i>
         </mat-grid-tile>
-
-
-
-
+        <mat-grid-tile colspan="4" *ngIf="newCategory[3]">
+          <app-category-editor class="w-100p" [simple]="true" [parent]="chosenCategories[2]"></app-category-editor>
+        </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="!newEmitter">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Emitter" [(ngModel)]="operation.emitter" name="emitter">
@@ -116,7 +124,7 @@
         </mat-grid-tile>
 
 
-        
+
         <mat-grid-tile colspan="3"*ngIf="!newReceiver">
           <mat-form-field class="w-100p">
             <mat-select placeholder="Receiver" [(ngModel)]="operation.receiver" name="receiver">

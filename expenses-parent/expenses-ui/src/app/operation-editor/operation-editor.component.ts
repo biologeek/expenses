@@ -34,6 +34,7 @@ export class OperationEditorComponent implements OnInit {
 
   newReceiver = false;
   newEmitter = false;
+  newCategory: boolean[] = [false, false, false, false];
 
 
   constructor(private operationService: OperationService,
@@ -132,9 +133,16 @@ export class OperationEditorComponent implements OnInit {
     this.refund = new Refund();
   }
 
-  openCategoryDialog(level: number) {
-    const parentCategory = this.chosenCategories.filter(x => x).slice(-1)[0];
-    thi
+  openCategoryDialog(category: Category) {
+    if (category) {
+      this.newCategory[category.level] = true;
+    } else {
+      this.newCategory[0] = true;
+    }
+  }
+
+  onSaveNewCategorySuccess(category: Category) {
+    this.availableCategories[category.level].push(category);
   }
 
 }

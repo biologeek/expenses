@@ -7,13 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.biologeek.expenses.domain.beans.Category;
+import io.biologeek.expenses.exceptions.BusinessException;
+import io.biologeek.expenses.exceptions.ValidationException;
 import io.biologeek.expenses.repositories.CategoryRepository;
+import io.biologeek.expenses.services.validation.Validator;
 
 @Service
 public class CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	@Autowired
+	private Validator<Category> categoryValidator;
 
 	/**
 	 * Retrieves {@link Category} related to passed nomenclature.
@@ -64,6 +69,15 @@ public class CategoryService {
 
 	public List<Category> getAllCategories() {
 		return categoryRepository.findAll();
+	}
+
+	public Category saveCategory(Category convert) throws BusinessException {
+		try {
+			this.categoryValidator.validate(convert);
+			return this.categoryRepository.save(convert);
+		} catch (ValidationException e) {
+			throw new BusinessException(e.getMessage());
+		}
 	}
 
 }
