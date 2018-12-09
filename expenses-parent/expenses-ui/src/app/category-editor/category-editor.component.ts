@@ -33,10 +33,10 @@ export class CategoryEditorComponent implements OnInit {
 
   onSave() {
 
-    if (this.parent) {
+    if (this.parent.id) {
       this.category.parent = this.parent;
     }
-    this.category.level = this.parent.level ? this.parent.level + 1 : 0;
+    this.category.level = this.parent.level >= 0 ? this.parent.level + 1 : 0;
     this.categoryService.saveCategory(this.category).subscribe(result => {
       this.snackBar.open(result.name + ' saved !',  'Close', {
         duration: 1000

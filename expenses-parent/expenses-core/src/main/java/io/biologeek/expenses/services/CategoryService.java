@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import io.biologeek.expenses.domain.beans.Category;
 import io.biologeek.expenses.exceptions.BusinessException;
@@ -74,10 +76,30 @@ public class CategoryService {
 	public Category saveCategory(Category convert) throws BusinessException {
 		try {
 			this.categoryValidator.validate(convert);
+			buildNomenclature(convert);
 			return this.categoryRepository.save(convert);
 		} catch (ValidationException e) {
 			throw new BusinessException(e.getMessage());
 		}
+	}
+
+	private void buildNomenclature(Category convert) {
+		String lastNomenc = "";
+		if (convert.getParent() != null) {
+			lastNomenc = this.categoryRepository.findMaxNomenclatureForChild(convert.getParent());	
+		}
+		if (lastNomenc == null || "".equals(lastNomenc)) {
+			lastNomenc = "000";
+		}
+		String lastItem = lastNomenc;
+		if (lastNomenc.length() > 3) {
+			lastItem = lastNomenc.substring(lastNomenc.length() - 3, lastNomenc.length());
+		}
+		String nextItem = String.format("%03d", Integer.parseInt(lastItem) + 1);
+		if (convert.getParent() != null)
+			convert.setNomenclature(convert.getParent().getNomenclature() + "-" + nextItem);
+		else 
+			convert.setNomenclature(nextItem);
 	}
 
 }

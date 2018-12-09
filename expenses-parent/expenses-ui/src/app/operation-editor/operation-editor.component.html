@@ -49,7 +49,7 @@
           </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="4" *ngIf="newCategory[0]">
-          <app-category-editor class="w-100p" [simple]="true" [parent]=""></app-category-editor>
+          <app-category-editor class="w-100p" (saveSuccess)="onSaveNewCategorySuccess($event)" [simple]="true" [parent]=""></app-category-editor>
         </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="chosenCategories[0].id && !newCategory[1]">
           <mat-form-field class="w-100p">
@@ -67,7 +67,7 @@
           </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="4" *ngIf="newCategory[1]">
-          <app-category-editor class="w-100p" [simple]="true" [parent]="chosenCategories[0]"></app-category-editor>
+          <app-category-editor class="w-100p" (saveSuccess)="onSaveNewCategorySuccess($event)" [simple]="true" [parent]="chosenCategories[0]"></app-category-editor>
         </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="chosenCategories[1].id && !newCategory[2]">
           <mat-form-field class="w-100p">
@@ -85,7 +85,7 @@
           </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="4" *ngIf="newCategory[2]">
-          <app-category-editor class="w-100p" [simple]="true" [parent]="chosenCategories[1]"></app-category-editor>
+          <app-category-editor class="w-100p" (saveSuccess)="onSaveNewCategorySuccess($event)" [simple]="true" [parent]="chosenCategories[1]"></app-category-editor>
         </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="chosenCategories[2].id && !newCategory[3]">
           <mat-form-field class="w-100p">
@@ -102,7 +102,7 @@
           </i>
         </mat-grid-tile>
         <mat-grid-tile colspan="4" *ngIf="newCategory[3]">
-          <app-category-editor class="w-100p" [simple]="true" [parent]="chosenCategories[2]"></app-category-editor>
+          <app-category-editor class="w-100p" [simple]="true" (saveSuccess)="onSaveNewCategorySuccess($event)" [parent]="chosenCategories[2]"></app-category-editor>
         </mat-grid-tile>
         <mat-grid-tile colspan="3" *ngIf="!newEmitter">
           <mat-form-field class="w-100p">
@@ -213,17 +213,13 @@
             <i class="material-icons" (click)="saveRefund()"> save </i>
           </mat-grid-tile>
         </div>
-
         <mat-grid-tile colspan="2">
           <button mat-raised-button color="primary" (click)="saveOperation()">Save</button>
         </mat-grid-tile>
-
         <mat-grid-tile colspan="2">
           <button mat-raised-button color="basic" (click)="reset()">Reset</button>
         </mat-grid-tile>
       </mat-grid-list>
-
-
     </form>
   </mat-card-content>
 </mat-card>

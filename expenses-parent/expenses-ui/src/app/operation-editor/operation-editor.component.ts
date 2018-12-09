@@ -72,6 +72,8 @@ export class OperationEditorComponent implements OnInit {
   }
 
   onSelectCategory(level) {
+
+    console.log(this.chosenCategories[level]);
     this.categoryService.getAllCategoriesByNomenclature(this.chosenCategories[level].nomenclature).subscribe(cats => {
       this.availableCategories[level + 1] = cats;
     });
@@ -135,13 +137,14 @@ export class OperationEditorComponent implements OnInit {
 
   openCategoryDialog(category: Category) {
     if (category) {
-      this.newCategory[category.level] = true;
+      this.newCategory[category.level + 1] = true;
     } else {
       this.newCategory[0] = true;
     }
   }
 
   onSaveNewCategorySuccess(category: Category) {
+    this.newCategory[category.level] = false;
     this.availableCategories[category.level].push(category);
   }
 

@@ -105,7 +105,7 @@ public class SimpleTokenAuthenticationFilter implements Filter {
 							"error.token.invalid");
 				}
 			} catch (Exception e) {
-				((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.token.invalid");
+				((HttpServletResponse) response).sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			}
 		} else {
 			// Else HTTP 401 error

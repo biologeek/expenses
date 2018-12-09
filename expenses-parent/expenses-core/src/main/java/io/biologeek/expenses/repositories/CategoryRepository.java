@@ -23,5 +23,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long>{
 
 	Category findByNomenclature(String nomenclature);
 
+	@Query("select max(a.nomenclature) from Category a where parent = :parent")
+	String findMaxNomenclatureForChild(@Param("parent") Category parent);
+
 	
 }

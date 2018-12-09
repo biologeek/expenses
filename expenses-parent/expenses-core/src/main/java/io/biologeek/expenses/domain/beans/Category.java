@@ -2,6 +2,7 @@ package io.biologeek.expenses.domain.beans;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,8 +34,8 @@ public class Category {
 	/**
 	 * Level af the category in the classification
 	 */
-	private int level;
-	
+	private Integer level;
+	@Column(nullable=false)
 	private String nomenclature;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -92,11 +93,11 @@ public class Category {
 		this.categoryPictureId = categoryPictureId;
 	}
 
-	public int getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 
